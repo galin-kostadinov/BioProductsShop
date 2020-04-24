@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-user}"/>
+<main>
+    <div class="w-50 mx-auto">
+        <h1 class="text-center mt-5">All Bio Products</h1>
+        <hr class="hr-2 bg-dark">
+        <th:block th:each="product : ${products}">
+            <div>
+                <span style="visibility: hidden">....</span>
+                <div class="row">
+                    <div class="col col-md-6 text-right pr-md-5">
+                        <img th:src="${product.imgUrl}" alt="img" width="300">
+                    </div>
+                    <div class="col col-md-6 pl-md-5">
+                        <ul>
+                            <li class="text-left">
+                                <h2 th:utext="${product.name}"></h2>
+                            </li>
+                            <li class="text-left">
+                                <h4 th:utext="'Made: ' + ${product.made}"></h4>
+                            </li>
+                            <li>
+                                <span style="visibility: hidden">....</span>
+                            </li>
+                            <li>
+                                <span style="visibility: hidden">....</span>
+                            </li>
+                            <li class="text-left">
+                                <h5 th:utext="'Price: ' + ${product.price} + ' $'"></h5>
+                            </li>
+                            <li>
+                                <span style="visibility: hidden">....</span>
+                            </li>
+                            <li>
+                                <th:block>
+                                    <a th:href="@{/product/details/{id}(id=${product.id})}"
+                                       class="btn btn-secondary glow-button font-weight-bold text-white">Details</a>
+                                </th:block>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr class="hr-2 bg-dark"/>
+        </th:block>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>

@@ -3,6 +3,7 @@ package org.gkk.bioshopapp.web.controller;
 import org.gkk.bioshopapp.service.model.LoginUserServiceModel;
 import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
+import org.gkk.bioshopapp.web.model.OrderProductModel;
 import org.gkk.bioshopapp.web.model.UserLoginModel;
 import org.gkk.bioshopapp.web.model.UserRegisterModel;
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 @Controller
 public class AuthController extends BaseController {
@@ -61,6 +63,7 @@ public class AuthController extends BaseController {
         try {
             LoginUserServiceModel loggedUser = this.authService.login(serviceModel);
             session.setAttribute("username", loggedUser.getUsername());
+            session.setAttribute("cart", new HashMap<String, OrderProductModel>());
             return super.redirect("/home");
         } catch (Exception e) {
             return super.redirect("/login");

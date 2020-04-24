@@ -69,7 +69,6 @@ public class ProductController extends BaseController {
         return model;
     }
 
-
     @GetMapping("/details/{id}")
     public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) throws Exception {
         ProductDetailsModel product = this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class); ;
@@ -113,25 +112,5 @@ public class ProductController extends BaseController {
         this.productService.deleteProduct(id);
 
         return super.redirect("/product/all");
-    }
-
-    @GetMapping("/buy/{id}")
-    public ModelAndView buyProduct(@PathVariable String id, ModelAndView model) throws Exception {
-        ProductDetailsModel product = this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class); ;
-
-        model.addObject("product", product);
-        model.addObject("productId", id);
-
-        return super.view("product/details-product", model);
-    }
-
-    @GetMapping("/add-to-cart/{id}")
-    public ModelAndView addProductToCart(@PathVariable String id, ModelAndView model) throws Exception {
-        ProductDetailsModel product = this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class); ;
-
-        model.addObject("product", product);
-        model.addObject("productId", id);
-
-        return super.view("product/details-product", model);
     }
 }

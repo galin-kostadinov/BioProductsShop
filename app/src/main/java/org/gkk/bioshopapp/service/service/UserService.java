@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.service.service;
 
+import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.service.model.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.UserProfileServiceModel;
 
@@ -11,4 +12,6 @@ public interface UserService {
     void editUserProfile(UserEditProfileServiceModel serviceModel) throws Exception;
 
     List<UserProfileServiceModel> getAllUsers();
+
+    User getUserEntityByUsername(String username) throws Exception;
 }

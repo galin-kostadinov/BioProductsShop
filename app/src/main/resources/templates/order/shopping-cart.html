@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-user}"/>
+<main>
+    <div class="w-75 mx-auto">
+        <span style="visibility: hidden">....</span>
+        <div class="row">
+            <div class="col col-md-8 text-left pr-5">
+                <th:block th:each="c : ${cart}">
+                    <h2 th:utext="${c.product.name}"></h2>
+                    <span style="visibility: hidden">....</span>
+                    <img th:src="${c.product.imgUrl}" alt="img" width="50" height="50">
+                    <span style="visibility: hidden">....</span>
+                    <h5 th:utext="'Price: ' + ${c.product.price} + ' $'"></h5>
+                    <h5 th:utext="'Quantity: ' + ${c.quantity} + 'pcs.'"></h5>
+                    <span style="visibility: hidden">....</span>
+                    <form class="mx-auto" th:action="@{/order/remove-from-cart/{id}(id=${c.product.id})}" method="post">
+                        <button class="btn warning btn-warning low-button font-weight-bold text-white"
+                                type="submit">Remove from Cart
+                        </button>
+                    </form>
+                    <span style="visibility: hidden">....</span>
+                </th:block>
+            </div>
+            <div class="col col-md-4">
+                <h2>Shopping cart</h2>
+                <h1>
+                    Items bought:
+                </h1>
+                <form th:action="@{/order/buy}" method="post">
+                    <ul>
+                        <li>
+                            <h1>Banana - 1 pcs.</h1>
+                        </li>
+                        <li>
+                            <h1>Apple - 1 pcs.</h1>
+                        </li>
+                    </ul>
+                    <th:block>
+                        <button class="btn warning btn-warning low-button font-weight-bold text-white" type="submit">
+                            Buy
+                        </button>
+                    </th:block>
+                </form>
+            </div>
+        </div>
+    </div>
+    <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>

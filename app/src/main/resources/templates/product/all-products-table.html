@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-admin}"/>
+<main>
+    <div>
+        <span style="visibility: hidden">....</span>
+        <h1 class="text-center bold font-weight-bold text-dark">Table with all products:</h1>
+        <hr class="hr-2 bg-dark">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-1 text-center">Image</th>
+                <th class="col-md-1 text-center">Name</th>
+                <th class="col-md-1 text-center">Made</th>
+                <th class="col-md-1 text-center">Price</th>
+                <th class="col-md-7 text-center">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product, iter : ${products}">
+                <tr class="row mx-auto">
+                    <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
+                    <td class="col-md-1">
+                        <div class="text-center"><img th:src="${product.imgUrl}" width="40" height="40"
+                                                      alt="quotes">
+                        </div>
+                    </td>
+                    <td class="col-md-1 text-center" th:utext="${product.name}"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.made}"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.price}  + ' $'"></td>
+                    <td class="col-md-7 text-center" th:utext="${product.description}"></td>
+                    <td class="col-md-3 text-center">
+                        <a th:href="@{/product/details/{id}(id=${product.id})}"
+                           class="btn btn-secondary glow-button font-weight-bold text-white">Details</a>
+                        <th:block>
+                            <a th:href="@{/product/edit/{id}(id=${product.id})}"
+                               class="btn btn-success glow-button font-weight-bold text-white">Edit</a>
+                        </th:block>
+                        <th:block>
+                            <a th:href="@{/product/delete/{id}(id=${product.id})}"
+                               class="btn btn-danger glow-button font-weight-bold text-white">Delete</a>
+                        </th:block>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-dark">
+        <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>

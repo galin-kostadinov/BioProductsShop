@@ -57,4 +57,10 @@ public class UserServiceImpl implements UserService {
                 .map(user -> this.modelMapper.map(user, UserProfileServiceModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public User getUserEntityByUsername(String username) throws Exception {
+        return this.usersRepository.findByUsername(username)
+                .orElseThrow(() -> new Exception("Invalid user"));
+    }
 }

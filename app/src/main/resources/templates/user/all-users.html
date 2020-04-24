@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-admin}"/>
+<main>
+    <main>
+        <div>
+            <span style="visibility: hidden">....</span>
+            <h1 class="text-center bold font-weight-bold text-dark">Table with all users:</h1>
+            <hr class="hr-2 bg-dark">
+            <table class="table table-hover w-75 mx-auto">
+                <thead>
+                <tr class="row mx-auto">
+                    <th class="col-md-1 text-center">#</th>
+                    <th class="col-md-2 text-center">Username</th>
+                    <th class="col-md-4 text-center">Email</th>
+                    <th class="col-md-1 text-center">Authority</th>
+                    <th class="col-md-4 text-center">Change Authority</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="user, iter : ${users}">
+                    <tr class="row mx-auto">
+                        <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
+                        <td class="col-md-2 text-center" th:utext="${user.username}"></td>
+                        <td class="col-md-4 text-center" th:utext="${user.email}"></td>
+                        <td class="col-md-1 text-center" th:text="TODO"></td>
+                        <td class="col-md-4 text-center">
+                            <th:block>
+                                <a href="#"
+                                   class="btn btn-success glow-button font-weight-bold text-white">USER</a>
+                            </th:block>
+                            <th:block>
+                                <a href="#"
+                                   class="btn btn-warning glow-button font-weight-bold text-white">ADMIN</a>
+                            </th:block>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <hr class="hr-2 bg-dark">
+            <span style="visibility: hidden">....</span>
+        </div>
+    </main>
+    <th:block th:include="~{fragments/footer}"/>
+</body>
+
+</html>

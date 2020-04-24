@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-admin}"/>
+<main>
+    <main>
+        <div class="container">
+            <h1>Welcome to BioProducts Shop</h1>
+            <hr class="my-4"/>
+            <h3>We offer natural <a href="product">fruits</a> and <a href="product">vegetables</a>.
+            </h3>
+            <hr class="my-4"/>
+            <h2>Look into our weekly offers:</h2>
+            <hr class="my-2"/>
+            <ul style="margin-bottom: 100px">
+                <li>
+                    <img src="/img/banana.png" alt="img" height="300">
+                    <h3>Natural bananas</h3>
+                    <h4>For European consumers who prefer to buy organic, Dole offers certified organically grown
+                        bananas. These are grown without the use of synthetic chemicals and fertilisers.
+                        Our growing techniques focus on improvements in a biological approach to pests and plant
+                        diseases.</h4>
+                    <h3>Price: $2.00</h3>
+                    <form action="post">
+                        <button type="button" class="btn btn-danger">Details</button>
+                    </form>
+                </li>
+                <hr class="my-4"/>
+                <li>
+                    <img src="/img/apple.jpg" alt="img" height="300">
+                    <h3>Bio Apples</h3>
+                    <h4>This is the highest quality e-liquid, a brand new and premium e-liquid, which will offer you
+                        unforgettable experience. It produces large amounts of vapors and a tasty and unique flavour.
+                    </h4>
+                    <h3>Price: $3.00</h3>
+                    <form action="post">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </main>
+    <th:block th:include="~{fragments/footer}"/>
+</body>
+
+</html>

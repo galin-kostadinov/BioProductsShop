@@ -1,6 +1,6 @@
 package org.gkk.bioshopapp.service.service;
 
-import org.gkk.bioshopapp.service.model.OrderCreateServiceModel;
+import org.gkk.bioshopapp.service.model.OrderProductServiceModel;
 import org.gkk.bioshopapp.service.model.OrderServiceModel;
 
 import java.util.List;
@@ -8,7 +8,9 @@ import java.util.List;
 public interface OrderService {
     List<OrderServiceModel> getAllOrders();
 
-    OrderServiceModel create(OrderCreateServiceModel order);
+    void create(List<OrderProductServiceModel> orderProducts, String username) throws Exception;
 
     void update(OrderServiceModel order);
+
+    List<OrderServiceModel> getAllOrdersByUser(String username);
 }
