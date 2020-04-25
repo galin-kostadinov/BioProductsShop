@@ -25,8 +25,14 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping({"/", ""})
-    ModelAndView getProducts() {
-        return super.view("product/products");
+    public ModelAndView getAllProducts(ModelAndView model) {
+        List<ProductServiceModel> products = this.productService.getAllProducts();
+
+        model.addObject("products", products);
+
+        model.setViewName("product/all-products");
+
+        return model;
     }
 
     @GetMapping("/create")
@@ -52,26 +58,20 @@ public class ProductController extends BaseController {
         }
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllProducts(ModelAndView model) {
+    @GetMapping("/all-products-table")
+    public ModelAndView getAllProductsTable(ModelAndView model) {
         List<ProductServiceModel> products = this.productService.getAllProducts();
 
         model.addObject("products", products);
 
-        //admin
-        //model.setViewName("product/all-products-table");
-
-        //user
-        model.setViewName("product/all-products");
-
-        //guest
-
-        return model;
+        return super.view("product/all-products-table", model);
     }
 
     @GetMapping("/details/{id}")
     public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) throws Exception {
-        ProductDetailsModel product = this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class); ;
+        ProductDetailsModel product =
+                this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class);
+
 
         model.addObject("product", product);
         model.addObject("productId", id);
@@ -111,6 +111,24 @@ public class ProductController extends BaseController {
     public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateModel model) throws Exception {
         this.productService.deleteProduct(id);
 
-        return super.redirect("/product/all");
+        return super.redirect("/product/all-products-table");
+    }
+
+    @GetMapping("/promote/{id}")
+    public ModelAndView getPromoteForm(@PathVariable String id, ModelAndView model) throws Exception {
+        ProductDetailsModel product =
+                this.modelMapper.map(this.productService.getProductById(id), ProductDetailsModel.class);
+
+        model.addObject("product", product);
+        model.addObject("productId", id);
+
+        return super.view("product/promote-product-form", model);
+    }
+
+    @PostMapping("/promote/{id}")
+    public ModelAndView promote(@PathVariable String id, Integer discount) throws Exception {
+        this.productService.promote(id, discount);
+
+        return super.redirect("/product/all-products-table");
     }
 }
