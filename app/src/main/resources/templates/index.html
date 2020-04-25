@@ -9,39 +9,38 @@
 <body>
 <th:block th:include="~{fragments/navbar-index}"/>
 <main>
-    <div class="container">
-        <h1>Welcome to BioProducts Shop</h1>
-        <hr class="my-4"/>
-        <h3>We offer natural <a href="/product">fruits</a> and <a href="/product">vegetables</a>.</h3>
-        <hr class="my-4"/>
-        <h2>Look into our weekly offers:</h2>
-        <hr class="my-2"/>
-        <ul style="margin-bottom: 100px">
-            <li>
-                <img src="/img/banana.png" alt="img" th:high="300px">
-                <h3>Natural bananas</h3>
-                <h4>For European consumers who prefer to buy organic, Dole offers certified organically grown
-                    bananas. These are grown without the use of synthetic chemicals and fertilisers.
-                    Our growing techniques focus on improvements in a biological approach to pests and plant
-                    diseases.</h4>
-                <h3>Price: $2.00</h3>
-                <form action="get">
-                    <button type="button" class="btn btn-success">Details</button>
-                </form>
-            </li>
-            <hr class="my-4"/>
-            <li>
-                <img src="/img/apple.jpg" alt="img" th:high="300px">
-                <h3>Bio Apples</h3>
-                <h4>This is the highest quality e-liquid, a brand new and premium e-liquid, which will offer you
-                    unforgettable experience. It produces large amounts of vapors and a tasty and unique flavour.
-                </h4>
-                <h3>Price: $3.00</h3>
-                <form action="get">
-                    <button type="button" class="btn btn-success">Details</button>
-                </form>
-            </li>
-        </ul>
+    <div class="w-75 mx-auto">
+        <h1 class="text-center">Welcome to BioProducts Shop</h1>
+        <hr class="hr-2 bg-dark"/>
+        <h3>We offer natural fruits and vegetables.</h3>
+        <h3>If you want to look all or buy a product then you have to <a href="/login">Login</a>/<a href="/login">Register</a>
+        </h3>
+        <hr class="hr-2 bg-dark"/>
+        <th:block th:unless="${promotedProducts == null}">
+            <h2 class="text-center">Our weekly offers:</h2>
+            <hr class="hr-2 bg-dark"/>
+            <div class="row">
+                <div class="col col-md-12 text-center p-0">
+                    <th:block th:each="product : ${promotedProducts}">
+                        <output class="col col-md-3 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0" th:escape="false">
+                            <div>
+                                <h2 th:utext="${product.name}"></h2>
+                                <h4 th:utext="'Made: ' + ${product.made}"></h4>
+                            </div>
+                            <img class="mb-md-3 mt-md-3" th:src="${product.imgUrl}" width="300" height="300">
+
+                            <h6 class="mb-md-2" style="text-decoration: line-through" th:utext="'Old Price: ' + ${product.price} + ' $'">${product.priceNow}</h6>
+                            <h5 class="mb-md-2" th:utext="'Price: ' + ${product.priceNow} + ' $'"></h5>
+
+                            <th:block>
+                                <a th:href="@{/product/details/{id}(id=${product.id})}"
+                                   class="btn btn-secondary glow-button font-weight-bold text-white">Details</a>
+                            </th:block>
+                        </output>
+                    </th:block>
+                </div>
+            </div>
+        </th:block>
     </div>
 </main>
 <th:block th:include="~{fragments/footer}"/>
