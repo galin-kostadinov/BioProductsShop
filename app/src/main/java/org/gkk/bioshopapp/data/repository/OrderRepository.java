@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
 
-    @Query("SELECT o FROM Order o join o.buyer b where b.username =:username")
+    @Query("SELECT o FROM Order o join o.buyer b where b.username =:username ORDER BY o.dateCreated desc ")
     List<Order> findAllByUsername(@Param("username") String username);
 }
