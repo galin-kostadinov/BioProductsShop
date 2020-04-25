@@ -19,6 +19,8 @@ public class Product extends BaseEntity {
 
     private BigDecimal price;
 
+    private Promotion promotion;
+
     public Product() {
     }
 
@@ -75,5 +77,14 @@ public class Product extends BaseEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 }
