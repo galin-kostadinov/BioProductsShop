@@ -2,6 +2,7 @@ package org.gkk.bioshopapp.service.service;
 
 import org.gkk.bioshopapp.data.model.Product;
 import org.gkk.bioshopapp.service.model.CreateProductServiceModel;
+import org.gkk.bioshopapp.service.model.ProductPromoteServiceModel;
 import org.gkk.bioshopapp.service.model.ProductServiceModel;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface ProductService {
     void deleteProduct(String id);
 
     Product getProduct(String id) throws Exception;
+
+    void promote(String productId, Integer discount) throws Exception;
+
+    List<ProductPromoteServiceModel> getAllPromotedProducts();
 }
