@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-user}"/>
+<main>
+    <div class="w-75 mx-auto">
+        <h1 class="text-center mt-5">All Bio Products</h1>
+        <hr class="hr-2 bg-dark">
+        <div class="row">
+            <div class="col col-md-12 text-center p-0">
+                <th:block th:each="product : ${products}">
+                    <output class="col col-md-3 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0" th:escape="false">
+                        <div>
+                            <h2 class="col col-md-12" th:utext="${product.name}"></h2>
+                            <h4 class="col col-md-12" th:utext="'Made: ' + ${product.made}"></h4>
+                        </div>
+                        <img class="col col-md-12 mb-md-3 mt-md-3" th:src="${product.imgUrl}" width="300" height="300">
+                        <div th:if="${product.priceNow} == null">
+                            <h5 class="col col-md-12 mb-md-2" th:utext="'Price: ' + ${product.price} + ' $'"></h5>
+                        </div>
+                        <div class="form-inline col col-md-12 mb-md-2"  th:unless="${product.priceNow} == null">
+                            <div class="col col-md-5 h5 text-right pr-0 mr-0">Price:</div>
+                            <div class="col col-md-2 h6 discount-price pl-1 pr-1 mr-0 ml-0" th:utext="${product.price}"></div>
+                            <div class="col col-md-5 h4 text-left pl-0 ml-0" th:utext="${product.priceNow} + ' $'"></div>
+                        </div>
+                        <th:block class="col col-md-12">
+                            <a th:href="@{/product/details/{id}(id=${product.id})}"
+                               class="btn btn-secondary glow-button font-weight-bold text-white">Details</a>
+                        </th:block>
+                    </output>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>
