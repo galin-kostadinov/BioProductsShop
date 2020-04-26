@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-user}"/>
+<main>
+    <div class="w-100 mx-auto">
+        <span style="visibility: hidden">....</span>
+        <h2 class="text-center bold font-weight-bold text-dark">All orders:</h2>
+        <hr class="hr-2 bg-dark">
+        <div class="row text-center w-75 mx-auto">
+            <th:block th:each="order : ${orders}">
+                <div class="col col-md-12 text-left pt-3 pl-5">
+                    <ul>
+                        <li>
+                            <h5 th:utext="'Order ID: ' + ${order.id}"></h5>
+                        </li>
+                        <li>
+                            <h5 th:utext="'Date: ' + ${order.dateCreated}"></h5>
+                        </li>
+                        <li>
+                            <h5 th:utext="'Status: ' + ${order.status}"></h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col col-md-12 text-left pt-3">
+                    <table class="table table-hover table-bordered mx-auto">
+                        <thead>
+                        <tr class="row mx-auto">
+                            <th class="col-md-2 text-center">#</th>
+                            <th class="col-md-2 text-center">Image</th>
+                            <th class="col-md-4 text-center">Name</th>
+                            <th class="col-md-2 text-center">Quantity</th>
+                            <th class="col-md-2 text-center">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="product, iter : ${order.getOrderProducts()}">
+                            <tr class="row mx-auto">
+                                <th class="col-md-2 text-center" th:utext="${iter.index + 1}"></th>
+                                <td class="col-md-2">
+                                    <div class="text-center"><img th:src="${product.product.imgUrl}" width="40"
+                                                                  height="40"
+                                                                  alt="quotes">
+                                    </div>
+                                </td>
+                                <td class="col-md-4 text-center" th:utext="${product.product.name}"></td>
+                                <td class="col-md-2 text-center" th:utext="${product.quantity}"></td>
+                                <td class="col-md-2 text-center" th:utext="${product.product.price}  + ' $'"></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col col-md-12 text-right">
+                    <h5 class="pr-4" th:utext="'Total price: ' + ${order.totalPrice} + ' $'"></h5>
+                    <hr class="hr-2 bg-dark">
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>
