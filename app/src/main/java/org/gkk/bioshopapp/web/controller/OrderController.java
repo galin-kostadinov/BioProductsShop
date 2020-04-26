@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.data.repository.OrderRepository;
 import org.gkk.bioshopapp.service.model.OrderProductServiceModel;
 import org.gkk.bioshopapp.service.model.OrderServiceModel;
 import org.gkk.bioshopapp.service.model.ProductServiceModel;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,32 +35,14 @@ public class OrderController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/all")
-    public ModelAndView getAllProducts(ModelAndView model) {
-        List<ProductServiceModel> products = this.productService.getAllProducts();
-
-        model.addObject("products", products);
-
-        //admin
-        //model.setViewName("product/all-products-table");
-
-        //user
-        model.setViewName("product/all-products");
-
-        //guest
-
-        return model;
-    }
-
-    @GetMapping("/all-orders")
+    @GetMapping("/orders")
     public ModelAndView getAllOrders(ModelAndView model, HttpSession session) {
         String username = session.getAttribute("username").toString();
         List<OrderServiceModel> orders = this.orderService.getAllOrdersByUser(username);
 
         model.addObject("orders", orders);
-        model.setViewName("order/all-orders");
 
-        return model;
+        return super.view("order/orders", model);
     }
 
     @GetMapping("/cart")
@@ -70,7 +52,12 @@ public class OrderController extends BaseController {
 
         List<OrderProductModel> cart = new ArrayList<>(cartInSession.values());
 
+        BigDecimal cartTotalPrice = cart.stream()
+                .map(op -> op.getProduct().getPrice().multiply(BigDecimal.valueOf(op.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         model.addObject("cart", cart);
+        model.addObject("cartTotalPrice", cartTotalPrice);
         model.setViewName("order/shopping-cart");
 
         return model;
@@ -82,6 +69,10 @@ public class OrderController extends BaseController {
         HashMap<String, OrderProductModel> cartInSession =
                 (HashMap<String, OrderProductModel>) session.getAttribute("cart");
 
+        if (cartInSession.isEmpty()) {
+            return super.redirect("/order/cart");
+        }
+
         List<OrderProductServiceModel> ordersService =
                 cartInSession.values()
                         .stream()
@@ -92,7 +83,7 @@ public class OrderController extends BaseController {
 
         cartInSession.clear();
 
-        return super.redirect("/order/all-orders");
+        return super.redirect("/order/orders");
     }
 
     @PostMapping("/add-to-cart/{id}")
@@ -107,7 +98,7 @@ public class OrderController extends BaseController {
             orderProductModel.setQuantity(orderProductModel.getQuantity() + quantity);
         }
 
-        return super.redirect("/product/all");
+        return super.redirect("/product");
     }
 
     @PostMapping("/remove-from-cart/{id}")
