@@ -19,7 +19,7 @@ public class HomeController extends BaseController {
 
     @GetMapping("/")
     public ModelAndView index(ModelAndView model) {
-        List<ProductPromoteServiceModel> products = this.productService.getAllPromotedProducts();
+        List<ProductPromoteServiceModel> products = this.productService.getPromotedProducts();
 
         if (!products.isEmpty()){
             model.addObject("promotedProducts", products);
@@ -30,7 +30,7 @@ public class HomeController extends BaseController {
 
     @GetMapping("/home")
     public ModelAndView home(ModelAndView model) {
-        List<ProductPromoteServiceModel> products = this.productService.getAllPromotedProducts();
+        List<ProductPromoteServiceModel> products = this.productService.getPromotedProducts();
 
         if (!products.isEmpty()){
             model.addObject("promotedProducts", products);
