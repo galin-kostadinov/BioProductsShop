@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-admin}"/>
+<main>
+    <div>
+        <span style="visibility: hidden">....</span>
+        <h2 class="text-center bold font-weight-bold text-dark">Table with all promotions:</h2>
+        <hr class="hr-2 bg-dark">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-1 text-center">Image</th>
+                <th class="col-md-2 text-center">Name</th>
+                <th class="col-md-1 text-center">Made</th>
+                <th class="col-md-1 text-center">Regular Price</th>
+                <th class="col-md-1 text-center">Discount</th>
+                <th class="col-md-2 text-center">From Date</th>
+                <th class="col-md-2 text-center">To Date</th>
+                <th class="col-md-1 text-center">Promotional Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="product, iter : ${products}">
+                <tr class="row mx-auto">
+                    <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
+                    <td class="col-md-1">
+                        <div class="text-center"><img th:src="${product.imgUrl}" width="40" height="40"
+                                                      alt="quotes">
+                        </div>
+                    </td>
+                    <td class="col-md-2 text-center" th:utext="${product.name}"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.made}"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.price}  + ' $'"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.priceDiscount.discount}  + ' %'"></td>
+                    <td class="col-md-2 text-center" th:utext="${product.priceDiscount.fromDate}"></td>
+                    <td class="col-md-2 text-center" th:utext="${product.priceDiscount.toDate}"></td>
+                    <td class="col-md-1 text-center" th:utext="${product.promotionalPrice}  + ' $'"></td>
+                    <td class="col-md-12 text-left">
+                        <th:block>
+                            <form th:action="@{/product/remove-promotion/{id}(id=${product.id})}" method="post">
+                                <button class="btn btn-danger glow-button font-weight-bold text-white" type="submit">
+                                    Remove Promotion
+                                </button>
+                            </form>
+                        </th:block>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-dark">
+        <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+</html>

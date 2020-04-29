@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="~{fragments/head}"/>
+
+<body>
+<th:block th:include="~{fragments/navbar-admin}"/>
+<main>
+    <div>
+        <span style="visibility: hidden">....</span>
+        <div class="row">
+            <div class="col col-md-4 text-right pr-5">
+                <img th:src="${product.imgUrl}" width="300">
+            </div>
+            <div class="col col-md-6 text-left pl-5">
+                <ul>
+                    <li>
+                        <h1 th:utext="${product.name}"></h1>
+                    </li>
+                    <li>
+                        <h5 th:utext="'Made: ' + ${product.made}"></h5>
+                    </li>
+                    <li class="text-left pt-2 pb-2">
+                        <h6 th:utext="${product.description}"></h6>
+                    </li>
+                    <li class="text-left">
+                        <h5 th:utext="'Regular Price: ' + ${product.price} + ' $'"></h5>
+                    </li>
+                    <li>
+                        <form class="mx-auto" th:action="@{/product/promote/{id}(id=${productId})}" method="post">
+                            <div class="col col-md-5 h5 p-0">
+                                <label for="discount">Discount: </label>
+                                <input type="number" size="3px" id="discount" name="discount" placeholder="10%" min="1"
+                                       max="90" step="1" required>
+                            </div>
+                            <div class="col col-md-5 h5 p-0">
+                                <label for="fromDate">From Date: </label>
+                                <input type="datetime-local" size="15px" id="fromDate" name="fromDate"
+                                       th:value="${dataTimeNow}"
+                                       readonly>
+                            </div>
+                            <div class="col col-md-5 h5 p-0">
+                                <label for="toDate">To Date: </label>
+                                <input type="datetime-local" size="15px" id="toDate" name="toDate"
+                                       placeholder="2020-05-22T08:30"
+                                       pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" required>
+                            </div>
+                            <button class="btn warning btn-primary low-button font-weight-bold text-white mt-2 ml-2"
+                                    type="submit">Promote
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
+</body>
+
+</html>
