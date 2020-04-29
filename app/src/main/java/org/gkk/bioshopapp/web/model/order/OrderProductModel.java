@@ -1,26 +1,28 @@
-package org.gkk.bioshopapp.web.model;
+package org.gkk.bioshopapp.web.model.order;
+
+import org.gkk.bioshopapp.web.model.product.ProductShoppingCartModel;
 
 import java.io.Serializable;
 
 public class OrderProductModel implements Serializable {
 
-    private ProductBuyModel product;
+    private ProductShoppingCartModel product;
 
     private Integer quantity;
 
     public OrderProductModel() {
     }
 
-    public OrderProductModel(ProductBuyModel product, Integer quantity) {
+    public OrderProductModel(ProductShoppingCartModel product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    public ProductBuyModel getProduct() {
+    public ProductShoppingCartModel getProduct() {
         return product;
     }
 
-    public void setProduct(ProductBuyModel product) {
+    public void setProduct(ProductShoppingCartModel product) {
         this.product = product;
     }
 

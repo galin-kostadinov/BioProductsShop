@@ -1,6 +1,6 @@
-package org.gkk.bioshopapp.web.model;
+package org.gkk.bioshopapp.service.model.user;
 
-public class UserEditProfileModel {
+public class UserEditProfileServiceModel {
 
     private String username;
 
@@ -12,7 +12,7 @@ public class UserEditProfileModel {
 
     private String confirmNewPassword;
 
-    public UserEditProfileModel() {
+    public UserEditProfileServiceModel() {
     }
 
     public String getUsername() {

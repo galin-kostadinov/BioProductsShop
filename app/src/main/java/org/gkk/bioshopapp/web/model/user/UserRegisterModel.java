@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.web.model;
+package org.gkk.bioshopapp.web.model.user;
 
 public class UserRegisterModel {
 

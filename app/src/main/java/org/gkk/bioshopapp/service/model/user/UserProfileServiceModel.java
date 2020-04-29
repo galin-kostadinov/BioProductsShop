@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.service.model;
+package org.gkk.bioshopapp.service.model.user;
 
 public class UserProfileServiceModel {
 

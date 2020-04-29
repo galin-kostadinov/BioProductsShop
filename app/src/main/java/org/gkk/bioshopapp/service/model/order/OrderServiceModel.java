@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.service.model;
+package org.gkk.bioshopapp.service.model.order;
 
 import org.gkk.bioshopapp.data.model.OrderStatus;
 

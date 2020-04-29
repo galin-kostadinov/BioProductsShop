@@ -1,6 +1,6 @@
-package org.gkk.bioshopapp.service.model;
+package org.gkk.bioshopapp.service.model.user;
 
-public class RegisterUserServiceModel {
+public class UserRegisterServiceModel {
 
     private String username;
 
@@ -10,7 +10,7 @@ public class RegisterUserServiceModel {
 
     private String email;
 
-    public RegisterUserServiceModel() {
+    public UserRegisterServiceModel() {
     }
 
     public String getUsername() {

@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.web.model;
+package org.gkk.bioshopapp.web.model.product;
 
 import org.gkk.bioshopapp.data.model.ProductType;
 

@@ -1,16 +1,12 @@
-package org.gkk.bioshopapp.service.model;
-
-import org.gkk.bioshopapp.data.model.ProductType;
+package org.gkk.bioshopapp.web.model.product;
 
 import java.math.BigDecimal;
 
-public class CreateProductServiceModel {
+public class ProductDetailsModel {
 
     private String name;
 
     private String made;
-
-    private ProductType type;
 
     private String description;
 
@@ -18,7 +14,9 @@ public class CreateProductServiceModel {
 
     private BigDecimal price;
 
-    public CreateProductServiceModel() {
+    private BigDecimal promotionalPrice;
+
+    public ProductDetailsModel() {
     }
 
     public String getName() {
@@ -35,14 +33,6 @@ public class CreateProductServiceModel {
 
     public void setMade(String made) {
         this.made = made;
-    }
-
-    public ProductType getType() {
-        return type;
-    }
-
-    public void setType(ProductType type) {
-        this.type = type;
     }
 
     public String getDescription() {
@@ -67,5 +57,13 @@ public class CreateProductServiceModel {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getPromotionalPrice() {
+        return promotionalPrice;
+    }
+
+    public void setPromotionalPrice(BigDecimal promotionalPrice) {
+        this.promotionalPrice = promotionalPrice;
     }
 }
