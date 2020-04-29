@@ -2,8 +2,8 @@ package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UsersRepository;
-import org.gkk.bioshopapp.service.model.LoginUserServiceModel;
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserLoginServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
 import org.gkk.bioshopapp.service.service.HashingService;
 import org.gkk.bioshopapp.validation.AuthValidation;
@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void register(RegisterUserServiceModel model) {
+    public void register(UserRegisterServiceModel model) {
         if (!authValidation.isValid(model)) {
             return;
         }
@@ -39,12 +39,12 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginUserServiceModel login(LoginUserServiceModel serviceModel) throws Exception {
+    public UserLoginServiceModel login(UserLoginServiceModel serviceModel) throws Exception {
         String passwordHash = hashingService.hash(serviceModel.getPassword());
 
         return usersRepository
                 .findByUsernameAndPassword(serviceModel.getUsername(), passwordHash)
-                .map(user -> modelMapper.map(user, LoginUserServiceModel.class))
+                .map(user -> modelMapper.map(user, UserLoginServiceModel.class))
                 .orElseThrow(() -> new Exception("Invalid user"));
     }
 }

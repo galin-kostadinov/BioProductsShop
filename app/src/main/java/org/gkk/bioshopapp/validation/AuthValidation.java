@@ -1,8 +1,8 @@
 package org.gkk.bioshopapp.validation;
 
 
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 
 public interface AuthValidation {
-    boolean isValid(RegisterUserServiceModel user);
+    boolean isValid(UserRegisterServiceModel user);
 }

@@ -1,7 +1,8 @@
 package org.gkk.bioshopapp.data.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -11,17 +12,18 @@ public class Product extends BaseEntity {
 
     private String made;
 
-    private ProductType type;
+    private Category category;
 
     private String description;
 
     private String imgUrl;
 
-    private BigDecimal price;
+    private List<PriceHistory> prices;
 
-    private Promotion promotion;
+    private boolean isDeleted;
 
     public Product() {
+        this.prices = new ArrayList<>();
     }
 
     @Column(name = "name", length = 50, nullable = false)
@@ -42,14 +44,14 @@ public class Product extends BaseEntity {
         this.made = made;
     }
 
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    public ProductType getType() {
-        return type;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    public Category getCategory() {
+        return category;
     }
 
-    public void setType(ProductType type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Column(name = "description", length = 65535, columnDefinition = "text", nullable = false)
@@ -70,21 +72,21 @@ public class Product extends BaseEntity {
         this.imgUrl = imgUrl;
     }
 
-    @Column(name = "price", nullable = false)
-    public BigDecimal getPrice() {
-        return price;
+    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.PERSIST})
+    public List<PriceHistory> getPrices() {
+        return prices;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPrices(List<PriceHistory> prices) {
+        this.prices = prices;
     }
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public Promotion getPromotion() {
-        return promotion;
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "boolean default false")
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

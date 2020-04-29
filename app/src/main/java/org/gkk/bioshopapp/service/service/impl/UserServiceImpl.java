@@ -2,9 +2,8 @@ package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UsersRepository;
-import org.gkk.bioshopapp.service.model.ProductServiceModel;
-import org.gkk.bioshopapp.service.model.UserEditProfileServiceModel;
-import org.gkk.bioshopapp.service.model.UserProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.HashingService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.validation.UserValidation;

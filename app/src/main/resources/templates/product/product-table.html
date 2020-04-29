@@ -13,30 +13,31 @@
         <span style="visibility: hidden">....</span>
         <h2 class="text-center bold font-weight-bold text-dark">Table with all products:</h2>
         <hr class="hr-2 bg-dark">
-        <table class="table table-hover w-75 mx-auto">
+        <table class="table table-hover w-50 mx-auto">
             <thead>
             <tr class="row mx-auto">
                 <th class="col-md-1 text-center">#</th>
-                <th class="col-md-1 text-center">Image</th>
-                <th class="col-md-1 text-center">Name</th>
-                <th class="col-md-1 text-center">Made</th>
-                <th class="col-md-1 text-center">Price</th>
-                <th class="col-md-7 text-center">Description</th>
+                <th class="col-md-2 text-center">Image</th>
+                <th class="col-md-2 text-center">Name</th>
+                <th class="col-md-2 text-center">Made</th>
+                <th class="col-md-2 text-center">Regular Price</th>
+                <th class="col-md-3 text-center">Promotional Price</th>
             </tr>
             </thead>
             <tbody>
             <th:block th:each="product, iter : ${products}">
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
-                    <td class="col-md-1">
+                    <td class="col-md-2">
                         <div class="text-center"><img th:src="${product.imgUrl}" width="40" height="40"
                                                       alt="quotes">
                         </div>
                     </td>
-                    <td class="col-md-1 text-center" th:utext="${product.name}"></td>
-                    <td class="col-md-1 text-center" th:utext="${product.made}"></td>
-                    <td class="col-md-1 text-center" th:utext="${product.price}  + ' $'"></td>
-                    <td class="col-md-7 text-center" th:utext="${product.description}"></td>
+                    <td class="col-md-2 text-center" th:utext="${product.name}"></td>
+                    <td class="col-md-2 text-center" th:utext="${product.made}"></td>
+                    <td class="col-md-2 text-center" th:utext="${product.price}  + ' $'"></td>
+                    <td th:if="${product.promotionalPrice == null}" class="col-md-3 text-center font-italic">Without current promotion</td>
+                    <td th:unless="${product.promotionalPrice == null}" class="col-md-3 text-center" th:utext="${product.promotionalPrice}  + ' $'"></td>
                     <td class="col-md-12 text-left">
                         <th:block>
                             <a th:href="@{/product/details/{id}(id=${product.id})}"
@@ -50,7 +51,7 @@
                             <a th:href="@{/product/delete/{id}(id=${product.id})}"
                                class="btn btn-danger glow-button font-weight-bold text-white">Delete</a>
                         </th:block>
-                        <th:block th:if="${product.promotion == null}">
+                        <th:block th:if="${product.promotionalPrice == null}">
                             <a th:href="@{/product/promote/{id}(id=${product.id})}"
                                class="btn btn-primary glow-button font-weight-bold text-white">Promote</a>
                         </th:block>

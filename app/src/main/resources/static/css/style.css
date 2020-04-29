@@ -43,3 +43,7 @@ footer {
     border-radius: .25rem;
     max-width: 100%;
 }
+
+.discount-price {
+    text-decoration: line-through;
+}

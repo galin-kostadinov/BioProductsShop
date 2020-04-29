@@ -1,9 +1,7 @@
 package org.gkk.bioshopapp.validation.impl;
 
 import org.gkk.bioshopapp.data.repository.UsersRepository;
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
-import org.gkk.bioshopapp.service.model.UserEditProfileServiceModel;
-import org.gkk.bioshopapp.validation.AuthValidation;
+import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.validation.UserValidation;
 import org.springframework.stereotype.Component;
 

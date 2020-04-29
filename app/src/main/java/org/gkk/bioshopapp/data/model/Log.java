@@ -18,7 +18,7 @@ public class Log extends BaseEntity{
     public Log() {
     }
 
-    @Column(name = "username",length = 50, nullable = false)
+    @Column(name = "username", length = 50, nullable = false)
     public String getUsername() {
         return username;
     }

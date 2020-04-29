@@ -29,8 +29,8 @@
                             </div>
                             <img class="mb-md-3 mt-md-3" th:src="${product.imgUrl}" width="300" height="300">
 
-                            <h6 class="mb-md-2" style="text-decoration: line-through" th:utext="'Old Price: ' + ${product.price} + ' $'">${product.priceNow}</h6>
-                            <h5 class="mb-md-2" th:utext="'Price: ' + ${product.priceNow} + ' $'"></h5>
+                            <h6 class="mb-md-2 discount-price" th:utext="'Old Price: ' + ${product.price} + ' $'">${product.priceNow}</h6>
+                            <h5 class="mb-md-2" th:utext="'Price: ' + ${product.promotionalPrice} + ' $'"></h5>
 
                             <th:block>
                                 <a th:href="@{/product/details/{id}(id=${product.id})}"

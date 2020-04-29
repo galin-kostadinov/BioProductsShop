@@ -1,12 +1,10 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.service.model.LoginUserServiceModel;
-import org.gkk.bioshopapp.service.model.ProductServiceModel;
-import org.gkk.bioshopapp.service.model.UserEditProfileServiceModel;
-import org.gkk.bioshopapp.service.model.UserProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.UserService;
-import org.gkk.bioshopapp.web.model.UserEditProfileModel;
-import org.gkk.bioshopapp.web.model.UserProfileViewModel;
+import org.gkk.bioshopapp.web.model.user.UserEditProfileModel;
+import org.gkk.bioshopapp.web.model.user.UserProfileViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

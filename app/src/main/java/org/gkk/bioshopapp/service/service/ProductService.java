@@ -1,27 +1,27 @@
 package org.gkk.bioshopapp.service.service;
 
 import org.gkk.bioshopapp.data.model.Product;
-import org.gkk.bioshopapp.service.model.CreateProductServiceModel;
-import org.gkk.bioshopapp.service.model.ProductPromoteServiceModel;
-import org.gkk.bioshopapp.service.model.ProductServiceModel;
+import org.gkk.bioshopapp.service.model.product.*;
 
 import java.util.List;
 
 public interface ProductService {
 
-    void create(CreateProductServiceModel serviceModel);
+    void create(ProductCreateServiceModel serviceModel);
 
-    List<ProductServiceModel> getAllProducts();
-
-    ProductServiceModel getProductById(String id) throws Exception;
-
-    ProductServiceModel editProduct(String id, CreateProductServiceModel map) throws Exception;
+    void editProduct(String id, ProductEditServiceModel map);
 
     void deleteProduct(String id);
 
-    Product getProduct(String id) throws Exception;
+    Product getProduct(String id);
 
-    void promote(String productId, Integer discount) throws Exception;
+    ProductEditServiceModel getProductEditModelById(String id);
 
-    List<ProductPromoteServiceModel> getAllPromotedProducts();
+    ProductDetailsServiceModel getProductDetailsModel(String id) ;
+
+    List<ProductTableServiceModel> getProductTable();
+
+    List<ProductDiscountTableServiceModel> getDiscountedProducts();
+
+    ProductShoppingCartServiceModel getShoppingCartProductModelById(String id);
 }

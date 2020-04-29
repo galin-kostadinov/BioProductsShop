@@ -15,14 +15,15 @@
         <hr class="hr-2 bg-dark">
         <div class="row">
             <div class="col col-md-12 text-center">
-                <th:block th:each="c, iter : ${cart}">
+                <th:block th:each="orderProduct, iter : ${cart}">
                     <output class="col col-md-3 text-center" th:escape="false">
-                        <h2 th:utext="${c.product.name}"></h2>
-                        <img class ="mb-3 mt-3" th:src="${c.product.imgUrl}" width="100" height="100" >
-                        <h5 class="text-left pl-4" th:utext="'Price: ' + ${c.product.price} + ' $'"></h5>
-                        <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${c.quantity} + 'pcs.'"></h5>
+                        <h2 th:utext="${orderProduct.product.name}"></h2>
+                        <img class ="mb-3 mt-3" th:src="${orderProduct.product.imgUrl}" width="100" height="100" >
+                        <h5 th:if="${orderProduct.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${orderProduct.product.price} + ' $'"></h5>
+                        <h5 th:unless="${orderProduct.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${orderProduct.product.promotionalPrice} + ' $'"></h5>
+                        <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${orderProduct.quantity} + 'pcs.'"></h5>
                         <span style="visibility: hidden">....</span>
-                        <form class="mx-auto" th:action="@{/order/remove-from-cart/{id}(id=${c.product.id})}"
+                        <form class="mx-auto" th:action="@{/order/remove-from-cart/{id}(id=${orderProduct.product.id})}"
                               method="post">
                             <button class="btn warning btn-primary low-button font-weight-bold text-white"
                                     type="submit">Remove from Cart

@@ -1,11 +1,11 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.service.model.LoginUserServiceModel;
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserLoginServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
-import org.gkk.bioshopapp.web.model.OrderProductModel;
-import org.gkk.bioshopapp.web.model.UserLoginModel;
-import org.gkk.bioshopapp.web.model.UserRegisterModel;
+import org.gkk.bioshopapp.web.model.order.OrderProductModel;
+import org.gkk.bioshopapp.web.model.user.UserLoginModel;
+import org.gkk.bioshopapp.web.model.user.UserRegisterModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -40,7 +40,7 @@ public class AuthController extends BaseController {
             return super.view("user/register");
         }
 
-        RegisterUserServiceModel serviceModel = this.modelMapper.map(model, RegisterUserServiceModel.class);
+        UserRegisterServiceModel serviceModel = this.modelMapper.map(model, UserRegisterServiceModel.class);
         authService.register(serviceModel);
         return super.redirect("/login");
     }
@@ -58,10 +58,10 @@ public class AuthController extends BaseController {
 
     @PostMapping("/login")
     public ModelAndView login(@ModelAttribute UserLoginModel model, HttpSession session) {
-        LoginUserServiceModel serviceModel = this.modelMapper.map(model, LoginUserServiceModel.class);
+        UserLoginServiceModel serviceModel = this.modelMapper.map(model, UserLoginServiceModel.class);
 
         try {
-            LoginUserServiceModel loggedUser = this.authService.login(serviceModel);
+            UserLoginServiceModel loggedUser = this.authService.login(serviceModel);
             session.setAttribute("username", loggedUser.getUsername());
             session.setAttribute("cart", new HashMap<String, OrderProductModel>());
             return super.redirect("/home");

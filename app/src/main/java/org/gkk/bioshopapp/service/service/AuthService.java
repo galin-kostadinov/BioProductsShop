@@ -1,10 +1,10 @@
 package org.gkk.bioshopapp.service.service;
 
-import org.gkk.bioshopapp.service.model.LoginUserServiceModel;
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserLoginServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 
 public interface AuthService {
-    void register(RegisterUserServiceModel model);
+    void register(UserRegisterServiceModel model);
 
-    LoginUserServiceModel login(LoginUserServiceModel serviceModel) throws Exception;
+    UserLoginServiceModel login(UserLoginServiceModel serviceModel) throws Exception;
 }

@@ -2,8 +2,9 @@ package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.OrderRepository;
-import org.gkk.bioshopapp.service.model.OrderProductServiceModel;
-import org.gkk.bioshopapp.service.model.OrderServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderProductCreateServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderProductServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.service.service.UserService;
@@ -11,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,15 +34,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderServiceModel> getAllOrders() {
-        return this.orderRepository.findAll()
-                .stream()
-                .map(order -> this.modelMapper.map(order, OrderServiceModel.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void create(List<OrderProductServiceModel> orderProducts, String username) throws Exception {
+    public void create(List<OrderProductCreateServiceModel> orderProducts, String username) throws Exception {
         Order order = new Order();
         order.setDateCreated(LocalDateTime.now());
         order.setStatus(OrderStatus.PAID);
@@ -68,18 +63,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void update(OrderServiceModel orderService) {
-        Order order = this.modelMapper.map(orderService, Order.class);
-        this.orderRepository.save(order);
-    }
-
-    @Override
     public List<OrderServiceModel> getAllOrdersByUser(String username) {
         return this.orderRepository.findAllByUsername(username)
                 .stream()
                 .map(order -> {
                     OrderServiceModel orderServiceModel = this.modelMapper.map(order, OrderServiceModel.class);
-                    orderServiceModel.setTotalPrice(order.getTotalOrderPrice());
+                    orderServiceModel.getOrderProducts()
+                            .forEach(p-> p.getProduct().setPrice(p.getTotalPrice().divide(BigDecimal.valueOf(p.getQuantity()), RoundingMode.HALF_UP)));
                     return orderServiceModel;
                 })
                 .collect(Collectors.toList());

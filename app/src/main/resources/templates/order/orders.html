@@ -32,18 +32,19 @@
                     <table class="table table-hover table-bordered mx-auto">
                         <thead>
                         <tr class="row mx-auto">
-                            <th class="col-md-2 text-center">#</th>
-                            <th class="col-md-2 text-center">Image</th>
+                            <th class="col-md-1 text-center">#</th>
+                            <th class="col-md-1 text-center">Image</th>
                             <th class="col-md-4 text-center">Name</th>
                             <th class="col-md-2 text-center">Quantity</th>
                             <th class="col-md-2 text-center">Price</th>
+                            <th class="col-md-2 text-center">Total Price</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="product, iter : ${order.getOrderProducts()}">
+                        <th:block th:each="product, iter : ${order.orderProducts}">
                             <tr class="row mx-auto">
-                                <th class="col-md-2 text-center" th:utext="${iter.index + 1}"></th>
-                                <td class="col-md-2">
+                                <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
+                                <td class="col-md-1">
                                     <div class="text-center"><img th:src="${product.product.imgUrl}" width="40"
                                                                   height="40"
                                                                   alt="quotes">
@@ -52,6 +53,7 @@
                                 <td class="col-md-4 text-center" th:utext="${product.product.name}"></td>
                                 <td class="col-md-2 text-center" th:utext="${product.quantity}"></td>
                                 <td class="col-md-2 text-center" th:utext="${product.product.price}  + ' $'"></td>
+                                <td class="col-md-2 text-center" th:utext="${product.totalPrice}  + ' $'"></td>
                             </tr>
                         </th:block>
                         </tbody>

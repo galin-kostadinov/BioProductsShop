@@ -1,12 +1,12 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.service.model.OrderProductServiceModel;
-import org.gkk.bioshopapp.service.model.OrderServiceModel;
-import org.gkk.bioshopapp.service.model.ProductServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderProductCreateServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderProductServiceModel;
+import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
-import org.gkk.bioshopapp.web.model.OrderProductModel;
-import org.gkk.bioshopapp.web.model.ProductBuyModel;
+import org.gkk.bioshopapp.web.model.order.OrderProductModel;
+import org.gkk.bioshopapp.web.model.product.ProductShoppingCartModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +52,7 @@ public class OrderController extends BaseController {
 
         List<OrderProductModel> cart = new ArrayList<>(cartInSession.values());
 
-        BigDecimal cartTotalPrice = cart.stream()
-                .map(op -> op.getProduct().getPrice().multiply(BigDecimal.valueOf(op.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal cartTotalPrice = calculateTotalCartPrice(cart);
 
         model.addObject("cart", cart);
         model.addObject("cartTotalPrice", cartTotalPrice);
@@ -73,10 +71,10 @@ public class OrderController extends BaseController {
             return super.redirect("/order/cart");
         }
 
-        List<OrderProductServiceModel> ordersService =
+        List<OrderProductCreateServiceModel> ordersService =
                 cartInSession.values()
                         .stream()
-                        .map(o -> this.modelMapper.map(o, OrderProductServiceModel.class))
+                        .map(o -> this.modelMapper.map(o, OrderProductCreateServiceModel.class))
                         .collect(Collectors.toList());
 
         this.orderService.create(ordersService, username);
@@ -87,11 +85,13 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("/add-to-cart/{id}")
-    public ModelAndView addToCart(@PathVariable String id, Integer quantity, HttpSession session) throws Exception {
+    public ModelAndView addToCart(@PathVariable String id, Integer quantity, HttpSession session){
         HashMap<String, OrderProductModel> cart = (HashMap<String, OrderProductModel>) session.getAttribute("cart");
 
         if (!cart.containsKey(id)) {
-            ProductBuyModel product = this.modelMapper.map(this.productService.getProductById(id), ProductBuyModel.class);
+            ProductShoppingCartModel product =
+                    this.modelMapper.map(this.productService.getShoppingCartProductModelById(id),
+                            ProductShoppingCartModel.class);
             cart.put(id, new OrderProductModel(product, quantity));
         } else {
             OrderProductModel orderProductModel = cart.get(id);
@@ -107,5 +107,22 @@ public class OrderController extends BaseController {
         cart.remove(id);
 
         return super.redirect("/order/cart");
+    }
+
+    private BigDecimal calculateTotalCartPrice(List<OrderProductModel> cart) {
+        return cart.stream()
+                .map(op -> {
+                            BigDecimal resultPrice;
+
+                            if (op.getProduct().getPromotionalPrice() == null) {
+                                resultPrice = op.getProduct().getPrice().multiply(BigDecimal.valueOf(op.getQuantity()));
+                            } else {
+                                resultPrice = op.getProduct().getPromotionalPrice().multiply(BigDecimal.valueOf(op.getQuantity()));
+                            }
+
+                            return resultPrice;
+                        }
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

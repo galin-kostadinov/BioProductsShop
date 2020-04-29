@@ -1,8 +1,8 @@
 package org.gkk.bioshopapp.service.service;
 
 import org.gkk.bioshopapp.data.model.User;
-import org.gkk.bioshopapp.service.model.UserEditProfileServiceModel;
-import org.gkk.bioshopapp.service.model.UserProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package org.gkk.bioshopapp.validation.impl;
 
 import org.gkk.bioshopapp.data.repository.UsersRepository;
-import org.gkk.bioshopapp.service.model.RegisterUserServiceModel;
+import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.validation.AuthValidation;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class AuthValidationImpl implements AuthValidation {
     }
 
     @Override
-    public boolean isValid(RegisterUserServiceModel user) {
+    public boolean isValid(UserRegisterServiceModel user) {
         return this.isEmailValid(user.getEmail()) &&
                 this.arePasswordsValid(user.getPassword(), user.getConfirmPassword()) &&
                 this.isUsernameFree(user.getUsername());
