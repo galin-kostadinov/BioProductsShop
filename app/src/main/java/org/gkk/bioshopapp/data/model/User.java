@@ -1,11 +1,14 @@
 package org.gkk.bioshopapp.data.model;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
 
     private String username;
 
@@ -16,6 +19,10 @@ public class User extends BaseEntity {
     private Set<Role> authorities;
 
     private Set<Order> orders;
+
+    public User() {
+        this.authorities = new HashSet<>();
+    }
 
     @Column(name = "username", length = 50, nullable = false, unique = true, updatable = false)
     public String getUsername() {
@@ -44,7 +51,8 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(
                     name = "user_id",
@@ -70,5 +78,29 @@ public class User extends BaseEntity {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isEnabled() {
+        return true;
     }
 }

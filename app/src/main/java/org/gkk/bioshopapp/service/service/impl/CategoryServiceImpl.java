@@ -4,12 +4,14 @@ import org.gkk.bioshopapp.data.model.Category;
 import org.gkk.bioshopapp.data.model.ProductType;
 import org.gkk.bioshopapp.data.repository.CategoryRepository;
 import org.gkk.bioshopapp.service.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }

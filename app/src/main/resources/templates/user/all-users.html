@@ -7,7 +7,7 @@
 <th:block th:include="~{fragments/head}"/>
 
 <body>
-<th:block th:include="~{fragments/navbar-admin}"/>
+<th:block th:include="~{fragments/navbar}"/>
 <main>
     <main>
         <div>
@@ -19,9 +19,9 @@
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center">#</th>
                     <th class="col-md-2 text-center">Username</th>
-                    <th class="col-md-4 text-center">Email</th>
-                    <th class="col-md-1 text-center">Authority</th>
-                    <th class="col-md-4 text-center">Change Authority</th>
+                    <th class="col-md-3 text-center">Email</th>
+                    <th class="col-md-4 text-center">Authorities</th>
+                    <th class="col-md-3 text-center"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,18 +29,30 @@
                     <tr class="row mx-auto">
                         <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
                         <td class="col-md-2 text-center" th:utext="${user.username}"></td>
-                        <td class="col-md-4 text-center" th:utext="${user.email}"></td>
-                        <td class="col-md-1 text-center" th:text="TODO"></td>
-                        <td class="col-md-4 text-center">
-                            <th:block>
-                                <a href="#"
-                                   class="btn btn-success glow-button font-weight-bold text-white">USER</a>
+                        <td class="col-md-3 text-center" th:utext="${user.email}"></td>
+                        <th:block class="col-md-4 text-center" th:each="authority : ${user.authorities}">
+                            <td th:utext="${authority.authority}"></td>
+                        </th:block>
+                        <th:block sec:authorize="hasRole('ROLE_ROOT')">
+                            <th:block th:if="${#lists.size(user.authorities) == 2}">
+                                <td class="col-md-3 text-right">
+                                    <form th:action="@{/user/set-user/{id}(id=${user.id})}" method="post">
+                                        <button class="btn btn-secondary glow-button font-weight-bold text-white">MAKE
+                                            USER
+                                        </button>
+                                    </form>
+                                </td>
                             </th:block>
-                            <th:block>
-                                <a href="#"
-                                   class="btn btn-warning glow-button font-weight-bold text-white">ADMIN</a>
+                            <th:block th:if="${#lists.size(user.authorities) == 1}">
+                                <td class="col-md-3 text-right">
+                                    <form th:action="@{/user/set-admin/{id}(id=${user.id})}" method="post">
+                                        <button class="btn btn-secondary glow-button font-weight-bold text-white">
+                                            MAKE ADMIN
+                                        </button>
+                                    </form>
+                                </td>
                             </th:block>
-                        </td>
+                        </th:block>
                     </tr>
                 </th:block>
                 </tbody>

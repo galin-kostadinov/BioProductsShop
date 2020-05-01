@@ -2,28 +2,39 @@ package org.gkk.bioshopapp.web.controller;
 
 import org.gkk.bioshopapp.service.model.product.ProductDiscountTableServiceModel;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class HomeController extends BaseController {
     private final ProductService productService;
 
+    @Autowired
     public HomeController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/")
-    public ModelAndView index(ModelAndView model) {
+    @PreAuthorize("isAnonymous()")
+    public ModelAndView index(ModelAndView model, Principal principal) {
+
+        if (principal != null) {
+            return super.redirect("/home");
+        }
+
         setPromotedProducts(model);
 
         return super.view("index", model);
     }
 
     @GetMapping("/home")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView home(ModelAndView model) {
         setPromotedProducts(model);
 

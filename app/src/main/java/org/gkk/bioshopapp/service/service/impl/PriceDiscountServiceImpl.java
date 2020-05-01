@@ -3,6 +3,7 @@ package org.gkk.bioshopapp.service.service.impl;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.repository.PriceDiscountRepository;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class PriceDiscountServiceImpl implements PriceDiscountService {
 
     private final PriceDiscountRepository priceDiscountRepository;
 
+    @Autowired
     public PriceDiscountServiceImpl(PriceDiscountRepository priceDiscountRepository) {
         this.priceDiscountRepository = priceDiscountRepository;
     }

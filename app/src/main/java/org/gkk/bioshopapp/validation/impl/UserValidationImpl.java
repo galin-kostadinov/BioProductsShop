@@ -1,16 +1,16 @@
 package org.gkk.bioshopapp.validation.impl;
 
-import org.gkk.bioshopapp.data.repository.UsersRepository;
+import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.validation.UserValidation;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserValidationImpl implements UserValidation {
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
-    public UserValidationImpl(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UserValidationImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -24,6 +24,6 @@ public class UserValidationImpl implements UserValidation {
     }
 
     private boolean areOldPasswordValid(String username, String password) {
-        return usersRepository.findByUsernameAndPassword(username, password).isPresent();
+        return userRepository.findByUsernameAndPassword(username, password).isPresent();
     }
 }

@@ -6,6 +6,7 @@ import org.gkk.bioshopapp.data.repository.PriceHistoryRepository;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
     private final PriceHistoryRepository priceHistoryRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public PriceHistoryServiceImpl(PriceHistoryRepository priceHistoryRepository, ModelMapper modelMapper) {
         this.priceHistoryRepository = priceHistoryRepository;
         this.modelMapper = modelMapper;

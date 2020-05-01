@@ -1,15 +1,16 @@
 package org.gkk.bioshopapp.service.service.impl;
 
-import org.gkk.bioshopapp.data.model.Category;
-import org.gkk.bioshopapp.data.model.PriceDiscount;
-import org.gkk.bioshopapp.data.model.PriceHistory;
-import org.gkk.bioshopapp.data.model.Product;
+import org.gkk.bioshopapp.constant.GlobalLogConstant;
+import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
+import org.gkk.bioshopapp.service.model.log.LogServiceModel;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.CategoryService;
+import org.gkk.bioshopapp.service.service.LogService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,21 +20,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.gkk.bioshopapp.constant.GlobalLogConstant.*;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final LogService logService;
     private final ModelMapper modelMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService, ModelMapper modelMapper) {
+    @Autowired
+    public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService, LogService logService, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.categoryService = categoryService;
+        this.logService = logService;
         this.modelMapper = modelMapper;
     }
 
     @Override
     @Transactional
-    public void create(ProductCreateServiceModel serviceModel) {
+    public void create(ProductCreateServiceModel serviceModel, String username) {
         Product product = this.modelMapper.map(serviceModel, Product.class);
 
         Category category = this.categoryService.getCategoryByName(serviceModel.getType());
@@ -51,6 +57,10 @@ public class ProductServiceImpl implements ProductService {
         product.getPrices().add(price);
 
         this.productRepository.saveAndFlush(product);
+
+        LogServiceModel log = new LogServiceModel(username, PRODUCT_ADDED, product.getId(), LocalDateTime.now());
+
+        this.logService.seedLogInDb(log);
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ProductService productService, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
         this.userService = userService;

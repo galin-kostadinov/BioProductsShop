@@ -6,6 +6,8 @@ import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.web.model.user.UserEditProfileModel;
 import org.gkk.bioshopapp.web.model.user.UserProfileViewModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,12 +22,14 @@ public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/profile")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getProfile(HttpSession session, ModelAndView model) throws Exception {
         String username = session.getAttribute("username").toString();
         UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
@@ -35,6 +39,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("profile/edit")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getEditProfile(HttpSession session, ModelAndView model) throws Exception {
         String username = session.getAttribute("username").toString();
         UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
@@ -44,6 +49,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("profile/edit")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView editProfileConfirm(@ModelAttribute UserEditProfileModel model) {
         UserEditProfileServiceModel serviceModel = this.modelMapper.map(model, UserEditProfileServiceModel.class);
 
@@ -56,9 +62,8 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/all-users")
-    public ModelAndView getAllProducts(ModelAndView model) {
-        //admin todo
-
+    @PreAuthorize("hasRole('ROLE_ROOT')")
+    public ModelAndView getAllUsers(ModelAndView model) {
         List<UserProfileViewModel> users = this.userService.getAllUsers().stream()
                 .map(userService -> this.modelMapper.map(userService, UserProfileViewModel.class))
                 .collect(Collectors.toList());
@@ -66,5 +71,21 @@ public class UserController extends BaseController {
         model.addObject("users", users);
 
         return super.view("user/all-users", model);
+    }
+
+    @PostMapping("/set-admin/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ModelAndView setAdminRole(@PathVariable String id) {
+        this.userService.makeAdmin(id);
+
+        return super.redirect("/user/all-users");
+    }
+
+    @PostMapping("/set-user/{id}")
+    @PreAuthorize("hasRole('ROLE_ROOT')")
+    public ModelAndView setUserRole(@PathVariable String id) {
+        this.userService.makeUser(id);
+
+        return super.redirect("/user/all-users");
     }
 }

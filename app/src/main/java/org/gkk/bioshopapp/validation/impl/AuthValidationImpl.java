@@ -1,16 +1,16 @@
 package org.gkk.bioshopapp.validation.impl;
 
-import org.gkk.bioshopapp.data.repository.UsersRepository;
+import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.validation.AuthValidation;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthValidationImpl implements AuthValidation {
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
-    public AuthValidationImpl(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public AuthValidationImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AuthValidationImpl implements AuthValidation {
     }
 
     private boolean isUsernameFree(String username) {
-        return !usersRepository.existsByUsername(username);
+        return !userRepository.existsByUsername(username);
     }
 
     private boolean isEmailValid(String email) {

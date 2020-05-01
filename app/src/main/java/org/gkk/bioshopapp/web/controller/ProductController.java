@@ -10,11 +10,14 @@ import org.gkk.bioshopapp.web.model.product.ProductCreateModel;
 import org.gkk.bioshopapp.web.model.product.ProductDetailsModel;
 import org.gkk.bioshopapp.web.model.product.ProductEditModel;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,6 +32,7 @@ public class ProductController extends BaseController {
     private final PriceDiscountService priceDiscountService;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public ProductController(ProductService productService, PriceHistoryService priceHistoryService, PriceDiscountService priceDiscountService, ModelMapper modelMapper) {
         this.productService = productService;
         this.priceHistoryService = priceHistoryService;
@@ -37,6 +41,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping({"/", ""})
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getAllProducts(ModelAndView model) {
         List<ProductTableServiceModel> products = this.productService.getProductTable();
 
@@ -46,6 +51,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getCreateForm() {
         ModelAndView modelAndView = super.view("product/create-product");
         modelAndView.addObject("model", new ProductCreateModel());
@@ -53,7 +59,8 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/create")
-    ModelAndView create(@ModelAttribute ProductCreateModel model, BindingResult bindingResult) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    ModelAndView create(@ModelAttribute ProductCreateModel model, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return super.view("product/create-product");
         }
@@ -61,7 +68,8 @@ public class ProductController extends BaseController {
         ProductCreateServiceModel serviceModel = this.modelMapper.map(model, ProductCreateServiceModel.class);
 
         try {
-            this.productService.create(serviceModel);
+            String username = session.getAttribute("username").toString();
+            this.productService.create(serviceModel, username);
             return super.redirect("/product");
         } catch (Exception e) {
             return super.redirect("/product/create-product");
@@ -69,6 +77,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/product-table")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getProductTable(ModelAndView model) {
         List<ProductTableServiceModel> products = this.productService.getProductTable();
 
@@ -78,6 +87,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/details/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) {
         ProductDetailsModel product =
                 this.modelMapper.map(this.productService.getProductDetailsModel(id), ProductDetailsModel.class);
@@ -89,6 +99,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView editProduct(@PathVariable String id, ModelAndView model) {
         ProductEditModel product = this.modelMapper.map(this.productService.getProductEditModelById(id), ProductEditModel.class);
 
@@ -99,6 +110,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView editProductConfirm(@PathVariable String id, @ModelAttribute ProductEditModel model) {
         this.productService.editProduct(id, this.modelMapper.map(model, ProductEditServiceModel.class));
 
@@ -107,6 +119,7 @@ public class ProductController extends BaseController {
 
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView deleteProduct(@PathVariable String id, ModelAndView model) {
         ProductEditServiceModel product = this.productService.getProductEditModelById(id);
 
@@ -117,6 +130,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateModel model) {
         this.productService.deleteProduct(id);
 
@@ -124,6 +138,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/promote/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getPromoteForm(@PathVariable String id, ModelAndView model) {
         ProductDetailsServiceModel productServiceModel = this.productService.getProductDetailsModel(id);
 
@@ -142,6 +157,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/promote/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView promote(@PathVariable String id, @ModelAttribute PriceDiscountModel model) {
         PriceDiscountServiceModel priceDiscountServiceModel = this.modelMapper.map(model, PriceDiscountServiceModel.class);
 
@@ -154,6 +170,7 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/promotion-table")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView getPromotionalProductTable(ModelAndView model) {
         List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts();
 
@@ -163,6 +180,7 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/remove-promotion/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView removePromotion(@PathVariable String id) {
         this.priceDiscountService.removePromotion(id);
 

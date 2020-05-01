@@ -7,13 +7,13 @@
 <th:block th:include="~{fragments/head}"/>
 
 <body>
-<th:block th:include="~{fragments/navbar-index}"/>
+<th:block th:include="~{fragments/navbar}"/>
 <main>
     <div class="w-75 mx-auto">
         <h1 class="text-center">Welcome to BioProducts Shop</h1>
         <hr class="hr-2 bg-dark"/>
         <h3>We offer natural fruits and vegetables.</h3>
-        <h3>If you want to look all or buy a product then you have to <a href="/login">Login</a>/<a href="/login">Register</a>
+        <h3>If you want to look all or buy a product then you have to <a href="/login">Login</a>/<a href="/register">Register</a>
         </h3>
         <hr class="hr-2 bg-dark"/>
         <th:block th:unless="${promotedProducts == null}">
@@ -29,7 +29,8 @@
                             </div>
                             <img class="mb-md-3 mt-md-3" th:src="${product.imgUrl}" width="300" height="300">
 
-                            <h6 class="mb-md-2 discount-price" th:utext="'Old Price: ' + ${product.price} + ' $'">${product.priceNow}</h6>
+                            <h6 class="mb-md-2 discount-price" th:utext="'Old Price: ' + ${product.price} + ' $'">
+                                ${product.priceNow}</h6>
                             <h5 class="mb-md-2" th:utext="'Price: ' + ${product.promotionalPrice} + ' $'"></h5>
 
                             <th:block>

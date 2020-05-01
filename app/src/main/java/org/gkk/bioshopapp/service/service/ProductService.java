@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    void create(ProductCreateServiceModel serviceModel);
+    void create(ProductCreateServiceModel serviceModel, String username);
 
     void editProduct(String id, ProductEditServiceModel map);
 
