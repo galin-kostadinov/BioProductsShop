@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.model.PriceHistory;
 import org.gkk.bioshopapp.data.repository.PriceHistoryRepository;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
 
 @Service
 public class PriceHistoryServiceImpl implements PriceHistoryService {
@@ -33,7 +36,7 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
         }
 
         PriceHistory priceHistory = this.priceHistoryRepository.findOneByProductIdOrderByFromDateDesc(productId)
-                .orElseThrow(()->new PriceHishoryNotFoundException("PriceHistory not found!"));
+                .orElseThrow(()->new PriceHishoryNotFoundException(PRICE_HISTORY_NOT_FOUND));
         List<PriceDiscount> priceDiscounts = priceHistory.getPriceDiscountList();
 
         if (!priceDiscounts.isEmpty()) {

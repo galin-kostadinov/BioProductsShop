@@ -1,7 +1,10 @@
 package org.gkk.bioshopapp.service.service.impl;
 
-import org.gkk.bioshopapp.constant.GlobalLogConstant;
-import org.gkk.bioshopapp.data.model.*;
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
+import org.gkk.bioshopapp.data.model.Category;
+import org.gkk.bioshopapp.data.model.PriceDiscount;
+import org.gkk.bioshopapp.data.model.PriceHistory;
+import org.gkk.bioshopapp.data.model.Product;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
 import org.gkk.bioshopapp.error.ProductNotFoundException;
 import org.gkk.bioshopapp.service.model.log.LogServiceModel;
@@ -21,7 +24,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.gkk.bioshopapp.constant.GlobalLogConstant.*;
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
+import static org.gkk.bioshopapp.constant.GlobalLogConstant.PRODUCT_ADDED;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -67,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void editProduct(String id, ProductEditServiceModel model) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
         product.setName(model.getName());
         product.setDescription(model.getDescription());
@@ -95,13 +99,13 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(String id) {
         return this.productRepository
                 .findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
     }
 
     @Override
     public ProductEditServiceModel getProductEditModelById(String id) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
         ProductEditServiceModel productEditServiceModel = this.modelMapper.map(product, ProductEditServiceModel.class);
 
@@ -115,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDetailsServiceModel getProductDetailsModel(String id) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found!"));
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
         ProductDetailsServiceModel productServiceModel = this.modelMapper.map(product, ProductDetailsServiceModel.class);
 
@@ -169,7 +173,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductShoppingCartServiceModel getShoppingCartProductModelById(String id) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found!"));;
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
         ProductShoppingCartServiceModel productServiceModel = this.modelMapper.map(product, ProductShoppingCartServiceModel.class);
 

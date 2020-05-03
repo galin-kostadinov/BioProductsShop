@@ -1,9 +1,12 @@
 package org.gkk.bioshopapp.error;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "PriceHistory not found!")
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = PRICE_HISTORY_NOT_FOUND)
 public class PriceHishoryNotFoundException extends RuntimeException {
 
     private int status;

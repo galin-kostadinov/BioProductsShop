@@ -3,7 +3,9 @@ package org.gkk.bioshopapp.error;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "User not found!")
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.USERNAME_NOT_FOUND;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = USERNAME_NOT_FOUND)
 public class  UserNotFoundException extends RuntimeException {
 
     private int status;

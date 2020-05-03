@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
                                 orderProduct.setQuantity(o.getQuantity());
                                 orderProduct.setOrder(order);
                             } catch (Exception e) {
-                                ;
+                               //no catch
                             }
 
                             return orderProduct;
