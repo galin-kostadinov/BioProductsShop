@@ -3,6 +3,7 @@ package org.gkk.bioshopapp.service.service.impl;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.model.PriceHistory;
 import org.gkk.bioshopapp.data.repository.PriceHistoryRepository;
+import org.gkk.bioshopapp.error.PriceHishoryNotFoundException;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.modelmapper.ModelMapper;
@@ -31,7 +32,8 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
            return;
         }
 
-        PriceHistory priceHistory = this.priceHistoryRepository.findOneByProductIdOrderByFromDateDesc(productId);
+        PriceHistory priceHistory = this.priceHistoryRepository.findOneByProductIdOrderByFromDateDesc(productId)
+                .orElseThrow(()->new PriceHishoryNotFoundException("PriceHistory not found!"));
         List<PriceDiscount> priceDiscounts = priceHistory.getPriceDiscountList();
 
         if (!priceDiscounts.isEmpty()) {
