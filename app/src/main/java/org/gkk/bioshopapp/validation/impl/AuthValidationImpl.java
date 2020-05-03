@@ -21,11 +21,19 @@ public class AuthValidationImpl implements AuthValidation {
     }
 
     private boolean arePasswordsValid(String password, String confirmPassword) {
-        return password.equals(confirmPassword);
+        if (!password.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Passwords don't match!");
+        }
+
+        return true;
     }
 
     private boolean isUsernameFree(String username) {
-        return !userRepository.existsByUsername(username);
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException(String.format("User with Username: %s already exist!", username));
+        }
+
+        return true;
     }
 
     private boolean isEmailValid(String email) {

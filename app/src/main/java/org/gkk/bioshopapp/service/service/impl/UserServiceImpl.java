@@ -37,22 +37,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileServiceModel getUserByUsername(String username){
+    public UserProfileServiceModel getUserByUsername(String username) {
         return this.userRepository.findByUsername(username)
                 .map(u -> modelMapper.map(u, UserProfileServiceModel.class))
                 .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
     }
 
     @Override
-    public void editUserProfile(UserEditProfileServiceModel serviceModel){
-        serviceModel.setOldPassword(this.hashingService.hash(serviceModel.getOldPassword()));
-
-        if (!userValidation.isValid(serviceModel)) {
-            throw new IllegalArgumentException(USERNAME_OR_PASSWORD_ARE_INCORRECT);
-        }
-
+    public void editUserProfile(UserEditProfileServiceModel serviceModel) {
         User user = this.userRepository.findByUsername(serviceModel.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
+
+        if (!userValidation.isValid(serviceModel, user.getPassword())) {
+            throw new IllegalArgumentException(USERNAME_OR_PASSWORD_ARE_INCORRECT);
+        }
 
         user.setPassword(this.hashingService.hash(serviceModel.getNewPassword()));
         this.userRepository.save(user);
@@ -67,18 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserEntityByUsername(String username){
+    public User getUserEntityByUsername(String username) {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
     }
 
     @Override
     public void makeAdmin(String id) {
-       User user = this.userRepository.findById(id).orElse(null);
-
-        if (user == null){
-            return;
-        }
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
 
         user.getAuthorities().add(this.roleService.findByAuthority("ROLE_ADMIN"));
 
@@ -87,11 +82,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void makeUser(String id) {
-        User user = this.userRepository.findById(id).orElse(null);
-
-        if (user == null){
-            return;
-        }
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
 
         user.getAuthorities().remove(this.roleService.findByAuthority("ROLE_ADMIN"));
 

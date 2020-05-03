@@ -2,13 +2,13 @@ package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.data.model.Role;
 import org.gkk.bioshopapp.data.repository.RoleRepository;
+import org.gkk.bioshopapp.error.RoleNotFoundException;
 import org.gkk.bioshopapp.service.service.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -37,6 +37,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findByAuthority(String authority) {
-        return this.roleRepository.findByAuthority(authority);
+        return this.roleRepository.findByAuthority(authority)
+                .orElseThrow(()->new RoleNotFoundException("Role not found!"));
     }
 }
