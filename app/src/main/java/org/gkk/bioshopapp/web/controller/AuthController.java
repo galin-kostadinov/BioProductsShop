@@ -1,24 +1,18 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.service.model.user.UserLoginServiceModel;
+import org.gkk.bioshopapp.error.PriceHishoryNotFoundException;
+import org.gkk.bioshopapp.error.RoleNotFoundException;
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
-import org.gkk.bioshopapp.web.model.order.OrderProductModel;
-import org.gkk.bioshopapp.web.model.user.UserLoginModel;
+import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.model.user.UserRegisterModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @Controller
 public class AuthController extends BaseController {
@@ -34,6 +28,7 @@ public class AuthController extends BaseController {
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Register")
     public ModelAndView getRegisterForm() {
         return super.view("user/register");
     }
@@ -52,6 +47,7 @@ public class AuthController extends BaseController {
 
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Login")
     public ModelAndView getLoginForm(@RequestParam(required = false) String error) {
         ModelAndView model = new ModelAndView("user/login");
 
@@ -61,18 +57,4 @@ public class AuthController extends BaseController {
 
         return model;
     }
-
-//    @PostMapping("/login")
-//    public ModelAndView login(@ModelAttribute UserLoginModel model, HttpSession session) {
-//        UserLoginServiceModel serviceModel = this.modelMapper.map(model, UserLoginServiceModel.class);
-//
-//        try {
-//            UserLoginServiceModel loggedUser = this.authService.login(serviceModel);
-//            session.setAttribute("username", loggedUser.getUsername());
-//            session.setAttribute("cart", new HashMap<String, OrderProductModel>());
-//            return super.redirect("/home");
-//        } catch (Exception e) {
-//            return super.redirect("/login");
-//        }
-//    }
 }
