@@ -1,20 +1,21 @@
 package org.gkk.bioshopapp.web.controller;
 
+import org.gkk.bioshopapp.error.PriceHishoryNotFoundException;
+import org.gkk.bioshopapp.error.ProductNotFoundException;
+import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.order.OrderProductCreateServiceModel;
 import org.gkk.bioshopapp.service.model.order.OrderProductServiceModel;
 import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.model.order.OrderProductModel;
 import org.gkk.bioshopapp.web.model.product.ProductShoppingCartModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("/orders")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Orders")
     public ModelAndView getAllOrders(ModelAndView model, Principal principal) {
         String username = principal.getName();
         List<OrderServiceModel> orders = this.orderService.getAllOrdersByUser(username);
@@ -52,6 +54,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("/cart")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Shopping Cart")
     public ModelAndView getShoppingCart(ModelAndView model, HttpSession session) {
         HashMap<String, OrderProductModel> cartInSession =
                 (HashMap<String, OrderProductModel>) session.getAttribute("cart");
@@ -93,7 +96,7 @@ public class OrderController extends BaseController {
 
     @PostMapping("/add-to-cart/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView addToCart(@PathVariable String id, Integer quantity, HttpSession session){
+    public ModelAndView addToCart(@PathVariable String id, Integer quantity, HttpSession session) {
         HashMap<String, OrderProductModel> cart = (HashMap<String, OrderProductModel>) session.getAttribute("cart");
 
         if (!cart.containsKey(id)) {

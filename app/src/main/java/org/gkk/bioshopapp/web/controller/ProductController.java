@@ -1,10 +1,14 @@
 package org.gkk.bioshopapp.web.controller;
 
+import org.gkk.bioshopapp.error.CategoryNotFoundException;
+import org.gkk.bioshopapp.error.ProductNotFoundException;
+import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.model.product.PriceDiscountModel;
 import org.gkk.bioshopapp.web.model.product.ProductCreateModel;
 import org.gkk.bioshopapp.web.model.product.ProductDetailsModel;
@@ -42,6 +46,7 @@ public class ProductController extends BaseController {
 
     @GetMapping({"/", ""})
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Products")
     public ModelAndView getAllProducts(ModelAndView model) {
         List<ProductTableServiceModel> products = this.productService.getProductTable();
 
@@ -52,6 +57,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Create Product")
     public ModelAndView getCreateForm() {
         ModelAndView modelAndView = super.view("product/create-product");
         modelAndView.addObject("model", new ProductCreateModel());
@@ -78,6 +84,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/product-table")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Product Table")
     public ModelAndView getProductTable(ModelAndView model) {
         List<ProductTableServiceModel> products = this.productService.getProductTable();
 
@@ -88,6 +95,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/details/{id}")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Product Details")
     public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) {
         ProductDetailsModel product =
                 this.modelMapper.map(this.productService.getProductDetailsModel(id), ProductDetailsModel.class);
@@ -100,6 +108,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Edit Product")
     public ModelAndView editProduct(@PathVariable String id, ModelAndView model) {
         ProductEditModel product = this.modelMapper.map(this.productService.getProductEditModelById(id), ProductEditModel.class);
 
@@ -120,6 +129,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete Product")
     public ModelAndView deleteProduct(@PathVariable String id, ModelAndView model) {
         ProductEditServiceModel product = this.productService.getProductEditModelById(id);
 
@@ -139,6 +149,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/promote/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Promote Product")
     public ModelAndView getPromoteForm(@PathVariable String id, ModelAndView model) {
         ProductDetailsServiceModel productServiceModel = this.productService.getProductDetailsModel(id);
 
@@ -171,6 +182,7 @@ public class ProductController extends BaseController {
 
     @GetMapping("/promotion-table")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Promotional Table")
     public ModelAndView getPromotionalProductTable(ModelAndView model) {
         List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts();
 

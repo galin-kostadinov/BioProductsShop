@@ -1,8 +1,11 @@
 package org.gkk.bioshopapp.web.controller;
 
+import org.gkk.bioshopapp.error.RoleNotFoundException;
+import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.UserService;
+import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.model.user.UserEditProfileModel;
 import org.gkk.bioshopapp.web.model.user.UserProfileViewModel;
 import org.modelmapper.ModelMapper;
@@ -30,6 +33,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Profile")
     public ModelAndView getProfile(HttpSession session, ModelAndView model) throws Exception {
         String username = session.getAttribute("username").toString();
         UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
@@ -40,6 +44,7 @@ public class UserController extends BaseController {
 
     @GetMapping("profile/edit")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Edit Profile")
     public ModelAndView getEditProfile(HttpSession session, ModelAndView model) throws Exception {
         String username = session.getAttribute("username").toString();
         UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
@@ -63,6 +68,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/all-users")
     @PreAuthorize("hasRole('ROLE_ROOT')")
+    @PageTitle("Users")
     public ModelAndView getAllUsers(ModelAndView model) {
         List<UserProfileViewModel> users = this.userService.getAllUsers().stream()
                 .map(userService -> this.modelMapper.map(userService, UserProfileViewModel.class))
