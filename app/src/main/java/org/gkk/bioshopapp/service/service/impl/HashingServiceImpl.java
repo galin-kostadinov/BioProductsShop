@@ -19,4 +19,9 @@ public class HashingServiceImpl implements HashingService {
     public String hash(String str) {
         return passwordEncoder.encode(str);
     }
+
+    @Override
+    public boolean isPasswordMatch(String inputPassword, String oldPassword) {
+        return passwordEncoder.matches(inputPassword, oldPassword);
+    }
 }
