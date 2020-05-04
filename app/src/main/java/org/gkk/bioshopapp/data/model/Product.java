@@ -72,7 +72,7 @@ public class Product extends BaseEntity {
         this.imgUrl = imgUrl;
     }
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.PERSIST})
     public List<PriceHistory> getPrices() {
         return prices;
     }
@@ -88,5 +88,12 @@ public class Product extends BaseEntity {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    @Transient
+    public PriceHistory getLastAssignedAmountFromHistory() {
+        return this.prices.stream()
+                .min((p1, p2) -> p2.getFromDate().compareTo(p1.getFromDate()))
+                .orElseThrow();
     }
 }
