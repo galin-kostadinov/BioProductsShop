@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -52,7 +53,7 @@ public class HomeController extends BaseController {
     }
 
     private void setPromotedProducts(ModelAndView model) {
-        List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts();
+        List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts(LocalDateTime.now());
 
         if (!products.isEmpty()) {
             model.addObject("promotedProducts", products);
