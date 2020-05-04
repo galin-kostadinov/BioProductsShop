@@ -1,8 +1,5 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.error.CategoryNotFoundException;
-import org.gkk.bioshopapp.error.ProductNotFoundException;
-import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
@@ -184,7 +181,7 @@ public class ProductController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Promotional Table")
     public ModelAndView getPromotionalProductTable(ModelAndView model) {
-        List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts();
+        List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts(LocalDateTime.now());
 
         model.addObject("products", products);
 
