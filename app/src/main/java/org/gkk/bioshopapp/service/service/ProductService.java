@@ -3,6 +3,7 @@ package org.gkk.bioshopapp.service.service;
 import org.gkk.bioshopapp.data.model.Product;
 import org.gkk.bioshopapp.service.model.product.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProductService {
@@ -21,7 +22,7 @@ public interface ProductService {
 
     List<ProductTableServiceModel> getProductTable();
 
-    List<ProductDiscountTableServiceModel> getDiscountedProducts();
+    List<ProductDiscountTableServiceModel> getDiscountedProducts(LocalDateTime localDateTime);
 
     ProductShoppingCartServiceModel getShoppingCartProductModelById(String id);
 }
