@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.service.service.impl;
 
-import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.Category;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.model.PriceHistory;
@@ -24,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.PRODUCT_NOT_FOUND;
 import static org.gkk.bioshopapp.constant.GlobalLogConstant.PRODUCT_ADDED;
 
 @Service
@@ -79,8 +78,8 @@ public class ProductServiceImpl implements ProductService {
 
         List<PriceHistory> prices = product.getPrices();
 
-        if (!getLastPriceFromPriceHistory(product.getPrices()).getPrice().equals(model.getPrice())) {
-            getLastPriceFromPriceHistory(product.getPrices()).setToDate(LocalDateTime.now());
+        if (!product.getLastAssignedAmountFromHistory().getPrice().equals(model.getPrice())) {
+            product.getLastAssignedAmountFromHistory().setToDate(LocalDateTime.now());
 
             PriceHistory price = new PriceHistory(model.getPrice(), LocalDateTime.now());
             price.setProduct(product);
@@ -109,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductEditServiceModel productEditServiceModel = this.modelMapper.map(product, ProductEditServiceModel.class);
 
-        BigDecimal regularPrice = getLastPriceFromPriceHistory(product.getPrices()).getPrice();
+        BigDecimal regularPrice = product.getLastAssignedAmountFromHistory().getPrice();
 
         productEditServiceModel.setPrice(regularPrice);
 
@@ -123,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductDetailsServiceModel productServiceModel = this.modelMapper.map(product, ProductDetailsServiceModel.class);
 
-        PriceHistory lastPrice = getLastPriceFromPriceHistory(product.getPrices());
+        PriceHistory lastPrice = product.getLastAssignedAmountFromHistory();
         productServiceModel.setPrice(lastPrice.getPrice());
 
         setPromotionalPrice(lastPrice, productServiceModel);
@@ -137,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(p -> {
                     ProductTableServiceModel product = this.modelMapper.map(p, ProductTableServiceModel.class);
 
-                    PriceHistory price = getLastPriceFromPriceHistory(p.getPrices());
+                    PriceHistory price = p.getLastAssignedAmountFromHistory();
                     product.setPrice(price.getPrice());
 
                     setPromotionalPrice(price, product);
@@ -148,17 +147,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDiscountTableServiceModel> getDiscountedProducts() {
-        return this.productRepository.findAllInPromotion(LocalDateTime.now()).stream()
+    public List<ProductDiscountTableServiceModel> getDiscountedProducts(LocalDateTime dateTime) {
+        return this.productRepository.findAllInPromotion(dateTime).stream()
                 .map(p -> {
                     ProductDiscountTableServiceModel product = this.modelMapper.map(p, ProductDiscountTableServiceModel.class);
 
-                    PriceHistory price = getLastPriceFromPriceHistory(p.getPrices());
+                    PriceHistory price = p.getLastAssignedAmountFromHistory();
                     product.setPrice(price.getPrice());
 
                     PriceDiscountServiceModel lastPromotion =
-                            this.modelMapper.map(getLastPricePromotion(price.getPriceDiscountList()),
-                                    PriceDiscountServiceModel.class);
+                            this.modelMapper.map(price.getLastPromotion(), PriceDiscountServiceModel.class);
 
                     product.setPriceDiscount(lastPromotion);
 
@@ -177,7 +175,7 @@ public class ProductServiceImpl implements ProductService {
 
         ProductShoppingCartServiceModel productServiceModel = this.modelMapper.map(product, ProductShoppingCartServiceModel.class);
 
-        PriceHistory lastPrice = getLastPriceFromPriceHistory(product.getPrices());
+        PriceHistory lastPrice = product.getLastAssignedAmountFromHistory();
         productServiceModel.setPrice(lastPrice.getPrice());
 
         setPromotionalPrice(lastPrice, productServiceModel);
@@ -187,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void setPromotionalPrice(PriceHistory lastPrice, PricePromotion productServiceModel) {
         if (!lastPrice.getPriceDiscountList().isEmpty()) {
-            PriceDiscount lastPromotion = getLastPricePromotion(lastPrice.getPriceDiscountList());
+            PriceDiscount lastPromotion = lastPrice.getLastPromotion();
 
             if ((lastPromotion.getToDate() == null || lastPromotion.getToDate().isAfter(LocalDateTime.now()))
                     && lastPromotion.getFromDate().isBefore(LocalDateTime.now())) {
@@ -195,17 +193,5 @@ public class ProductServiceImpl implements ProductService {
                 productServiceModel.setPromotionalPrice(promotionalPrice.setScale(2, RoundingMode.HALF_UP));
             }
         }
-    }
-
-    private PriceHistory getLastPriceFromPriceHistory(List<PriceHistory> prices) {
-        return prices.stream()
-                .min((p1, p2) -> p2.getFromDate().compareTo(p1.getFromDate()))
-                .orElseThrow();
-    }
-
-    private PriceDiscount getLastPricePromotion(List<PriceDiscount> priceDiscountList) {
-        return priceDiscountList.stream()
-                .min((pd1, pd2) -> pd2.getFromDate().compareTo(pd1.getFromDate()))
-                .orElseThrow();
     }
 }
