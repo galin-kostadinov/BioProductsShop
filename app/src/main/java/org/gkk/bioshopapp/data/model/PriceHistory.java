@@ -75,4 +75,11 @@ public class PriceHistory extends BaseEntity {
     public void setPriceDiscountList(List<PriceDiscount> priceDiscountList) {
         this.priceDiscountList = priceDiscountList;
     }
+
+    @Transient
+    public PriceDiscount getLastPromotion() {
+        return this.priceDiscountList.stream()
+                .min((pd1, pd2) -> pd2.getFromDate().compareTo(pd1.getFromDate()))
+                .orElseThrow();
+    }
 }
