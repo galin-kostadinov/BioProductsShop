@@ -5,63 +5,60 @@
         xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:include="~{fragments/head}"/>
-
 <body>
 <th:block th:include="~{fragments/navbar}"/>
 <main>
-    <main>
-        <div>
-            <span style="visibility: hidden">....</span>
-            <h1 class="text-center bold font-weight-bold text-dark">Table with all users:</h1>
-            <hr class="hr-2 bg-dark">
-            <table class="table table-hover w-75 mx-auto">
-                <thead>
-                <tr class="row mx-auto">
-                    <th class="col-md-1 text-center">#</th>
-                    <th class="col-md-2 text-center">Username</th>
-                    <th class="col-md-3 text-center">Email</th>
-                    <th class="col-md-4 text-center">Authorities</th>
-                    <th class="col-md-3 text-center"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <th:block th:each="user, iter : ${users}">
-                    <tr class="row mx-auto">
-                        <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
-                        <td class="col-md-2 text-center" th:utext="${user.username}"></td>
-                        <td class="col-md-3 text-center" th:utext="${user.email}"></td>
-                        <th:block class="col-md-4 text-center" th:each="authority : ${user.authorities}">
-                            <td th:utext="${authority.authority}"></td>
+    <div>
+        <span style="visibility: hidden">....</span>
+        <h2 class="text-center bold font-weight-bold text-dark">Table with all users:</h2>
+        <hr class="hr-2 bg-dark">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto col-md-12">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-2 text-center">Username</th>
+                <th class="col-md-3 text-center">Email</th>
+                <th class="col-md-4 text-center">Authorities</th>
+                <th class="col-md-2 text-center">Change Authority</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="user, iter : ${users}">
+                <tr class="row mx-auto col-md-12">
+                    <td class="col-md-1 text-center" th:utext="${iter.index + 1}"></td>
+                    <td class="col-md-2 text-center" th:utext="${user.username}"></td>
+                    <td class="col-md-3 text-center" th:utext="${user.email}"></td>
+                    <td class="col-md-4 text-center">
+                        <th:block  th:each="authority : ${user.authorities}">
+                            <span class="pl-1 pr-1" th:utext="${authority.authority}"></span>
                         </th:block>
+                    </td>
+                    <td class="col-md-2 text-center">
                         <th:block sec:authorize="hasRole('ROLE_ROOT')">
                             <th:block th:if="${#lists.size(user.authorities) == 2}">
-                                <td class="col-md-3 text-right">
-                                    <form th:action="@{/user/set-user/{id}(id=${user.id})}" method="post">
-                                        <button class="btn btn-secondary glow-button font-weight-bold text-white">MAKE
-                                            USER
-                                        </button>
-                                    </form>
-                                </td>
+                                <form th:action="@{/user/set-user/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-secondary glow-button font-weight-bold text-white">
+                                        MAKE USER
+                                    </button>
+                                </form>
                             </th:block>
                             <th:block th:if="${#lists.size(user.authorities) == 1}">
-                                <td class="col-md-3 text-right">
-                                    <form th:action="@{/user/set-admin/{id}(id=${user.id})}" method="post">
-                                        <button class="btn btn-secondary glow-button font-weight-bold text-white">
-                                            MAKE ADMIN
-                                        </button>
-                                    </form>
-                                </td>
+                                <form th:action="@{/user/set-admin/{id}(id=${user.id})}" method="post">
+                                    <button class="btn btn-secondary glow-button font-weight-bold text-white">
+                                        MAKE ADMIN
+                                    </button>
+                                </form>
                             </th:block>
                         </th:block>
-                    </tr>
-                </th:block>
-                </tbody>
-            </table>
-            <hr class="hr-2 bg-dark">
-            <span style="visibility: hidden">....</span>
-        </div>
-    </main>
-    <th:block th:include="~{fragments/footer}"/>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-dark">
+        <span style="visibility: hidden">....</span>
+    </div>
+</main>
+<th:block th:include="~{fragments/footer}"/>
 </body>
-
 </html>
