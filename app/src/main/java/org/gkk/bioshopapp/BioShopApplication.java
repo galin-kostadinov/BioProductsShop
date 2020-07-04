@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BioShopAppApplication {
+public class BioShopApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BioShopAppApplication.class, args);
+        SpringApplication.run(BioShopApplication.class, args);
     }
 
 }

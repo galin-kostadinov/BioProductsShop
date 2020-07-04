@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.gkk</groupId>
-    <artifactId>bio-shop-app</artifactId>
+    <artifactId>bio-shop</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>bio-shop-app</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Online Shop for Bio Products</description>
 
     <properties>
         <java.version>11</java.version>
