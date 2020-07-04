@@ -56,14 +56,6 @@ public class AuthController extends BaseController {
 
         UserRegisterServiceModel serviceModel = this.modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class);
 
-//        try {
-//            authService.register(serviceModel);
-//        } catch (UserRegistrationException e) {
-//            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-//            redirectAttributes.addFlashAttribute("registrationError", e.getMessage());
-//            return this.redirectStr("register");
-//        }
-
         List<String> violations = authService.register(serviceModel);
 
         if (violations != null) {

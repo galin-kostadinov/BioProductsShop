@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.validation.impl;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.validation.AuthValidation;
@@ -35,13 +36,13 @@ public class AuthValidationImpl implements AuthValidation {
 
     private void isUsernameFree(String username, List<String> violations) {
         if (userRepository.existsByUsername(username)) {
-            violations.add(String.format("User with Username [%s] already exist!", username));
+            violations.add(String.format(ErrorMessageConstant.USERNAME_EXIST, username));
         }
     }
 
     private void isEmailValid(String email, List<String> violations) {
         if (userRepository.existsByEmail(email)) {
-            violations.add(String.format("User with Email [%s] already exist!", email));
+            violations.add(String.format(ErrorMessageConstant.EMAIL_EXIST, email));
         }
     }
 }
