@@ -34,6 +34,4 @@ public class CategoryServiceImpl implements CategoryService {
         return this.categoryRepository.findByName(name)
                 .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
     }
-
-
 }

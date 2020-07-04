@@ -3,16 +3,18 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div class="w-50 mx-auto">
-        <span style="visibility: hidden">....</span>
-        <h2 class="text-center">Shopping cart</h2>
-        <hr class="hr-2 bg-dark">
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Shopping cart</span>
+        </h2>
         <div class="row">
             <div class="col col-md-12 text-center">
                 <th:block th:each="orderProduct, iter : ${cart}">
@@ -23,18 +25,17 @@
                         <h5 th:unless="${orderProduct.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${orderProduct.product.promotionalPrice} + ' $'"></h5>
                         <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${orderProduct.quantity} + 'pcs.'"></h5>
                         <span style="visibility: hidden">....</span>
-                        <form class="mx-auto" th:action="@{/order/remove-from-cart/{id}(id=${orderProduct.product.id})}"
+                        <form class="mx-auto" th:action="@{/orders/remove-from-cart/{id}(id=${orderProduct.product.id})}"
                               method="post">
                             <button class="btn warning btn-primary low-button font-weight-bold text-white"
                                     type="submit">Remove from Cart
                             </button>
                         </form>
-                        <span style="visibility: hidden">....</span>
                     </output>
                 </th:block>
                 <hr class="hr-2 bg-dark">
                 <h4 th:utext="'Total price: ' + ${cartTotalPrice} + ' $'"></h4>
-                <form th:action="@{/order/buy}" method="post">
+                <form th:action="@{/orders/buy}" method="post">
                     <th:block>
                         <button class="btn warning btn-warning low-button font-weight-bold text-white" type="submit">
                             Buy Products
@@ -44,9 +45,9 @@
             </div>
         </div>
     </div>
-    <span style="visibility: hidden">....</span>
-    </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

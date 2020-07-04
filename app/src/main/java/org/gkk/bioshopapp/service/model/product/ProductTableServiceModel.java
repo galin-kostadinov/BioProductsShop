@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.service.model.product;
 
-
 import java.math.BigDecimal;
 
 public class ProductTableServiceModel implements PricePromotion {

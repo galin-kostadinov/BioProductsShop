@@ -3,60 +3,59 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
-    <div>
-        <span style="visibility: hidden">....</span>
-        <div class="row">
-            <div class="col col-md-4 text-right pr-5">
-                <img th:src="${product.imgUrl}" width="300">
-            </div>
-            <div class="col col-md-6 text-left pl-5">
-                <ul>
-                    <li>
-                        <h1 th:utext="${product.name}"></h1>
-                    </li>
-                    <li>
-                        <h5 th:utext="'Made: ' + ${product.made}"></h5>
-                    </li>
-                    <li>
-                        <span style="visibility: hidden">....</span>
-                    </li>
-                    <li class="text-left">
-                        <h6 th:utext="${product.description}"></h6>
-                    </li>
-                    <li>
-                        <span style="visibility: hidden">....</span>
-                    </li>
-                    <li class="text-left">
-                        <h6 class="discount-price" th:utext="'Regular Price: ' + ${product.price} + ' $'"></h6>
-                    </li>
-                    <li class="text-left">
-                        <h5 th:utext="'Discount: ' + ${product.promotion.discount} + ' %'"></h5>
-                    </li>
-                    <li class="text-left">
-                        <h5 th:utext="'Current Price: ' + ${product.priceNow} + ' $'"></h5>
-                    </li>
-                    <li>
-                        <form class="mx-auto" th:action="@{/product/remove-promotion/{id}(id=${productId})}"
-                              method="post">
-                            <button class="btn warning btn-danger low-button font-weight-bold text-white mt-2 ml-2"
-                                    type="submit">Remove Promotion
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+    <div class="row">
+        <div class="col col-md-4 text-right pr-5">
+            <img th:src="${product.imgUrl}" width="300">
+        </div>
+        <div class="col col-md-6 text-left pl-5">
+            <ul>
+                <li>
+                    <h1 th:utext="${product.name}"></h1>
+                </li>
+                <li>
+                    <h5 th:utext="'Made: ' + ${product.made}"></h5>
+                </li>
+                <li>
+                    <span style="visibility: hidden">....</span>
+                </li>
+                <li class="text-left">
+                    <h6 th:utext="${product.description}"></h6>
+                </li>
+                <li>
+                    <span style="visibility: hidden">....</span>
+                </li>
+                <li class="text-left">
+                    <h6 class="discount-price" th:utext="'Regular Price: ' + ${product.price} + ' $'"></h6>
+                </li>
+                <li class="text-left">
+                    <h5 th:utext="'Discount: ' + ${product.promotion.discount} + ' %'"></h5>
+                </li>
+                <li class="text-left">
+                    <h5 th:utext="'Current Price: ' + ${product.priceNow} + ' $'"></h5>
+                </li>
+                <li>
+                    <form class="mx-auto" th:action="@{/product/remove-promotion/{id}(id=${productId})}"
+                          method="post">
+                        <button class="btn warning btn-danger low-button font-weight-bold text-white mt-2 ml-2"
+                                type="submit">Remove Promotion
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
-    <span style="visibility: hidden">....</span>
-    </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 
 </html>

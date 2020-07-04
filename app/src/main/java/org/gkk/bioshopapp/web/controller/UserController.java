@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -40,7 +40,7 @@ public class UserController extends BaseController {
         return super.view("user/profile", model);
     }
 
-    @GetMapping("profile/edit")
+    @GetMapping("/profile/edit")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Edit Profile")
     public ModelAndView getEditProfile(HttpSession session, ModelAndView model) throws Exception {
@@ -51,16 +51,16 @@ public class UserController extends BaseController {
         return super.view("user/edit-profile", model);
     }
 
-    @PostMapping("profile/edit")
+    @PostMapping("/profile/edit")
     @PreAuthorize("isAuthenticated()")
     public ModelAndView editProfileConfirm(@ModelAttribute UserEditProfileModel model) {
         UserEditProfileServiceModel serviceModel = this.modelMapper.map(model, UserEditProfileServiceModel.class);
 
         try {
             this.userService.editUserProfile(serviceModel);
-            return super.redirect("/user/profile");
+            return super.redirect("/users/profile");
         } catch (Exception e) {
-            return super.redirect("/user/profile/edit");
+            return super.redirect("/users/profile/edit");
         }
     }
 
@@ -82,7 +82,7 @@ public class UserController extends BaseController {
     public ModelAndView setAdminRole(@PathVariable String id) {
         this.userService.makeAdmin(id);
 
-        return super.redirect("/user/all-users");
+        return super.redirect("/users/all-users");
     }
 
     @PostMapping("/set-user/{id}")
@@ -90,6 +90,6 @@ public class UserController extends BaseController {
     public ModelAndView setUserRole(@PathVariable String id) {
         this.userService.makeUser(id);
 
-        return super.redirect("/user/all-users");
+        return super.redirect("/users/all-users");
     }
 }

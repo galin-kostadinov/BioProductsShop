@@ -3,46 +3,74 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
-    <h1 class="text-center">Edit product</h1>
-    <hr class="hr-3"/>
-    <form class="mx-auto w-25 mb-5" th:action="@{/product/edit/{id}(id=${productId})}" th:method="post">
+    <h2 class="text-center mt-5">
+        <span class="badge badge-pill badge-secondary">Edit product</span>
+    </h2>
+    <form class="mx-auto w-25 mb-5 md-10 text-center bg-secondary p-3 rounded"
+          th:action="@{/products/edit/{id}(id=${productEditModel.id})}"
+          th:object="${productEditModel}" th:method="POST">
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="name" class="h4 mb-2 text-blue">Name</label>
+                <label for="name" class="h4 mb-2 text-white">Name</label>
             </div>
-            <input type="text" class="form-control" id="name" name="name" th:value="${product.name}"/>
+            <input type="text" class="form-control" id="name" name="name" th:errorclass="bg-danger" th:field="*{name}"/>
+            <p th:each="e : ${#fields.errors('name')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="description" class="h4 mb-2">Description</label>
+                <label for="description" class="h4 mb-2 text-white">Description</label>
             </div>
-            <textarea class="form-control" id="description" name="description" th:text="${product.description}"
+            <textarea class="form-control" id="description" name="description"
+                      th:errorclass="bg-danger" th:field="*{description}"
                       style="height:150px;"></textarea>
+            <p th:each="e : ${#fields.errors('description')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="imgUrl" class="h4 mb-2">Image url</label>
+                <label for="imgUrl" class="h4 mb-2 text-white">Image url</label>
             </div>
-            <input type="url" class="form-control" id="imgUrl" name="imgUrl" th:value="${product.imgUrl}"/>
+            <input type="url" class="form-control" id="imgUrl" name="imgUrl"
+                   th:errorclass="bg-danger" th:field="*{imgUrl}"/>
+            <p th:each="e : ${#fields.errors('imgUrl')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="price" class="h4 mb-2">Regular Price</label>
+                <label for="price" class="h4 mb-2 text-white">Regular Price</label>
             </div>
-            <input type="number" step="0.01" class="form-control" id="price" name="price" th:value="${product.price}"/>
+            <input type="number" step="0.01" class="form-control" id="price" name="price"
+                   th:errorclass="bg-danger" th:field="*{price}"/>
+            <p th:each="e : ${#fields.errors('price')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button class="btn btn-danger font-weight-bold text-white" type="submit">Edit</button>
+            <button class="btn btn-block btn-outline-dark font-weight-bold text-white mt-3 mb-3" type="submit">Save
+            </button>
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+            <a th:href="@{/products/details/{id}(id=${productEditModel.id})}"
+                    class="btn btn-block btn-outline-dark font-weight-bold text-white mb-3" type="submit">Cancel
+            </a>
         </div>
     </form>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 
 </html>

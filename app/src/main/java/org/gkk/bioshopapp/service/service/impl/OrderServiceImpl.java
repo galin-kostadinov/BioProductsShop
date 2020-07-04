@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     public void create(List<OrderProductCreateServiceModel> orderProducts, String username) throws Exception {
         Order order = new Order();
         order.setDateCreated(LocalDateTime.now());
-        order.setStatus(OrderStatus.PAID);
+        order.setStatus(OrderStatus.ORDERED);
         User buyer = this.userService.getUserEntityByUsername(username);
         order.setBuyer(buyer);
 

@@ -3,16 +3,18 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div>
-        <span style="visibility: hidden">....</span>
-        <h2 class="text-center bold font-weight-bold text-dark">Table with all promotions:</h2>
-        <hr class="hr-2 bg-dark">
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Table with all promotions</span>
+        </h2>
         <table class="table table-hover w-75 mx-auto">
             <thead>
             <tr class="row mx-auto">
@@ -56,10 +58,10 @@
             </th:block>
             </tbody>
         </table>
-        <hr class="hr-2 bg-dark">
-        <span style="visibility: hidden">....</span>
     </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

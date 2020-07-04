@@ -10,9 +10,9 @@
 <th:block th:include="~{fragments/navbar}"/>
 <main>
     <div class="mx-auto w-25">
-        <span style="visibility: hidden">....</span>
-        <h2 class="text-center font-weight-bold text-black">My Profile</h2>
-        <hr class="hr-2 bg-dark">
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">User profile</span>
+        </h2>
         <span style="visibility: hidden">....</span>
         <div class="text-left">
             <h4 th:utext="'Username: ' + ${model.username}"></h4>
@@ -23,7 +23,7 @@
         <span style="visibility: hidden">....</span>
         <div class="button-holder d-flex justify-content-center">
             <th:block>
-                <a th:href="@{/user/profile/edit}"
+                <a th:href="@{/users/profile/edit}"
                    class="btn warning btn-warning low-button font-weight-bold text-white">Edit Profile</a>
             </th:block>
         </div>

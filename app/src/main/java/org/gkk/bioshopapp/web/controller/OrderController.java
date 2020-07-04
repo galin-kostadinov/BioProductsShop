@@ -1,10 +1,6 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.error.PriceHishoryNotFoundException;
-import org.gkk.bioshopapp.error.ProductNotFoundException;
-import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.order.OrderProductCreateServiceModel;
-import org.gkk.bioshopapp.service.model.order.OrderProductServiceModel;
 import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
@@ -15,7 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -27,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController extends BaseController {
     private final OrderService orderService;
     private final ProductService productService;
@@ -40,7 +39,7 @@ public class OrderController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/orders")
+    @GetMapping({"/", ""})
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Orders")
     public ModelAndView getAllOrders(ModelAndView model, Principal principal) {
@@ -78,7 +77,7 @@ public class OrderController extends BaseController {
                 (HashMap<String, OrderProductModel>) session.getAttribute("cart");
 
         if (cartInSession.isEmpty()) {
-            return super.redirect("/order/cart");
+            return super.redirect("/orders/cart");
         }
 
         List<OrderProductCreateServiceModel> ordersService =
@@ -91,7 +90,7 @@ public class OrderController extends BaseController {
 
         cartInSession.clear();
 
-        return super.redirect("/order/orders");
+        return super.redirect("/orders");
     }
 
     @PostMapping("/add-to-cart/{id}")
@@ -109,7 +108,7 @@ public class OrderController extends BaseController {
             orderProductModel.setQuantity(orderProductModel.getQuantity() + quantity);
         }
 
-        return super.redirect("/product");
+        return super.redirect("/products");
     }
 
     @PostMapping("/remove-from-cart/{id}")
@@ -118,7 +117,7 @@ public class OrderController extends BaseController {
         HashMap<String, OrderProductModel> cart = (HashMap<String, OrderProductModel>) session.getAttribute("cart");
         cart.remove(id);
 
-        return super.redirect("/order/cart");
+        return super.redirect("/orders/cart");
     }
 
     private BigDecimal calculateTotalCartPrice(List<OrderProductModel> cart) {

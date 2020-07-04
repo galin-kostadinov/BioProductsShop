@@ -1,22 +1,17 @@
 package org.gkk.bioshopapp.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity
 @Table(name = "order_products")
 public class OrderProduct implements Serializable {
 
-    @JsonIgnore
     private Order order;
 
-    @JsonIgnore
     private Product product;
 
     private Integer quantity;

@@ -3,64 +3,78 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
-    <div>
-        <span style="visibility: hidden">....</span>
-        <div class="row">
-            <div class="col col-md-4 text-right pr-5">
-                <img th:src="${product.imgUrl}" width="300">
-            </div>
-            <div class="col col-md-6 text-left pl-5">
-                <ul>
-                    <li>
-                        <h1 th:utext="${product.name}"></h1>
-                    </li>
-                    <li>
-                        <h5 th:utext="'Made: ' + ${product.made}"></h5>
-                    </li>
-                    <li class="text-left pt-2 pb-2">
-                        <h6 th:utext="${product.description}"></h6>
-                    </li>
-                    <li class="text-left">
-                        <h5 th:utext="'Regular Price: ' + ${product.price} + ' $'"></h5>
-                    </li>
-                    <li>
-                        <form class="mx-auto" th:action="@{/product/promote/{id}(id=${productId})}" method="post">
-                            <div class="col col-md-5 h5 p-0">
-                                <label for="discount">Discount: </label>
-                                <input type="number" size="3px" id="discount" name="discount" placeholder="10%" min="1"
-                                       max="90" step="1" required>
-                            </div>
-                            <div class="col col-md-5 h5 p-0">
-                                <label for="fromDate">From Date: </label>
-                                <input type="datetime-local" size="15px" id="fromDate" name="fromDate"
-                                       th:value="${dataTimeNow}"
-                                       readonly>
-                            </div>
-                            <div class="col col-md-5 h5 p-0">
-                                <label for="toDate">To Date: </label>
-                                <input type="datetime-local" size="15px" id="toDate" name="toDate"
-                                       placeholder="2020-05-22T08:30"
-                                       pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" required>
-                            </div>
-                            <button class="btn warning btn-primary low-button font-weight-bold text-white mt-2 ml-2"
-                                    type="submit">Promote
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+    <div class="row">
+        <div class="col col-md-4 text-right pr-5">
+            <img th:src="${productDetailsModel.imgUrl}" width="300">
+        </div>
+        <div class="col col-md-6 text-left pl-5">
+            <ul>
+                <li>
+                    <h1 th:utext="${productDetailsModel.name}"></h1>
+                </li>
+                <li>
+                    <h5 th:utext="'Made: ' + ${productDetailsModel.made}"></h5>
+                </li>
+                <li class="text-left pt-2 pb-2">
+                    <h6 th:utext="${productDetailsModel.description}"></h6>
+                </li>
+                <li class="text-left">
+                    <h5 th:utext="'Regular Price: $' + ${productDetailsModel.price}"></h5>
+                </li>
+                <li>
+                    <form class="mx-auto" th:action="@{/products/promote/{id}(id=${productDetailsModel.id})}"
+                          th:object="${priceDiscountBindingModel}" th:method="POST">
+                        <div class="input-group col-md-5 h5 p-0 mb-3">
+                            <label for="discount" class="col-form-label">Discount: </label>
+                            <input class="form-control validate col-md-3 ml-2" type="number" size="5px"
+                                   id="discount" name="discount"
+                                   th:errorclass="bg-danger" th:field="*{discount}"
+                                   placeholder="10%" min="1"
+                                   max="90" step="1" required>
+                            <p th:each="e : ${#fields.errors('discount')}">
+                                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+                            </p>
+                        </div>
+                        <div class="input-group col-md-10 h5 p-0 mb-3">
+                            <label for="fromDate" class="col-form-label">From Date: </label>
+                            <input type="datetime-local" size="15px" id="fromDate" name="fromDate"
+                                   th:errorclass="bg-danger" th:field="*{fromDate}"
+                                   class="form-control validate col-md-4 ml-2"
+                                   data-large-mode="true">
+                            <p th:each="e : ${#fields.errors('fromDate')}">
+                                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+                            </p>
+                        </div>
+                        <div class="input-group col-md-10 h5 p-0 mb-3">
+                            <label for="toDate" class="col-form-label">To Date: </label>
+                            <input type="datetime-local" size="15px" id="toDate" name="toDate"
+                                   th:errorclass="bg-danger" th:field="*{toDate}"
+                                   class="form-control validate col-md-4 ml-2"
+                                   data-large-mode="true">
+                            <p th:each="e : ${#fields.errors('toDate')}">
+                                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+                            </p>
+                        </div>
+                        <button class="btn warning btn-primary low-button font-weight-bold text-white mt-2 ml-2"
+                                type="submit">Promote
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
-    <span style="visibility: hidden">....</span>
-    </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 
 </html>

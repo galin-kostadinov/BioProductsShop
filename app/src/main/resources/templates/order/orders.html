@@ -3,16 +3,18 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div class="w-100 mx-auto">
-        <span style="visibility: hidden">....</span>
-        <h2 class="text-center bold font-weight-bold text-dark">All orders:</h2>
-        <hr class="hr-2 bg-dark">
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Ordered products</span>
+        </h2>
         <div class="row text-center w-75 mx-auto">
             <th:block th:each="order : ${orders}">
                 <div class="col col-md-12 text-left pt-3 pl-5">
@@ -66,9 +68,9 @@
             </th:block>
         </div>
     </div>
-    <span style="visibility: hidden">....</span>
-    </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

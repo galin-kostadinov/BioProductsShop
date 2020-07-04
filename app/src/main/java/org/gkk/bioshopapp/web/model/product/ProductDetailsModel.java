@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 public class ProductDetailsModel {
 
+    private String id;
+
     private String name;
 
     private String made;
@@ -17,6 +19,14 @@ public class ProductDetailsModel {
     private BigDecimal promotionalPrice;
 
     public ProductDetailsModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

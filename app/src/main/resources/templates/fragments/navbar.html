@@ -1,6 +1,5 @@
 <th:block>
     <th:block sec:authorize="isAnonymous()">
-        <header>
             <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-dark border-bottom shadow-sm">
                 <a class="my-0 mr-md-auto font-weight-bold text-white" href="/">BioProduct Shop</a>
                 <nav class="row mr-md-3">
@@ -10,10 +9,8 @@
                     <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/contacts">Contacts</a>
                 </nav>
             </div>
-        </header>
     </th:block>
     <th:block sec:authorize="isAuthenticated()">
-        <header>
             <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-dark border-bottom shadow-sm">
                 <a class="my-0 mr-md-auto font-weight-bold text-white" href="/home">BioProduct Shop</a>
                 <nav class="row mr-md-3">
@@ -29,14 +26,14 @@
                             </th:block>
                         </div>
                     </div>
-                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/order/orders">Orders</a>
-                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/order/cart">Shopping cart</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/orders}">Orders</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/orders/cart}">Shopping cart</a>
                     <div class="dropdown">
                         <button class="dropbtn pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white">User</button>
                         <div class="dropdown-content">
-                            <a href="/user/profile">Profile</a>
+                            <a th:href="@{/users/profile}">Profile</a>
                             <th:block sec:authorize="hasRole('ROLE_ROOT')">
-                                <a href="/user/all-users">All Users</a>
+                                <a th:href="@{/users/all-users}">All Users</a>
                             </th:block>
                             <form  method="post" th:action="@{/logout}">
                                 <button type="submit">Logout
@@ -47,6 +44,5 @@
                     <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/contacts">Contacts</a>
                 </nav>
             </div>
-        </header>
     </th:block>
 </th:block>

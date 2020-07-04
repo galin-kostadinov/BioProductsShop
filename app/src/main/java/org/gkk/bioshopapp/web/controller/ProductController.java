@@ -6,10 +6,8 @@ import org.gkk.bioshopapp.service.service.PriceDiscountService;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.gkk.bioshopapp.web.model.product.PriceDiscountModel;
-import org.gkk.bioshopapp.web.model.product.ProductCreateBindingModel;
-import org.gkk.bioshopapp.web.model.product.ProductDetailsModel;
-import org.gkk.bioshopapp.web.model.product.ProductEditModel;
+import org.gkk.bioshopapp.web.model.product.*;
+import org.gkk.bioshopapp.web.model.user.UserRegisterBindingModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +23,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/products")
@@ -88,12 +87,14 @@ public class ProductController extends BaseController {
     @GetMapping("/product-table")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Product Table")
-    public ModelAndView getProductTable(ModelAndView model) {
-        List<ProductTableServiceModel> products = this.productService.getProductTable();
+    public String getProductTable(Model model) {
+        List<ProductTableViewModel> productTableViewModels = this.productService.getProductTable().stream()
+                .map(p -> this.modelMapper.map(p, ProductTableViewModel.class))
+                .collect(Collectors.toList());
 
-        model.addObject("products", products);
+        model.addAttribute("productTableViewModels", productTableViewModels);
 
-        return super.view("product/product-table", model);
+        return "product/product-table";
     }
 
     @GetMapping("/details/{id}")
@@ -112,21 +113,29 @@ public class ProductController extends BaseController {
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Edit Product")
-    public ModelAndView editProduct(@PathVariable String id, ModelAndView model) {
-        ProductEditModel product = this.modelMapper.map(this.productService.getProductEditModelById(id), ProductEditModel.class);
+    public String editProduct(@PathVariable String id, Model model) {
+        if (model.getAttribute("productEditModel") == null) {
+            ProductEditModel productEditModel =
+                    this.modelMapper.map(this.productService.getProductEditModelById(id), ProductEditModel.class);
+            model.addAttribute("productEditModel", productEditModel);
+        }
 
-        model.addObject("product", product);
-        model.addObject("productId", id);
-
-        return super.view("product/edit-product", model);
+        return "product/edit-product";
     }
 
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView editProductConfirm(@PathVariable String id, @ModelAttribute ProductEditModel model) {
-        this.productService.editProduct(id, this.modelMapper.map(model, ProductEditServiceModel.class));
+    public String editProductConfirm(@PathVariable String id, @Valid @ModelAttribute ProductEditModel productEditModel,
+                                     BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (productEditModel == null || bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("productEditModel", productEditModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productEditModel", bindingResult);
+            return this.redirectStr("/products/edit/" + id);
+        }
 
-        return super.redirect("/product/details/" + id);
+        this.productService.editProduct(id, this.modelMapper.map(productEditModel, ProductEditServiceModel.class));
+
+        return super.redirectStr("/products/details/" + id);
     }
 
 
@@ -147,40 +156,47 @@ public class ProductController extends BaseController {
     public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model) {
         this.productService.deleteProduct(id);
 
-        return super.redirect("/product/product-table");
+        return super.redirect("/products/product-table");
     }
 
     @GetMapping("/promote/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Promote Product")
-    public ModelAndView getPromoteForm(@PathVariable String id, ModelAndView model) {
+    public String getPromoteForm(@PathVariable String id, Model model) {
+        if (model.getAttribute("priceDiscountBindingModel") == null) {
+            model.addAttribute("priceDiscountBindingModel", new PriceDiscountBindingModel());
+        }
+
         ProductDetailsServiceModel productServiceModel = this.productService.getProductDetailsModel(id);
 
         if (productServiceModel.getPromotionalPrice() != null) {
-            return super.redirect("/product/product-table");
+            return super.redirectStr("/products/product-table");
         }
 
-        ProductDetailsModel product =
+        ProductDetailsModel productDetailsModel =
                 this.modelMapper.map(productServiceModel, ProductDetailsModel.class);
 
-        model.addObject("product", product);
-        model.addObject("productId", id);
-        model.addObject("dataTimeNow", LocalDateTime.now().format(formatter));
+        model.addAttribute("productDetailsModel", productDetailsModel);
 
-        return super.view("product/promote-form", model);
+        return "product/promote-form";
     }
 
     @PostMapping("/promote/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView promote(@PathVariable String id, @ModelAttribute PriceDiscountModel model) {
-        PriceDiscountServiceModel priceDiscountServiceModel = this.modelMapper.map(model, PriceDiscountServiceModel.class);
+    public String promoteConfirm(@PathVariable String id, @Valid @ModelAttribute PriceDiscountBindingModel priceDiscountBindingModel,
+                                 BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (priceDiscountBindingModel == null || bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("priceDiscountBindingModel", priceDiscountBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.priceDiscountBindingModel", bindingResult);
+            return this.redirectStr("/products/promote/" + id);
+        }
 
-        priceDiscountServiceModel.setFromDate(LocalDateTime.parse(model.getFromDate(), formatter));
-        priceDiscountServiceModel.setToDate(LocalDateTime.parse(model.getToDate(), formatter));
+        PriceDiscountServiceModel priceDiscountServiceModel =
+                this.modelMapper.map(priceDiscountBindingModel, PriceDiscountServiceModel.class);
 
         this.priceHistoryService.setDiscount(id, priceDiscountServiceModel);
 
-        return super.redirect("/product/product-table");
+        return super.redirectStr("/products/product-table");
     }
 
     @GetMapping("/promotion-table")
@@ -199,6 +215,6 @@ public class ProductController extends BaseController {
     public ModelAndView removePromotion(@PathVariable String id) {
         this.priceDiscountService.removePromotion(id);
 
-        return super.redirect("/product/promotion-table");
+        return super.redirect("/products/promotion-table");
     }
 }

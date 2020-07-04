@@ -3,18 +3,25 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+ <head>
+     <th:block th:include="~{fragments/head}"/>
+ </head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div class="container">
-        <h2>Contacts</h2>
-        <h4>Email: gk_1988@abv.bg</h4>
-        <h4>GSM: 0883 xxx xxx</h4>
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Contacts</span>
+        </h2>
+        <h4 class="text-center mt-2 pt-2">Name: Galin Kostadinov</h4>
+        <h4 class="text-center mt-2 pt-2">Email: gk_1988@abv.bg</h4>
+        <h4 class="text-center mt-2 pt-2">GSM: 0883 396 312</h4>
     </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

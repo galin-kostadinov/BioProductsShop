@@ -3,16 +3,18 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div>
-        <span style="visibility: hidden">....</span>
-        <h2 class="text-center bold font-weight-bold text-dark">Table with all products:</h2>
-        <hr class="hr-2 bg-dark">
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Table with all products</span>
+        </h2>
         <table class="table table-hover w-50 mx-auto">
             <thead>
             <tr class="row mx-auto">
@@ -25,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="product, iter : ${products}">
+            <th:block th:each="product, iter : ${productTableViewModels}">
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
                     <td class="col-md-2">
@@ -35,24 +37,27 @@
                     </td>
                     <td class="col-md-2 text-center" th:utext="${product.name}"></td>
                     <td class="col-md-2 text-center" th:utext="${product.made}"></td>
-                    <td class="col-md-2 text-center" th:utext="${product.price}  + ' $'"></td>
-                    <td th:if="${product.promotionalPrice == null}" class="col-md-3 text-center font-italic">Without current promotion</td>
-                    <td th:unless="${product.promotionalPrice == null}" class="col-md-3 text-center" th:utext="${product.promotionalPrice}  + ' $'"></td>
+                    <td class="col-md-2 text-center" th:utext="'$'+${product.price}"></td>
+                    <td th:if="${product.promotionalPrice == null}" class="col-md-3 text-center font-italic">Without
+                        current promotion
+                    </td>
+                    <td th:unless="${product.promotionalPrice == null}" class="col-md-3 text-center"
+                        th:utext="'$'+${product.promotionalPrice}"></td>
                     <td class="col-md-12 text-left">
                         <th:block>
-                            <a th:href="@{/product/details/{id}(id=${product.id})}"
+                            <a th:href="@{/products/details/{id}(id=${product.id})}"
                                class="btn btn-secondary glow-button font-weight-bold text-white">Details</a>
                         </th:block>
                         <th:block>
-                            <a th:href="@{/product/edit/{id}(id=${product.id})}"
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}"
                                class="btn btn-success glow-button font-weight-bold text-white">Edit</a>
                         </th:block>
                         <th:block>
-                            <a th:href="@{/product/delete/{id}(id=${product.id})}"
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}"
                                class="btn btn-danger glow-button font-weight-bold text-white">Delete</a>
                         </th:block>
                         <th:block th:if="${product.promotionalPrice == null}">
-                            <a th:href="@{/product/promote/{id}(id=${product.id})}"
+                            <a th:href="@{/products/promote/{id}(id=${product.id})}"
                                class="btn btn-primary glow-button font-weight-bold text-white">Promote</a>
                         </th:block>
                     </td>
@@ -60,10 +65,10 @@
             </th:block>
             </tbody>
         </table>
-        <hr class="hr-2 bg-dark">
-        <span style="visibility: hidden">....</span>
     </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

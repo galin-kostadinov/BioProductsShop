@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.service.service.impl;
 
-import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.model.PriceHistory;
 import org.gkk.bioshopapp.data.repository.PriceHistoryRepository;
@@ -15,7 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.PRICE_HISTORY_NOT_FOUND;
 
 @Service
 public class PriceHistoryServiceImpl implements PriceHistoryService {
