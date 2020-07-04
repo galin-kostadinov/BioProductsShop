@@ -1,7 +1,5 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.error.RoleNotFoundException;
-import org.gkk.bioshopapp.error.UserNotFoundException;
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.UserService;

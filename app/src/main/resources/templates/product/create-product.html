@@ -9,51 +9,74 @@
 <body>
 <th:block th:include="~{fragments/navbar}"/>
 <main>
-    <h1 class="text-center">Add product</h1>
-    <hr class="hr-3"/>
-    <form class="mx-auto w-25" th:action="@{create}" th:method="post">
+    <h2 class="text-center mt-5">
+        <span class="badge badge-pill badge-secondary">Add product</span>
+    </h2>
+    <form class="mx-auto w-25 mb-5 md-10 text-center bg-secondary p-3 rounded" th:object="${productCreateBindingModel}"
+          th:action="@{/products/create}" th:method="POST">
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="name" class="h4 mb-2 text-blue">Name</label>
+                <label for="name" class="h4 mb-2 text-white">Name</label>
             </div>
-            <input type="text" class="form-control" id="name" name="name"/>
+            <input type="text" class="form-control text-center" th:errorclass="bg-danger" th:field="*{name}" id="name" name="name"/>
+            <p th:each="e : ${#fields.errors('name')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="made" class="h4 mb-2">Made</label>
+                <label for="made" class="h4 mb-2 text-white">Made</label>
             </div>
-            <input type="text" class="form-control" id="made" name="made"/>
+            <input type="text" class="form-control  text-center" th:errorclass="bg-danger" th:field="*{made}" id="made" name="made"/>
+            <p th:each="e : ${#fields.errors('made')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="type" class="h4 mb-2">Category</label>
+                <label for="type" class="h4 mb-2 text-white">Category</label>
             </div>
-            <select class="form-control" id="type" name="type">
-                <option name="type" th:each="type : ${T(org.gkk.bioshopapp.data.model.ProductType).values()}"
-                        th:value="${type}" th:text="${type}"></option>
+            <select class="form-control text-center" th:errorclass="bg-danger" th:field="*{type}" id="type" name="type">
+                <option value="">--Select type--</option>
+                <option th:each="type : ${T(org.gkk.bioshopapp.data.model.ProductType).values()}"
+                        name="type" th:value="${type}" th:text="${type}"></option>
             </select>
+            <p th:each="e : ${#fields.errors('type')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="description" class="h4 mb-2">Description</label>
+                <label for="description" class="h4 mb-2 text-white">Description</label>
             </div>
-            <textarea class="form-control" id="description" name="description"
-                      style="height:150px;">Description...</textarea>
+            <textarea class="form-control" th:errorclass="bg-danger" th:field="*{description}"
+                      id="description" name="description" style="height:150px;">Description...</textarea>
+            <p th:each="e : ${#fields.errors('description')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="imgUrl" class="h4 mb-2">Image url</label>
+                <label for="imgUrl" class="h4 mb-2 text-white">Image url</label>
             </div>
-            <input type="url" class="form-control" id="imgUrl" name="imgUrl"/>
+            <input type="url" class="form-control" th:errorclass="bg-danger" th:field="*{imgUrl}"
+                   id="imgUrl" name="imgUrl"/>
+            <p th:each="e : ${#fields.errors('imgUrl')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
-                <label for="price" class="h4 mb-2">Price</label>
+                <label for="price" class="h4 mb-2 text-white">Price</label>
             </div>
-            <input type="number" step="0.01" class="form-control" id="price" name="price"/>
+            <input type="number" step="0.01" class="form-control text-center" th:errorclass="bg-danger" th:field="*{price}"
+                   id="price" name="price"/>
+            <p th:each="e : ${#fields.errors('price')}">
+                <small th:text="${e}" class="text-dark col-12 text-center"></small>
+            </p>
         </div>
         <div class="button-holder d-flex justify-content-center">
-            <button class="btn btn-info font-weight-bold text-white" type="submit">Add</button>
+            <button class="btn btn-block btn-outline-dark font-weight-bold text-white mt-3 mb-3" type="submit">Add</button>
         </div>
     </form>
 </main>

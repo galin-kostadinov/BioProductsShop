@@ -1,3 +1,4 @@
+
 .w-15 {
     width: 15%;
 }
@@ -16,14 +17,13 @@
     text-align: center;
 }
 
-main {
-    background-image: linear-gradient(rgba(220, 220, 130, 0.8), rgba(220, 200, 200, 1)), url('/img/background.jpg');
+body {
+    font-family: 'Dosis', sans-serif;
+    background-image:linear-gradient(rgba(220, 220, 130, 0.8), rgba(220, 200, 200, 1)), url('/img/background.jpg');
     background-position: center;
+    background-attachment: fixed;
     background-size: cover;
-    background-repeat: no-repeat;
-    position: relative;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    margin-bottom: 5rem;
 }
 
 textarea {
@@ -31,7 +31,7 @@ textarea {
 }
 
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }

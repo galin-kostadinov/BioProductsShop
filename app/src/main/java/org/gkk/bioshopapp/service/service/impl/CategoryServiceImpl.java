@@ -8,6 +8,8 @@ import org.gkk.bioshopapp.service.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 import static org.gkk.bioshopapp.constant.ErrorMessageConstant.CATEGORY_NOT_FOUND;
 
 @Service
@@ -20,8 +22,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void initCategories() {
+        if (categoryRepository.count() == 0) {
+            Arrays.stream(ProductType.values())
+                    .forEach(type -> this.categoryRepository.saveAndFlush(new Category(type)));
+        }
+    }
+
+    @Override
     public Category getCategoryByName(ProductType name) {
         return this.categoryRepository.findByName(name)
-                .orElseThrow(() ->new CategoryNotFoundException(CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_FOUND));
     }
+
+
 }

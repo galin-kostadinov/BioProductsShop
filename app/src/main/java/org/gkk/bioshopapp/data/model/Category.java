@@ -11,6 +11,10 @@ public class Category extends BaseEntity {
     public Category() {
     }
 
+    public Category(ProductType name) {
+        this.name = name;
+    }
+
     @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false, updatable = false)
     public ProductType getName() {

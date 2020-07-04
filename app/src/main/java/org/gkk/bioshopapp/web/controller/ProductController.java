@@ -7,24 +7,27 @@ import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.model.product.PriceDiscountModel;
-import org.gkk.bioshopapp.web.model.product.ProductCreateModel;
+import org.gkk.bioshopapp.web.model.product.ProductCreateBindingModel;
 import org.gkk.bioshopapp.web.model.product.ProductDetailsModel;
 import org.gkk.bioshopapp.web.model.product.ProductEditModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController extends BaseController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
@@ -55,28 +58,31 @@ public class ProductController extends BaseController {
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Create Product")
-    public ModelAndView getCreateForm() {
-        ModelAndView modelAndView = super.view("product/create-product");
-        modelAndView.addObject("model", new ProductCreateModel());
-        return modelAndView;
+    public String getCreateForm(Model model) {
+        if (model.getAttribute("productCreateBindingModel") == null) {
+            model.addAttribute("productCreateBindingModel", new ProductCreateBindingModel());
+        }
+
+        return "product/create-product";
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ModelAndView create(@ModelAttribute ProductCreateModel model, BindingResult bindingResult, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            return super.view("product/create-product");
+    public String createConfirm(@Valid @ModelAttribute ProductCreateBindingModel productCreateBindingModel,
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+
+        if (productCreateBindingModel == null || bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("productCreateBindingModel", productCreateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productCreateBindingModel", bindingResult);
+            return this.redirectStr("create");
         }
 
-        ProductCreateServiceModel serviceModel = this.modelMapper.map(model, ProductCreateServiceModel.class);
+        ProductCreateServiceModel serviceModel = this.modelMapper.map(productCreateBindingModel, ProductCreateServiceModel.class);
 
-        try {
-            String username = session.getAttribute("username").toString();
-            this.productService.create(serviceModel, username);
-            return super.redirect("/product");
-        } catch (Exception e) {
-            return super.redirect("/product/create-product");
-        }
+        String username = principal.getName();
+        this.productService.create(serviceModel, username);
+
+        return this.redirectStr("/products");
     }
 
     @GetMapping("/product-table")
@@ -138,7 +144,7 @@ public class ProductController extends BaseController {
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateModel model) {
+    public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model) {
         this.productService.deleteProduct(id);
 
         return super.redirect("/product/product-table");

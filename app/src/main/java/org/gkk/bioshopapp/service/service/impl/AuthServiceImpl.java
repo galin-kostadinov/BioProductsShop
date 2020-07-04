@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.error.UserNotFoundException;
@@ -13,7 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.gkk.bioshopapp.constant.ErrorMessageConstant.USERNAME_OR_PASSWORD_ARE_INCORRECT;
+import java.util.List;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -36,11 +37,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void register(UserRegisterServiceModel model) {
-        this.roleService.seedRolesInDb();
-
-        if (!authValidation.isValid(model)) {
-            return;
+    public List<String> register(UserRegisterServiceModel model) {
+        if (authValidation.getViolations(model).size() > 0) {
+          return authValidation.getViolations(model);
         }
 
         User user = modelMapper.map(model, User.class);
@@ -53,15 +52,17 @@ public class AuthServiceImpl implements AuthService {
         }
 
         userRepository.save(user);
+
+        return null;
     }
 
     @Override
-    public UserLoginServiceModel login(UserLoginServiceModel serviceModel){
+    public UserLoginServiceModel login(UserLoginServiceModel serviceModel) {
         String passwordHash = hashingService.hash(serviceModel.getPassword());
 
         return userRepository
                 .findByUsernameAndPassword(serviceModel.getUsername(), passwordHash)
                 .map(user -> modelMapper.map(user, UserLoginServiceModel.class))
-                .orElseThrow(() -> new UserNotFoundException(USERNAME_OR_PASSWORD_ARE_INCORRECT));
+                .orElseThrow(() -> new UserNotFoundException(ErrorMessageConstant.USERNAME_OR_PASSWORD_ARE_INCORRECT));
     }
 }

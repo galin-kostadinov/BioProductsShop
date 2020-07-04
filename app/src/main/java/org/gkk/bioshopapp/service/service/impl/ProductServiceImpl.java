@@ -48,11 +48,6 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = this.categoryService.getCategoryByName(serviceModel.getType());
 
-        if (category == null) {
-            category = new Category();
-            category.setName(serviceModel.getType());
-        }
-
         product.setCategory(category);
 
         PriceHistory price = new PriceHistory(serviceModel.getPrice(), LocalDateTime.now());

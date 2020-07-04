@@ -3,6 +3,8 @@ package org.gkk.bioshopapp.validation;
 
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 
+import java.util.List;
+
 public interface AuthValidation {
-    boolean isValid(UserRegisterServiceModel user);
+    List<String> getViolations(UserRegisterServiceModel user);
 }

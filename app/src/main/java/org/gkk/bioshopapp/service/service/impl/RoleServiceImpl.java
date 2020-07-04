@@ -4,7 +4,7 @@ import org.gkk.bioshopapp.data.model.Role;
 import org.gkk.bioshopapp.data.repository.RoleRepository;
 import org.gkk.bioshopapp.error.RoleNotFoundException;
 import org.gkk.bioshopapp.service.service.RoleService;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -14,11 +14,10 @@ import java.util.Set;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
-    private final ModelMapper modelMapper;
 
-    public RoleServiceImpl(RoleRepository roleRepository, ModelMapper modelMapper) {
+    @Autowired
+    public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override

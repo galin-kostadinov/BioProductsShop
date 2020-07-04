@@ -1,0 +1,25 @@
+#page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 127, 0.4);
+    width: 100%;
+    height: 100vh;
+}
+
+#page-loader .loader-area {
+    position: absolute;
+    top: 43.5%;
+    left: 43.5%;
+    width: 100%;
+    background-image: url(https://media.giphy.com/media/5k3Lykso2oV1xa2clN/giphy.gif);
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: 250px;
+}
+
+#page-loader .loader-text {
+    color: green;
+    padding-top: 110px;
+    padding-left: 80px;
+}

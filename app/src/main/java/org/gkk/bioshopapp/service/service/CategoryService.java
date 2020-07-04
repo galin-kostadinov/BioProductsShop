@@ -5,4 +5,6 @@ import org.gkk.bioshopapp.data.model.ProductType;
 
 public interface CategoryService {
     Category getCategoryByName(ProductType name);
+
+    void initCategories();
 }

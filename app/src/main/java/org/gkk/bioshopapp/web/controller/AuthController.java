@@ -1,18 +1,24 @@
 package org.gkk.bioshopapp.web.controller;
 
-import org.gkk.bioshopapp.error.PriceHishoryNotFoundException;
-import org.gkk.bioshopapp.error.RoleNotFoundException;
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.gkk.bioshopapp.web.model.user.UserRegisterModel;
+import org.gkk.bioshopapp.web.model.user.UserRegisterBindingModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class AuthController extends BaseController {
@@ -29,20 +35,44 @@ public class AuthController extends BaseController {
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Register")
-    public ModelAndView getRegisterForm() {
-        return super.view("user/register");
+    public String getRegisterForm(Model model) {
+        if (model.getAttribute("userRegisterBindingModel") == null) {
+            model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+        }
+
+        return "user/register";
     }
 
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView register(@ModelAttribute UserRegisterModel model, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return super.view("user/register");
+    public String registerConfirm(@Valid @ModelAttribute UserRegisterBindingModel userRegisterBindingModel,
+                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (userRegisterBindingModel == null || bindingResult.hasErrors() ||
+                !userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            return this.redirectStr("register");
         }
 
-        UserRegisterServiceModel serviceModel = this.modelMapper.map(model, UserRegisterServiceModel.class);
-        authService.register(serviceModel);
-        return super.redirect("/login");
+        UserRegisterServiceModel serviceModel = this.modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class);
+
+//        try {
+//            authService.register(serviceModel);
+//        } catch (UserRegistrationException e) {
+//            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+//            redirectAttributes.addFlashAttribute("registrationError", e.getMessage());
+//            return this.redirectStr("register");
+//        }
+
+        List<String> violations = authService.register(serviceModel);
+
+        if (violations != null) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("registrationError", violations);
+            return this.redirectStr("register");
+        }
+
+        return this.redirectStr("/login");
     }
 
     @GetMapping("/login")

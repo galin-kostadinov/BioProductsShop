@@ -1,41 +1,50 @@
 <th:block>
     <th:block sec:authorize="isAnonymous()">
         <header>
-            <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-dark border-bottom shadow-sm">
+            <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-dark border-bottom shadow-sm">
                 <a class="my-0 mr-md-auto font-weight-bold text-white" href="/">BioProduct Shop</a>
-                <nav class="row my-2 my-md-0 mr-md-3">
-                    <a class="p-2 font-weight-bold text-white" href="/">Home</a>
-                    <a class="p-2 font-weight-bold text-white" href="/login">Login</a>
-                    <a class="p-2 font-weight-bold text-white" href="/register">Register</a>
-                    <a class="p-2 font-weight-bold text-white" href="/contacts">Contacts</a>
+                <nav class="row mr-md-3">
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/">Home</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/login">Login</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/register">Register</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/contacts">Contacts</a>
                 </nav>
             </div>
         </header>
     </th:block>
     <th:block sec:authorize="isAuthenticated()">
         <header>
-            <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-dark border-bottom shadow-sm">
+            <div class="d-flex flex-column flex-md-row align-items-center px-md-4 bg-dark border-bottom shadow-sm">
                 <a class="my-0 mr-md-auto font-weight-bold text-white" href="/home">BioProduct Shop</a>
-                <nav class="row my-2 my-md-0 mr-md-3">
-                    <a class="p-2 font-weight-bold text-white" href="/home">Home</a>
-                    <a class="p-2 font-weight-bold text-white" href="/product/">Products</a>
-                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a class="p-2 font-weight-bold text-white" href="/product/product-table">Product Table</a>
-                        <a class="p-2 font-weight-bold text-white" href="/product/promotion-table">Promotion Table</a>
-                        <a class="p-2 font-weight-bold text-white" href="/product/create">Create Product</a>
-                    </th:block>
-                    <a class="p-2 font-weight-bold text-white" href="/order/orders">Orders</a>
-                    <a class="p-2 font-weight-bold text-white" href="/order/cart">Shopping cart</a>
-                    <th:block sec:authorize="hasRole('ROLE_ROOT')">
-                        <a class="p-2 font-weight-bold text-white" href="/user/all-users">Users</a>
-                    </th:block>
-                    <a class="p-2 font-weight-bold text-white" href="/user/profile">Profile</a>
-                    <a class="p-2 font-weight-bold text-white" href="/contacts">Contacts</a>
-                    <form class="form-inline my-2 my-lg-0" method="post" th:action="@{/logout}">
-                        <button class="btn btn-outline-danger font-weight-bold text-white  my-2 my-sm-0 btn-sm"
-                                type="submit">Logout
-                        </button>
-                    </form>
+                <nav class="row mr-md-3">
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/home">Home</a>
+                    <div class="dropdown">
+                        <button class="dropbtn pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white">Products</button>
+                        <div class="dropdown-content">
+                            <a th:href="@{/products}">Products</a>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a th:href="@{/products/product-table}">Product Table</a>
+                                <a th:href="@{/products/promotion-table}">Promotion Table</a>
+                                <a th:href="@{/products/create}">Create Product</a>
+                            </th:block>
+                        </div>
+                    </div>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/order/orders">Orders</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/order/cart">Shopping cart</a>
+                    <div class="dropdown">
+                        <button class="dropbtn pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white">User</button>
+                        <div class="dropdown-content">
+                            <a href="/user/profile">Profile</a>
+                            <th:block sec:authorize="hasRole('ROLE_ROOT')">
+                                <a href="/user/all-users">All Users</a>
+                            </th:block>
+                            <form  method="post" th:action="@{/logout}">
+                                <button type="submit">Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" href="/contacts">Contacts</a>
                 </nav>
             </div>
         </header>

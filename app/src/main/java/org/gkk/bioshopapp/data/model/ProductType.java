@@ -1,6 +1,6 @@
 package org.gkk.bioshopapp.data.model;
 
-public enum  ProductType {
+public enum ProductType {
     FRUIT,
     VEGETABLE
 }
