@@ -10,6 +10,8 @@ public class Product extends BaseEntity {
 
     private String name;
 
+    private String code;
+
     private String made;
 
     private Category category;
@@ -33,6 +35,15 @@ public class Product extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Column(name = "code", length = 50, nullable = false, unique = true)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Column(name = "made", length = 50, nullable = false)

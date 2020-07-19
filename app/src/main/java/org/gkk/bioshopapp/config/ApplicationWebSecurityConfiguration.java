@@ -33,7 +33,7 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/contacts").permitAll()
+                .antMatchers("/", "/contacts", "/products", "/products/details/{id}").permitAll()
                 .antMatchers("/js/*", "/css/*", "/img/*").permitAll()
                 .antMatchers("/register", "/login").anonymous()
                 .anyRequest().authenticated()

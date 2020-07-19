@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 public class ProductCreateBindingModel implements Serializable {
     private String name;
 
+    private String code;
+
     private String made;
 
     private ProductType type;
@@ -31,6 +33,16 @@ public class ProductCreateBindingModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @NotBlank(message = "Product code is mandatory.")
+    @Size(min = 5, message = "Code size have to be min 5 characters.")
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @NotBlank(message = "Product made is mandatory.")

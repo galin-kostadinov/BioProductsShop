@@ -1,9 +1,6 @@
 package org.gkk.bioshopapp.service.service.impl;
 
-import org.gkk.bioshopapp.data.model.Category;
-import org.gkk.bioshopapp.data.model.PriceDiscount;
-import org.gkk.bioshopapp.data.model.PriceHistory;
-import org.gkk.bioshopapp.data.model.Product;
+import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
 import org.gkk.bioshopapp.error.ProductNotFoundException;
 import org.gkk.bioshopapp.service.model.log.LogServiceModel;
@@ -27,6 +24,7 @@ import static org.gkk.bioshopapp.constant.ErrorMessageConstant.PRODUCT_NOT_FOUND
 import static org.gkk.bioshopapp.constant.GlobalLogConstant.PRODUCT_ADDED;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
@@ -42,7 +40,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+    public void initProducts(List<ProductCreateServiceModel> products, String username) {
+        if (this.productRepository.count() != 0) {
+            return;
+        }
+
+        for (ProductCreateServiceModel product : products) {
+            this.create(product, username);
+        }
+    }
+
+    @Override
     public void create(ProductCreateServiceModel serviceModel, String username) {
         Product product = this.modelMapper.map(serviceModel, Product.class);
 
@@ -115,6 +123,18 @@ public class ProductServiceImpl implements ProductService {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
+        ProductDetailsServiceModel productServiceModel = this.modelMapper.map(product, ProductDetailsServiceModel.class);
+
+        PriceHistory lastPrice = product.getLastAssignedAmountFromHistory();
+        productServiceModel.setPrice(lastPrice.getPrice());
+
+        setPromotionalPrice(lastPrice, productServiceModel);
+
+        return productServiceModel;
+    }
+
+    @Override
+    public ProductDetailsServiceModel parseToProductDetailsModel(Product product) {
         ProductDetailsServiceModel productServiceModel = this.modelMapper.map(product, ProductDetailsServiceModel.class);
 
         PriceHistory lastPrice = product.getLastAssignedAmountFromHistory();

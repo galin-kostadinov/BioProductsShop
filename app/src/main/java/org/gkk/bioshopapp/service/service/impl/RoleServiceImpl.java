@@ -7,6 +7,7 @@ import org.gkk.bioshopapp.service.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void seedRolesInDb() {
         if (this.roleRepository.count() == 0){
             this.roleRepository.saveAndFlush(new Role("ROLE_USER"));

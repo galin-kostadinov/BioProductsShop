@@ -1,6 +1,7 @@
 package org.gkk.bioshopapp.service.service;
 
 import org.gkk.bioshopapp.data.model.Product;
+import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.service.model.product.*;
 
 import java.time.LocalDateTime;
@@ -18,11 +19,15 @@ public interface ProductService {
 
     ProductEditServiceModel getProductEditModelById(String id);
 
-    ProductDetailsServiceModel getProductDetailsModel(String id) ;
+    ProductDetailsServiceModel getProductDetailsModel(String id);
 
     List<ProductTableServiceModel> getProductTable();
 
     List<ProductDiscountTableServiceModel> getDiscountedProducts(LocalDateTime localDateTime);
 
     ProductShoppingCartServiceModel getShoppingCartProductModelById(String id);
+
+    ProductDetailsServiceModel parseToProductDetailsModel(Product product);
+
+    void initProducts(List<ProductCreateServiceModel> products, String username);
 }

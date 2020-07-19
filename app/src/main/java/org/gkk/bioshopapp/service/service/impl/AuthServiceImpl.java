@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+import org.gkk.bioshopapp.config.InitRootUser;
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
@@ -9,8 +10,10 @@ import org.gkk.bioshopapp.service.service.RoleService;
 import org.gkk.bioshopapp.validation.AuthValidation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -34,19 +37,30 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
+    public User initRoot(InitRootUser initRootUser) {
+        if (this.userRepository.count() != 0) {
+            return null;
+        }
+
+        User user = new User();
+        user.setUsername(initRootUser.getUsername());
+        user.setEmail(initRootUser.getEmail());
+        user.setPassword(hashingService.hash(initRootUser.getPassword()));
+        user.setAuthorities(this.roleService.findAllRoles());
+
+        return userRepository.saveAndFlush(user);
+    }
+
+    @Override
     public List<String> register(UserRegisterServiceModel model) {
         if (authValidation.getViolations(model).size() > 0) {
-          return authValidation.getViolations(model);
+            return authValidation.getViolations(model);
         }
 
         User user = modelMapper.map(model, User.class);
         user.setPassword(hashingService.hash(user.getPassword()));
-
-        if (this.userRepository.count() == 0) {
-            user.setAuthorities(this.roleService.findAllRoles());
-        } else {
-            user.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
-        }
+        user.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
 
         userRepository.save(user);
 

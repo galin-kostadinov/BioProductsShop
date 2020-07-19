@@ -8,6 +8,8 @@ public class ProductCreateServiceModel {
 
     private String name;
 
+    private String code;
+
     private String made;
 
     private ProductType type;
@@ -21,12 +23,30 @@ public class ProductCreateServiceModel {
     public ProductCreateServiceModel() {
     }
 
+    public ProductCreateServiceModel(String name, String code, String made, ProductType type, String description, String imgUrl, BigDecimal price) {
+        this.name = name;
+        this.code = code;
+        this.made = made;
+        this.type = type;
+        this.description = description;
+        this.imgUrl = imgUrl;
+        this.price = price;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getMade() {

@@ -17,15 +17,17 @@
         </h2>
         <div class="row">
             <div class="col col-md-12 text-center">
-                <th:block th:each="orderProduct, iter : ${cart}">
+                <th:block th:each="product, iter : ${cart.shoppingCartProducts}">
                     <output class="col col-md-3 text-center" th:escape="false">
-                        <h2 th:utext="${orderProduct.product.name}"></h2>
-                        <img class ="mb-3 mt-3" th:src="${orderProduct.product.imgUrl}" width="100" height="100" >
-                        <h5 th:if="${orderProduct.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${orderProduct.product.price} + ' $'"></h5>
-                        <h5 th:unless="${orderProduct.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${orderProduct.product.promotionalPrice} + ' $'"></h5>
-                        <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${orderProduct.quantity} + 'pcs.'"></h5>
+                        <h4 class="text-center mt-5">
+                            <span class="badge badge-pill badge-primary" th:utext="${product.product.name}"></span>
+                        </h4>
+                        <img class ="mb-3 mt-3" th:src="${product.product.imgUrl}" width="100" height="100" >
+                        <h5 th:if="${product.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${product.product.price} + ' $'"></h5>
+                        <h5 th:unless="${product.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${product.product.promotionalPrice} + ' $'"></h5>
+                        <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${product.quantity} + 'pcs.'"></h5>
                         <span style="visibility: hidden">....</span>
-                        <form class="mx-auto" th:action="@{/orders/remove-from-cart/{id}(id=${orderProduct.product.id})}"
+                        <form class="mx-auto" th:action="@{/cart/remove-from-cart/{id}(id=${product.product.id})}"
                               method="post">
                             <button class="btn warning btn-primary low-button font-weight-bold text-white"
                                     type="submit">Remove from Cart
@@ -34,8 +36,8 @@
                     </output>
                 </th:block>
                 <hr class="hr-2 bg-dark">
-                <h4 th:utext="'Total price: ' + ${cartTotalPrice} + ' $'"></h4>
-                <form th:action="@{/orders/buy}" method="post">
+                <h4 th:utext="'Total price: ' + ${cart.calculateTotalCartPrice()} + ' $'"></h4>
+                <form th:action="@{/cart/buy}" method="post">
                     <th:block>
                         <button class="btn warning btn-warning low-button font-weight-bold text-white" type="submit">
                             Buy Products

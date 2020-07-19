@@ -24,7 +24,7 @@
                 <li class="text-left">
                     <h6 th:utext="${product.description}"></h6>
                 </li>
-                <li class="text-left pt-2">
+                <li class="text-left pt-4">
                     <div th:if="${product.promotionalPrice} == null">
                         <span class="h5 mb-md-2" th:utext="'Price: $' + ${product.price}"></span>
                     </div>
@@ -36,10 +36,10 @@
                     </div>
                 </li>
                 <li>
-                    <form class="mx-auto" th:action="@{/orders/add-to-cart/{id}(id=${productId})}" method="post">
-                        <div class="input-group col-md-5 h5 p-0 mb-3">
+                    <form class="mx-auto" th:action="@{/cart/add-to-cart/{id}(id=${productId})}" method="post">
+                        <div class="input-group col-md-5 h5 p-0 mt-3 mb-3">
                             <label class="col-form-label" for="quantity">Quantity: </label>
-                            <input class="form-control validate col-md-3 ml-2"
+                            <input class="form-control validate col-md-3 ml-1 mt-1"
                                    type="number" size="3px" id="quantity" name="quantity" placeholder="0" min="1"
                                    required>
                         </div>

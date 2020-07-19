@@ -28,7 +28,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
         String username = authenticatedUserService.getUsername();
         httpServletRequest.getSession().setAttribute("username", username);
-        httpServletRequest.getSession().setAttribute("cart", new HashMap<String, OrderProductModel>());
 
         redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
     }

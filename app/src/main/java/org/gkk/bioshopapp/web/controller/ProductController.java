@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/products")
 public class ProductController extends BaseController {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
     private final ProductService productService;
     private final PriceHistoryService priceHistoryService;
@@ -44,14 +43,11 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping({"/", ""})
-    @PreAuthorize("isAuthenticated()")
     @PageTitle("Products")
-    public ModelAndView getAllProducts(ModelAndView model) {
+    public String getAllProducts(Model model) {
         List<ProductTableServiceModel> products = this.productService.getProductTable();
-
-        model.addObject("products", products);
-
-        return super.view("product/products", model);
+        model.addAttribute("products", products);
+        return "product/products";
     }
 
     @GetMapping("/create")
@@ -77,7 +73,7 @@ public class ProductController extends BaseController {
         }
 
         ProductCreateServiceModel serviceModel = this.modelMapper.map(productCreateBindingModel, ProductCreateServiceModel.class);
-
+        //TODO check if it already exist
         String username = principal.getName();
         this.productService.create(serviceModel, username);
 
@@ -98,7 +94,6 @@ public class ProductController extends BaseController {
     }
 
     @GetMapping("/details/{id}")
-    @PreAuthorize("isAuthenticated()")
     @PageTitle("Product Details")
     public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) {
         ProductDetailsModel product =

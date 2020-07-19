@@ -1,8 +1,5 @@
 package org.gkk.bioshopapp.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -12,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "orderProducts")
 public class Order extends BaseEntity {
 
     private LocalDateTime dateCreated;
