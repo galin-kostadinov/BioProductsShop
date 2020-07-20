@@ -1,11 +1,11 @@
-package org.gkk.bioshopapp.web.controller;
+package org.gkk.bioshopapp.web.view.controller;
 
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.gkk.bioshopapp.web.model.user.UserEditProfileModel;
-import org.gkk.bioshopapp.web.model.user.UserProfileViewModel;
+import org.gkk.bioshopapp.web.view.model.user.UserEditProfileModel;
+import org.gkk.bioshopapp.web.view.model.user.UserProfileViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,8 @@ public class UserController extends BaseController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Profile")
-    public ModelAndView getProfile(HttpSession session, ModelAndView model) throws Exception {
-        String username = session.getAttribute("username").toString();
-        UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
+    public ModelAndView getProfile(Principal principal, ModelAndView model) throws Exception {
+        UserProfileServiceModel serviceModel = this.userService.getUserByUsername(principal.getName());
         model.addObject("model", this.modelMapper.map(serviceModel, UserProfileViewModel.class));
 
         return super.view("user/profile", model);
@@ -43,9 +43,8 @@ public class UserController extends BaseController {
     @GetMapping("/profile/edit")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Edit Profile")
-    public ModelAndView getEditProfile(HttpSession session, ModelAndView model) throws Exception {
-        String username = session.getAttribute("username").toString();
-        UserProfileServiceModel serviceModel = this.userService.getUserByUsername(username);
+    public ModelAndView getEditProfile(Principal principal, ModelAndView model) throws Exception {
+        UserProfileServiceModel serviceModel = this.userService.getUserByUsername(principal.getName());
         model.addObject("model", this.modelMapper.map(serviceModel, UserProfileViewModel.class));
 
         return super.view("user/edit-profile", model);
@@ -53,14 +52,14 @@ public class UserController extends BaseController {
 
     @PostMapping("/profile/edit")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView editProfileConfirm(@ModelAttribute UserEditProfileModel model) {
+    public String editProfileConfirm(@ModelAttribute UserEditProfileModel model) {
         UserEditProfileServiceModel serviceModel = this.modelMapper.map(model, UserEditProfileServiceModel.class);
 
         try {
             this.userService.editUserProfile(serviceModel);
-            return super.redirect("/users/profile");
+            return super.redirectStr("/users/profile");
         } catch (Exception e) {
-            return super.redirect("/users/profile/edit");
+            return super.redirectStr("/users/profile/edit");
         }
     }
 
@@ -79,17 +78,15 @@ public class UserController extends BaseController {
 
     @PostMapping("/set-admin/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView setAdminRole(@PathVariable String id) {
+    public String setAdminRole(@PathVariable String id) {
         this.userService.makeAdmin(id);
-
-        return super.redirect("/users/all-users");
+        return super.redirectStr("/users/all-users");
     }
 
     @PostMapping("/set-user/{id}")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    public ModelAndView setUserRole(@PathVariable String id) {
+    public String setUserRole(@PathVariable String id) {
         this.userService.makeUser(id);
-
-        return super.redirect("/users/all-users");
+        return super.redirectStr("/users/all-users");
     }
 }

@@ -12,6 +12,8 @@ public class ErrorMessageConstant {
 
     public final static String PRODUCT_NOT_FOUND = "Product not found!";
 
+    public final static String PRODUCT_DUPLICATE = "Product with given code already exist!";
+
     public final static String PRICE_HISTORY_NOT_FOUND = "PriceHistory not found!";
 
     public final static String CATEGORY_NOT_FOUND = "Category not found!";

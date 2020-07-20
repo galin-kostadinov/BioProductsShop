@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.web.controller;
+package org.gkk.bioshopapp.web.view.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

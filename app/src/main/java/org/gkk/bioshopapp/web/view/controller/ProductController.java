@@ -1,19 +1,21 @@
-package org.gkk.bioshopapp.web.controller;
+package org.gkk.bioshopapp.web.view.controller;
 
+import org.gkk.bioshopapp.error.ProductDuplicateException;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
 import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.gkk.bioshopapp.web.model.product.*;
-import org.gkk.bioshopapp.web.model.user.UserRegisterBindingModel;
+import org.gkk.bioshopapp.web.view.model.product.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,9 +45,7 @@ public class ProductController extends BaseController {
 
     @GetMapping({"/", ""})
     @PageTitle("Products")
-    public String getAllProducts(Model model) {
-        List<ProductTableServiceModel> products = this.productService.getProductTable();
-        model.addAttribute("products", products);
+    public String getAllProducts() {
         return "product/products";
     }
 
@@ -73,9 +72,16 @@ public class ProductController extends BaseController {
         }
 
         ProductCreateServiceModel serviceModel = this.modelMapper.map(productCreateBindingModel, ProductCreateServiceModel.class);
-        //TODO check if it already exist
+
         String username = principal.getName();
-        this.productService.create(serviceModel, username);
+        try {
+            this.productService.create(serviceModel, username);
+        } catch (ProductDuplicateException e) {
+            redirectAttributes.addFlashAttribute("productCreateBindingModel", productCreateBindingModel);
+            bindingResult.rejectValue("code", "error.productCreateBindingModel", e.getMessage());
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productCreateBindingModel", bindingResult);
+            return this.redirectStr("create");
+        }
 
         return this.redirectStr("/products");
     }
@@ -95,14 +101,13 @@ public class ProductController extends BaseController {
 
     @GetMapping("/details/{id}")
     @PageTitle("Product Details")
-    public ModelAndView detailsProduct(@PathVariable String id, ModelAndView model) {
+    public String detailsProduct(@PathVariable String id, Model model) {
         ProductDetailsModel product =
                 this.modelMapper.map(this.productService.getProductDetailsModel(id), ProductDetailsModel.class);
 
-        model.addObject("product", product);
-        model.addObject("productId", id);
+        model.addAttribute("product", product);
 
-        return super.view("product/details-product", model);
+        return "product/details-product";
     }
 
     @GetMapping("/edit/{id}")
@@ -137,21 +142,17 @@ public class ProductController extends BaseController {
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete Product")
-    public ModelAndView deleteProduct(@PathVariable String id, ModelAndView model) {
-        ProductEditServiceModel product = this.productService.getProductEditModelById(id);
-
-        model.addObject("product", product);
-        model.addObject("productId", id);
-
-        return super.view("product/delete-product", model);
+    public String deleteProduct(@PathVariable String id, Model model) {
+        ProductDeleteServiceModel product = this.productService.getProductDeleteModelById(id);
+        model.addAttribute("product", product);
+        return "product/delete-product";
     }
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model) {
+    public String deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model) {
         this.productService.deleteProduct(id);
-
-        return super.redirect("/products/product-table");
+        return super.redirectStr("/products/product-table");
     }
 
     @GetMapping("/promote/{id}")
@@ -197,19 +198,16 @@ public class ProductController extends BaseController {
     @GetMapping("/promotion-table")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Promotional Table")
-    public ModelAndView getPromotionalProductTable(ModelAndView model) {
+    public String getPromotionalProductTable(Model model) {
         List<ProductDiscountTableServiceModel> products = this.productService.getDiscountedProducts(LocalDateTime.now());
-
-        model.addObject("products", products);
-
-        return super.view("product/promotion-table", model);
+        model.addAttribute("products", products);
+        return "product/promotion-table";
     }
 
     @PostMapping("/remove-promotion/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView removePromotion(@PathVariable String id) {
+    public String removePromotion(@PathVariable String id) {
         this.priceDiscountService.removePromotion(id);
-
-        return super.redirect("/products/promotion-table");
+        return super.redirectStr("/products/promotion-table");
     }
 }

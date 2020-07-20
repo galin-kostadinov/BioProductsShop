@@ -19,6 +19,8 @@ public interface ProductService {
 
     ProductEditServiceModel getProductEditModelById(String id);
 
+    ProductDeleteServiceModel getProductDeleteModelById(String id);
+
     ProductDetailsServiceModel getProductDetailsModel(String id);
 
     List<ProductTableServiceModel> getProductTable();

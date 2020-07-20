@@ -1,9 +1,9 @@
-package org.gkk.bioshopapp.web.controller;
+package org.gkk.bioshopapp.web.view.controller;
 
 import org.gkk.bioshopapp.service.model.user.UserRegisterServiceModel;
 import org.gkk.bioshopapp.service.service.AuthService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.gkk.bioshopapp.web.model.user.UserRegisterBindingModel;
+import org.gkk.bioshopapp.web.view.model.user.UserRegisterBindingModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

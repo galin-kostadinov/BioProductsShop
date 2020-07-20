@@ -11,32 +11,25 @@
     <th:block th:include="~{fragments/navbar}"/>
 </header>
 <main>
-    <div class="row">
+    <h2 class="text-center mt-5">
+        <span class="badge badge-pill badge-secondary" th:text="${product.name}"></span>
+    </h2>
+    <h5 class="text-center" th:utext="'Code: ' + ${product.code}"></h5>
+    <h5 class="text-center" th:utext="'Made: ' + ${product.made}"></h5>
+    <div class="row mt-5">
         <div class="col col-md-4 text-right pr-5">
-            <img th:src="${product.imgUrl}" alt="img" width="300">
+            <img th:src="${product.imgUrl}" width="300">
         </div>
         <div class="col col-md-6 text-left pl-5">
             <ul>
-                <li>
-                    <h1 th:utext="${product.name}"></h1>
-                </li>
-                <li>
-                    <h5 th:utext="'Made: ' + ${product.made}"></h5>
-                </li>
-                <li>
-                    <span style="visibility: hidden">....</span>
-                </li>
                 <li class="text-left">
                     <h6 th:utext="${product.description}"></h6>
                 </li>
-                <li>
-                    <span style="visibility: hidden">....</span>
-                </li>
-                <li class="text-left">
-                    <h5 th:utext="'Price: ' + ${product.price} + ' $'"></h5>
+                <li class="text-left pt-4">
+                    <h5 class=" mb-md-2" th:utext="'Price: $' + ${product.price}"></h5>
                 </li>
                 <li>
-                    <form th:action="@{/product/delete/{id}(id=${productId})}" th:method="post">
+                    <form th:action="@{/products/delete/{id}(id=${product.id})}" th:method="post">
                         <th:block>
                             <div class="button-holder d-flex text-left">
                                 <button class="btn btn-danger font-weight-bold text-white" type="submit">Delete</button>

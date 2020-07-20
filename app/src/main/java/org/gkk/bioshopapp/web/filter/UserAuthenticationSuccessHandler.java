@@ -1,7 +1,6 @@
 package org.gkk.bioshopapp.web.filter;
 
 import org.gkk.bioshopapp.service.service.AuthenticatedUserService;
-import org.gkk.bioshopapp.web.model.order.OrderProductModel;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -11,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 @Component
 public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHandler {

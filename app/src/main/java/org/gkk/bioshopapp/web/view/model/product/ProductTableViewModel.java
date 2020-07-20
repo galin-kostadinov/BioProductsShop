@@ -1,16 +1,18 @@
-package org.gkk.bioshopapp.web.model.product;
+package org.gkk.bioshopapp.web.view.model.product;
+
+import org.gkk.bioshopapp.service.model.product.PricePromotion;
 
 import java.math.BigDecimal;
 
-public class ProductDetailsModel {
+public class ProductTableViewModel implements PricePromotion {
 
     private String id;
 
     private String name;
 
-    private String made;
+    private String code;
 
-    private String description;
+    private String made;
 
     private String imgUrl;
 
@@ -18,7 +20,7 @@ public class ProductDetailsModel {
 
     private BigDecimal promotionalPrice;
 
-    public ProductDetailsModel() {
+    public ProductTableViewModel() {
     }
 
     public String getId() {
@@ -37,20 +39,20 @@ public class ProductDetailsModel {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getMade() {
         return made;
     }
 
     public void setMade(String made) {
         this.made = made;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getImgUrl() {
@@ -61,18 +63,22 @@ public class ProductDetailsModel {
         this.imgUrl = imgUrl;
     }
 
+    @Override
     public BigDecimal getPrice() {
         return price;
     }
 
+    @Override
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    @Override
     public BigDecimal getPromotionalPrice() {
         return promotionalPrice;
     }
 
+    @Override
     public void setPromotionalPrice(BigDecimal promotionalPrice) {
         this.promotionalPrice = promotionalPrice;
     }

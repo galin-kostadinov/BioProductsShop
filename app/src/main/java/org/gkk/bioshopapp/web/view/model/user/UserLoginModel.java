@@ -1,11 +1,11 @@
-package org.gkk.bioshopapp.service.model.user;
+package org.gkk.bioshopapp.web.view.model.user;
 
-public class UserLoginServiceModel {
+public class UserLoginModel {
     private String username;
 
     private String password;
 
-    public UserLoginServiceModel() {
+    public UserLoginModel() {
     }
 
     public String getUsername() {

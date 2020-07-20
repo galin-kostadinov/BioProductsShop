@@ -19,7 +19,8 @@
             <thead>
             <tr class="row mx-auto">
                 <th class="col-md-1 text-center">#</th>
-                <th class="col-md-2 text-center">Image</th>
+                <th class="col-md-1 text-center">Image</th>
+                <th class="col-md-1 text-center">Code</th>
                 <th class="col-md-2 text-center">Name</th>
                 <th class="col-md-2 text-center">Made</th>
                 <th class="col-md-2 text-center">Regular Price</th>
@@ -30,11 +31,12 @@
             <th:block th:each="product, iter : ${productTableViewModels}">
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center" th:utext="${iter.index + 1}"></th>
-                    <td class="col-md-2">
+                    <td class="col-md-1">
                         <div class="text-center"><img th:src="${product.imgUrl}" width="40" height="40"
                                                       alt="img">
                         </div>
                     </td>
+                    <td class="col-md-1 text-center" th:utext="${product.code}"></td>
                     <td class="col-md-2 text-center" th:utext="${product.name}"></td>
                     <td class="col-md-2 text-center" th:utext="${product.made}"></td>
                     <td class="col-md-2 text-center" th:utext="'$'+${product.price}"></td>

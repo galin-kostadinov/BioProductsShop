@@ -1,20 +1,25 @@
-package org.gkk.bioshopapp.web.model.product;
+package org.gkk.bioshopapp.service.model.product;
+
 
 import java.math.BigDecimal;
 
-public class ProductShoppingCartModel {
+public class ProductDeleteServiceModel {
 
     private String id;
 
+    private String code;
+
+    private String made;
+
     private String name;
+
+    private String description;
 
     private String imgUrl;
 
     private BigDecimal price;
 
-    private BigDecimal promotionalPrice;
-
-    public ProductShoppingCartModel() {
+    public ProductDeleteServiceModel() {
     }
 
     public String getId() {
@@ -25,12 +30,36 @@ public class ProductShoppingCartModel {
         this.id = id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMade() {
+        return made;
+    }
+
+    public void setMade(String made) {
+        this.made = made;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImgUrl() {
@@ -47,13 +76,5 @@ public class ProductShoppingCartModel {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public BigDecimal getPromotionalPrice() {
-        return promotionalPrice;
-    }
-
-    public void setPromotionalPrice(BigDecimal promotionalPrice) {
-        this.promotionalPrice = promotionalPrice;
     }
 }

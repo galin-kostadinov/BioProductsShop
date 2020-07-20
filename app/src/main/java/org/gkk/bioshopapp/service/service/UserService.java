@@ -12,6 +12,8 @@ public interface UserService extends UserDetailsService {
 
     void editUserProfile(UserEditProfileServiceModel serviceModel) throws Exception;
 
+    void deleteUserProfile(String username);
+
     List<UserProfileServiceModel> getAllUsers();
 
     User getUserEntityByUsername(String username) throws Exception;

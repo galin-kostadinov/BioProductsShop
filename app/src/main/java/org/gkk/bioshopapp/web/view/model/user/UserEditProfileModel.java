@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.web.model.user;
+package org.gkk.bioshopapp.web.view.model.user;
 
 public class UserEditProfileModel {
 

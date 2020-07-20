@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.web.model.product;
+package org.gkk.bioshopapp.web.view.model.product;
 
 import org.gkk.bioshopapp.data.model.ProductType;
 import org.hibernate.validator.constraints.URL;

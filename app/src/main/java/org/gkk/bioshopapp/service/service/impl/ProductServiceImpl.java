@@ -1,7 +1,9 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
+import org.gkk.bioshopapp.error.ProductDuplicateException;
 import org.gkk.bioshopapp.error.ProductNotFoundException;
 import org.gkk.bioshopapp.service.model.log.LogServiceModel;
 import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
@@ -52,6 +54,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void create(ProductCreateServiceModel serviceModel, String username) {
+        if (this.productRepository.findByCode(serviceModel.getCode()).orElse(null) != null) {
+            throw new ProductDuplicateException(ErrorMessageConstant.PRODUCT_DUPLICATE);
+        }
+
         Product product = this.modelMapper.map(serviceModel, Product.class);
 
         Category category = this.categoryService.getCategoryByName(serviceModel.getType());
@@ -116,6 +122,20 @@ public class ProductServiceImpl implements ProductService {
         productEditServiceModel.setPrice(regularPrice);
 
         return productEditServiceModel;
+    }
+
+    @Override
+    public ProductDeleteServiceModel getProductDeleteModelById(String id) {
+        Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
+
+        ProductDeleteServiceModel productDeleteServiceModel = this.modelMapper.map(product, ProductDeleteServiceModel.class);
+
+        BigDecimal regularPrice = product.getLastAssignedAmountFromHistory().getPrice();
+
+        productDeleteServiceModel.setPrice(regularPrice);
+
+        return productDeleteServiceModel;
     }
 
     @Override

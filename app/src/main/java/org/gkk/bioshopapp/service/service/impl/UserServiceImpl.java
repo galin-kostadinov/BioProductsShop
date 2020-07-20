@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUserProfile(String username) {
+        this.userRepository.deleteUserByUsername(username);
+    }
+
+    @Override
     public List<UserProfileServiceModel> getAllUsers() {
         return this.userRepository.findAll()
                 .stream()

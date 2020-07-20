@@ -1,28 +1,22 @@
-package org.gkk.bioshopapp.service.model.product;
-
-import org.gkk.bioshopapp.service.model.price.PriceDiscountServiceModel;
+package org.gkk.bioshopapp.web.api.model.product;
 
 import java.math.BigDecimal;
 
-public class ProductDiscountTableServiceModel implements PricePromotion {
+public class ProductTableResponceModel {
 
     private String id;
 
     private String name;
 
-    private String code;
-
     private String made;
 
     private String imgUrl;
-
-    private PriceDiscountServiceModel priceDiscount;
 
     private BigDecimal price;
 
     private BigDecimal promotionalPrice;
 
-    public ProductDiscountTableServiceModel() {
+    public ProductTableResponceModel() {
     }
 
     public String getId() {
@@ -41,14 +35,6 @@ public class ProductDiscountTableServiceModel implements PricePromotion {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMade() {
         return made;
     }
@@ -65,30 +51,18 @@ public class ProductDiscountTableServiceModel implements PricePromotion {
         this.imgUrl = imgUrl;
     }
 
-    public PriceDiscountServiceModel getPriceDiscount() {
-        return priceDiscount;
-    }
-
-    public void setPriceDiscount(PriceDiscountServiceModel priceDiscount) {
-        this.priceDiscount = priceDiscount;
-    }
-
-    @Override
     public BigDecimal getPrice() {
         return price;
     }
 
-    @Override
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    @Override
     public BigDecimal getPromotionalPrice() {
         return promotionalPrice;
     }
 
-    @Override
     public void setPromotionalPrice(BigDecimal promotionalPrice) {
         this.promotionalPrice = promotionalPrice;
     }

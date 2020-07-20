@@ -1,17 +1,14 @@
-package org.gkk.bioshopapp.web.controller;
+package org.gkk.bioshopapp.web.view.controller;
 
 import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
-import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
