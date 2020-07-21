@@ -54,8 +54,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public List<String> register(UserRegisterServiceModel model) {
-        if (authValidation.getViolations(model).size() > 0) {
-            return authValidation.getViolations(model);
+        List<String> violations = authValidation.getViolations(model);
+
+        if (violations.size() > 0) {
+            return violations;
         }
 
         User user = modelMapper.map(model, User.class);

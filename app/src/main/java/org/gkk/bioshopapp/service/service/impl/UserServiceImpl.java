@@ -44,16 +44,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserProfile(UserEditProfileServiceModel serviceModel) {
+    public List<String> editUserProfile(UserEditProfileServiceModel serviceModel) {
+        List<String> violations = userValidation.getViolations(serviceModel);
+
+        if (violations.size() > 0) {
+            return violations;
+        }
+
         User user = this.userRepository.findByUsername(serviceModel.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException(USERNAME_NOT_FOUND));
 
-        if (!userValidation.isValid(serviceModel, user.getPassword())) {
-            throw new IllegalArgumentException(USERNAME_OR_PASSWORD_ARE_INCORRECT);
-        }
-
         user.setPassword(this.hashingService.hash(serviceModel.getNewPassword()));
         this.userRepository.save(user);
+
+        return null;
     }
 
     @Override

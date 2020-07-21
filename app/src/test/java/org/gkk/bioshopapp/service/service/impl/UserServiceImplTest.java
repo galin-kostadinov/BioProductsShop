@@ -90,7 +90,7 @@ class UserServiceImplTest {
         user.setPassword(password);
 
         Mockito.when(userRepository.findByUsername(serviceModel.getUsername())).thenReturn(Optional.of(user));
-        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(false);
+//        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(false);
 
         assertThrows(IllegalArgumentException.class, () -> userService.editUserProfile(serviceModel));
     }
@@ -111,7 +111,7 @@ class UserServiceImplTest {
         user.setPassword(passwordOld);
 
         Mockito.when(userRepository.findByUsername(serviceModel.getUsername())).thenReturn(Optional.of(user));
-        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(true);
+//        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(true);
         Mockito.when(hashingService.hash(serviceModel.getNewPassword())).thenReturn(passwordNew);
 
         userService.editUserProfile(serviceModel);

@@ -2,6 +2,8 @@ package org.gkk.bioshopapp.validation;
 
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 
+import java.util.List;
+
 public interface UserValidation {
-    boolean isValid(UserEditProfileServiceModel userService, String oldPassword);
+    List<String> getViolations(UserEditProfileServiceModel user);
 }
