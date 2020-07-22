@@ -41,4 +41,4 @@ From root dir execute:
        
     5. Log
        - persist in DB some activities from users - like creating and editing products - used for monitoring
-       - every day at 3 o'clock in the morning the log created more than a month ago is deleted.
+       - every day at 3AM the logs created more than a month ago are deleted.
