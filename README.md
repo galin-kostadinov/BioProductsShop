@@ -40,5 +40,5 @@ From root dir execute:
        - all user orders are saved in DB. The user can monitor all own orders in table format.
        
     5. Log
-       - saves in DB some activities from users - like created and edited product - used for monitoring
+       - persist in DB some activities from users - like creating and editing products - used for monitoring
        - every day at 3 o'clock in the morning the log created more than a month ago is deleted.
