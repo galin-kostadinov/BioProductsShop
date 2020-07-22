@@ -1,7 +1,6 @@
 package org.gkk.bioshopapp.service.service;
 
 import org.gkk.bioshopapp.data.model.Product;
-import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.service.model.product.*;
 
 import java.time.LocalDateTime;
@@ -11,9 +10,9 @@ public interface ProductService {
 
     void create(ProductCreateServiceModel serviceModel, String username);
 
-    void editProduct(String id, ProductEditServiceModel map);
+    void editProduct(String id, ProductEditServiceModel map, String username);
 
-    void deleteProduct(String id);
+    void deleteProduct(String id, String username);
 
     Product getProduct(String id);
 

@@ -3,10 +3,13 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <div>
         <h2 class="text-center mt-5">
@@ -36,14 +39,14 @@
                     <td class="col-md-2 text-center">
                         <th:block sec:authorize="hasRole('ROLE_ROOT')">
                             <th:block th:if="${#lists.size(user.authorities) == 2}">
-                                <form th:action="@{/user/set-user/{id}(id=${user.id})}" method="post">
+                                <form th:action="@{/users/set-user/{id}(id=${user.id})}" method="post">
                                     <button class="btn btn-secondary glow-button font-weight-bold text-white">
                                         MAKE USER
                                     </button>
                                 </form>
                             </th:block>
                             <th:block th:if="${#lists.size(user.authorities) == 1}">
-                                <form th:action="@{/user/set-admin/{id}(id=${user.id})}" method="post">
+                                <form th:action="@{/users/set-admin/{id}(id=${user.id})}" method="post">
                                     <button class="btn btn-secondary glow-button font-weight-bold text-white">
                                         MAKE ADMIN
                                     </button>
@@ -57,6 +60,8 @@
         </table>
     </div>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

@@ -21,7 +21,7 @@
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="name" class="h4 mb-2 text-white">Name</label>
             </div>
-            <input type="text" class="form-control" id="name" name="name" th:errorclass="bg-danger" th:field="*{name}"/>
+            <input type="text" class="form-control text-center" id="name" name="name" th:errorclass="bg-danger" th:field="*{name}"/>
             <p th:each="e : ${#fields.errors('name')}">
                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
             </p>
@@ -30,7 +30,7 @@
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="description" class="h4 mb-2 text-white">Description</label>
             </div>
-            <textarea class="form-control" id="description" name="description"
+            <textarea class="form-control text-center" id="description" name="description"
                       th:errorclass="bg-danger" th:field="*{description}"
                       style="height:150px;"></textarea>
             <p th:each="e : ${#fields.errors('description')}">
@@ -41,7 +41,7 @@
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="imgUrl" class="h4 mb-2 text-white">Image url</label>
             </div>
-            <input type="url" class="form-control" id="imgUrl" name="imgUrl"
+            <input type="url" class="form-control text-center" id="imgUrl" name="imgUrl"
                    th:errorclass="bg-danger" th:field="*{imgUrl}"/>
             <p th:each="e : ${#fields.errors('imgUrl')}">
                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
@@ -51,7 +51,7 @@
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="price" class="h4 mb-2 text-white">Regular Price</label>
             </div>
-            <input type="number" step="0.01" class="form-control" id="price" name="price"
+            <input type="number" step="0.01" class="form-control  text-center" id="price" name="price"
                    th:errorclass="bg-danger" th:field="*{price}"/>
             <p th:each="e : ${#fields.errors('price')}">
                 <small th:text="${e}" class="text-dark col-12 text-center"></small>

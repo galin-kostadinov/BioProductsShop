@@ -24,6 +24,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductServiceImplTest {
+    private final String USERNAME = "galin";
+
     ProductRepository productRepository;
     CategoryService categoryService;
     LogService logService;
@@ -58,10 +60,10 @@ class ProductServiceImplTest {
 
         Product product = argumentProduct.getValue();
 
-        ArgumentCaptor<LogServiceModel> argumentLog = ArgumentCaptor.forClass(LogServiceModel.class);
+        ArgumentCaptor<Log> argumentLog = ArgumentCaptor.forClass(Log.class);
         Mockito.verify(logService).seedLogInDb(argumentLog.capture());
 
-        LogServiceModel log = argumentLog.getValue();
+        Log log = argumentLog.getValue();
 
         assertEquals(price, product.getPrices().get(0).getPrice());
         assertEquals(type, product.getCategory().getName());
@@ -92,10 +94,10 @@ class ProductServiceImplTest {
 
         Product product = argumentProduct.getValue();
 
-        ArgumentCaptor<LogServiceModel> argumentLog = ArgumentCaptor.forClass(LogServiceModel.class);
+        ArgumentCaptor<Log> argumentLog = ArgumentCaptor.forClass(Log.class);
         Mockito.verify(logService).seedLogInDb(argumentLog.capture());
 
-        LogServiceModel log = argumentLog.getValue();
+        Log log = argumentLog.getValue();
 
         assertEquals(price, product.getPrices().get(0).getPrice());
         assertEquals(type, product.getCategory().getName());
@@ -108,7 +110,7 @@ class ProductServiceImplTest {
         String id = "123abc";
         ProductEditServiceModel productModel = new ProductEditServiceModel();
 
-        assertThrows(ProductNotFoundException.class, () -> productService.editProduct(id, productModel));
+        assertThrows(ProductNotFoundException.class, () -> productService.editProduct(id, productModel, USERNAME));
     }
 
     @Test
@@ -116,7 +118,7 @@ class ProductServiceImplTest {
         String id = "123abc";
         ProductEditServiceModel productModel = new ProductEditServiceModel();
 
-        assertThrows(ProductNotFoundException.class, () -> productService.editProduct(id, productModel));
+        assertThrows(ProductNotFoundException.class, () -> productService.editProduct(id, productModel, USERNAME));
     }
 
     @Test
@@ -142,7 +144,7 @@ class ProductServiceImplTest {
 
         Mockito.when(productRepository.findByIdAndDeletedIsFalse(id)).thenReturn(Optional.of(product));
 
-        productService.editProduct(id, productModel);
+        productService.editProduct(id, productModel, USERNAME);
         assertEquals(newProductName, product.getName());
     }
 
@@ -169,7 +171,7 @@ class ProductServiceImplTest {
 
         Mockito.when(productRepository.findByIdAndDeletedIsFalse(id)).thenReturn(Optional.of(product));
 
-        productService.editProduct(id, productModel);
+        productService.editProduct(id, productModel, USERNAME);
         assertEquals(newUrl, product.getImgUrl());
     }
 
@@ -194,7 +196,7 @@ class ProductServiceImplTest {
 
         Mockito.when(productRepository.findByIdAndDeletedIsFalse(id)).thenReturn(Optional.of(product));
 
-        productService.editProduct(id, productModel);
+        productService.editProduct(id, productModel, USERNAME);
 
         assertEquals(newPrice, product.getLastAssignedAmountFromHistory().getPrice());
     }

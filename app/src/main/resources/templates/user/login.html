@@ -3,11 +3,13 @@
         lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
-
-<th:block th:include="~{fragments/head}"/>
-
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
 <body>
-<th:block th:include="~{fragments/navbar}"/>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
 <main>
     <h2 class="text-center mt-5">
         <span class="badge badge-pill badge-secondary">Login</span>
@@ -35,6 +37,8 @@
         </div>
     </form>
 </main>
-<th:block th:include="~{fragments/footer}"/>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
 </body>
 </html>

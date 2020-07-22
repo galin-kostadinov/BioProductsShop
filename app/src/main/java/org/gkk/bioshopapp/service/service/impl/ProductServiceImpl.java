@@ -1,6 +1,7 @@
 package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.constant.ErrorMessageConstant;
+import org.gkk.bioshopapp.constant.GlobalLogConstant;
 import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
 import org.gkk.bioshopapp.error.ProductDuplicateException;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.gkk.bioshopapp.constant.ErrorMessageConstant.PRODUCT_NOT_FOUND;
+import static org.gkk.bioshopapp.constant.GlobalLogConstant.*;
 import static org.gkk.bioshopapp.constant.GlobalLogConstant.PRODUCT_ADDED;
 
 @Service
@@ -71,21 +73,19 @@ public class ProductServiceImpl implements ProductService {
 
         this.productRepository.saveAndFlush(product);
 
-        LogServiceModel log = new LogServiceModel(username, PRODUCT_ADDED, product.getId(), LocalDateTime.now());
+        Log log = new Log(username, PRODUCT_ADDED, product.getId(), LocalDateTime.now());
 
         this.logService.seedLogInDb(log);
     }
 
     @Override
-    public void editProduct(String id, ProductEditServiceModel model) {
+    public void editProduct(String id, ProductEditServiceModel model, String username) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
         product.setName(model.getName());
         product.setDescription(model.getDescription());
         product.setImgUrl(model.getImgUrl());
-
-        List<PriceHistory> prices = product.getPrices();
 
         if (!product.getLastAssignedAmountFromHistory().getPrice().equals(model.getPrice())) {
             product.getLastAssignedAmountFromHistory().setToDate(LocalDateTime.now());
@@ -96,11 +96,19 @@ public class ProductServiceImpl implements ProductService {
         }
 
         this.productRepository.saveAndFlush(product);
+
+        Log log = new Log(username, PRODUCT_EDITED, product.getId(), LocalDateTime.now());
+
+        this.logService.seedLogInDb(log);
     }
 
     @Override
-    public void deleteProduct(String id) {
+    public void deleteProduct(String id, String username) {
         this.productRepository.setProductDeletedTrue(id);
+
+        Log log = new Log(username, PRODUCT_DELETED, id, LocalDateTime.now());
+
+        this.logService.seedLogInDb(log);
     }
 
     @Override

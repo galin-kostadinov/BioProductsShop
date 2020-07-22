@@ -1,8 +1,11 @@
 package org.gkk.bioshopapp.service.model.log;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class LogServiceModel {
+public class LogServiceModel implements Serializable {
+
+    private String id;
 
     private String username;
 
@@ -15,11 +18,12 @@ public class LogServiceModel {
     public LogServiceModel() {
     }
 
-    public LogServiceModel(String username, String description, String propertyId, LocalDateTime time) {
-        this.username = username;
-        this.description = description;
-        this.propertyId = propertyId;
-        this.time = time;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {

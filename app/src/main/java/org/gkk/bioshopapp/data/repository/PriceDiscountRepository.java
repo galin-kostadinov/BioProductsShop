@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.data.repository;
 
-
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

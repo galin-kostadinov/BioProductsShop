@@ -38,7 +38,7 @@
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="made" class="h4 mb-2 text-white">Made</label>
             </div>
-            <input type="text" class="form-control  text-center" th:errorclass="bg-danger" th:field="*{made}" id="made" name="made"/>
+            <input type="text" class="form-control text-center" th:errorclass="bg-danger" th:field="*{made}" id="made" name="made"/>
             <p th:each="e : ${#fields.errors('made')}">
                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
             </p>

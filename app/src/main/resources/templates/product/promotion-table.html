@@ -49,7 +49,7 @@
                     <td class="col-md-1 text-center" th:utext="${product.promotionalPrice}  + ' $'"></td>
                     <td class="col-md-12 text-left">
                         <th:block>
-                            <form th:action="@{/product/remove-promotion/{id}(id=${product.id})}" method="post">
+                            <form th:action="@{/products/remove-promotion/{id}(id=${product.id})}" method="post">
                                 <button class="btn btn-danger glow-button font-weight-bold text-white" type="submit">
                                     Remove Promotion
                                 </button>

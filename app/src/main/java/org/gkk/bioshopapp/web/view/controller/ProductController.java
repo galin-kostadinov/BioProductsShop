@@ -126,14 +126,14 @@ public class ProductController extends BaseController {
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editProductConfirm(@PathVariable String id, @Valid @ModelAttribute ProductEditModel productEditModel,
-                                     BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                                     BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
         if (productEditModel == null || bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("productEditModel", productEditModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productEditModel", bindingResult);
             return this.redirectStr("/products/edit/" + id);
         }
 
-        this.productService.editProduct(id, this.modelMapper.map(productEditModel, ProductEditServiceModel.class));
+        this.productService.editProduct(id, this.modelMapper.map(productEditModel, ProductEditServiceModel.class), principal.getName());
 
         return super.redirectStr("/products/details/" + id);
     }
@@ -150,8 +150,8 @@ public class ProductController extends BaseController {
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model) {
-        this.productService.deleteProduct(id);
+    public String deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model, Principal principal) {
+        this.productService.deleteProduct(id, principal.getName());
         return super.redirectStr("/products/product-table");
     }
 

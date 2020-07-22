@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"/>
+    <link rel="stylesheet" href="/css/pagination.css">
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
+<main>
+    <div>
+        <h2 class="text-center mt-5">
+            <span class="badge badge-pill badge-secondary">Logs</span>
+        </h2>
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-3 text-center">Log Id</th>
+                <th class="col-md-2 text-center">Description</th>
+                <th class="col-md-3 text-center">Entity Id</th>
+                <th class="col-md-2 text-center">Time</th>
+                <th class="col-md-1 text-center">Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="log, iter : ${logPage}">
+                <tr class="row mx-auto">
+                    <th class="col-md-1 text-center" th:text="${iter.index + 1}"></th>
+                    <td class="col-md-3 text-center" th:text="${log.id}"></td>
+                    <td class="col-md-2 text-center" th:text="${log.description}"></td>
+                    <td class="col-md-3 text-center" th:text="${log.propertyId}"></td>
+                    <td class="col-md-2 text-center" th:text="${log.time}"></td>
+                    <td class="col-md-1 text-center" th:text="${log.username}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <div class="w-25 mx-auto">
+            <div th:if="${logPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/logs(size=${logPage.size}, page=${pageNumber})}" th:text="${pageNumber}"
+                   th:class="${pageNumber==logPage.number + 1} ? active"></a>
+            </div>
+        </div>
+
+    </div>
+</main>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
+</body>
+</html>
