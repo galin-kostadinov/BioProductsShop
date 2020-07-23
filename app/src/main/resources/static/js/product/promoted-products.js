@@ -13,8 +13,8 @@ function loadAllPromotedProducts() {
                 $.each(products, function (i, product) {
                     addProductDOM(product);
                 })
-                loader.hide();
             }
+            loader.hide();
         }
     })
 }

@@ -27,16 +27,16 @@
                             </th:block>
                         </div>
                     </div>
-                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/orders}">Orders</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/orders?size=2&sort=dateCreated,desc&page=0}">Orders</a>
                     <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/cart}">Shopping cart</a>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white"
-                       th:href="@{/logs}">Logs</a>
+                       th:href="@{/logs?page=0&size=10&sort=time,desc}">Logs</a>
                     <div class="dropdown">
                         <button class="dropbtn pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white">User</button>
                         <div class="dropdown-content">
                             <a th:href="@{/users/profile}">Profile</a>
                             <th:block sec:authorize="hasRole('ROLE_ROOT')">
-                                <a th:href="@{/users/all-users}">All Users</a>
+                                <a th:href="@{/users}">All Users</a>
                             </th:block>
                             <form  method="post" th:action="@{/logout}">
                                 <button type="submit">Logout

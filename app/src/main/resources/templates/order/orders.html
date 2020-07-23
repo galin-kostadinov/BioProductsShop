@@ -16,7 +16,7 @@
             <span class="badge badge-pill badge-secondary">Ordered products</span>
         </h2>
         <div class="row text-center w-75 mx-auto">
-            <th:block th:each="order : ${orders}">
+            <th:block th:each="order : ${orderServiceModels}">
                 <div class="col col-md-12 text-left pt-3 pl-5">
                     <ul>
                         <li>
@@ -67,6 +67,37 @@
                 </div>
             </th:block>
         </div>
+        <!--logs pagination -->
+        <nav class="text-center mt-5" aria-label="Pagination" th:if="${orderServiceModels.totalPages gt 0}">
+            <ul class="pagination justify-content-center font-weight-bold">
+                <li class="page-item" th:classappend="${orderServiceModels.number eq 0} ? 'disabled'">
+                    <a class="page-link svg-icon"
+                       th:href="@{/orders?size=1&sort=dateCreated,desc&page={id}(id=${orderServiceModels.number lt 1 ? 0 : orderServiceModels.number - 1})}"
+                       aria-label="Previous"
+                       title="Previous Page" rel="tooltip">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${i eq orderServiceModels.number + 1} ? 'active'"
+                    th:each="i : ${#numbers.sequence( orderServiceModels.number + 1, orderServiceModels.totalPages > 10 + orderServiceModels.number ? orderServiceModels.number + 10 : orderServiceModels.totalPages, 1)}">
+                    <a class="page-link" th:href="@{/orders?size=1&sort=dateCreated,desc&page={id}(id=${i-1})}" th:text="${i}"
+                       th:title="${'Page '} + i"
+                       rel="tooltip"></a>
+                </li>
+                <li class="page-item disabled" th:if="${orderServiceModels.number + 10 < orderServiceModels.totalPages}">
+                    <a class="page-link svg-icon" href="#">
+                        <span data-feather="more-horizontal" width="20" height="20"></span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${orderServiceModels.number + 1 eq orderServiceModels.totalPages} ? 'disabled'">
+                    <a class="page-link svg-icon" th:href="@{/orders?size=1&sort=dateCreated,desc&page={id}(id=${orderServiceModels.number + 1})}"
+                       aria-label="Next"
+                       title="Next Page" rel="tooltip">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </main>
 <footer class="footer">

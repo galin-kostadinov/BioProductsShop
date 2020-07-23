@@ -23,8 +23,8 @@ From root dir execute:
     
     2. Products
        - CRUD operations
-       - get all products - created using REST Controler and AJAX request
-       - get all promoted products - created using REST Controler and AJAX request
+       - get all products - created using RestController and AJAX request
+       - get all promoted products - created using RestController and AJAX request
        - get all products in table format - only for ADMIN Users
        - get all promoted products in table format - only for ADMIN Users
        - add and remove promotion - only for ADMIN Users

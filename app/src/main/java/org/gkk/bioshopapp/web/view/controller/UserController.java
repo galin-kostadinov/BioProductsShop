@@ -34,6 +34,19 @@ public class UserController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ROOT')")
+    @PageTitle("Users")
+    public ModelAndView getAllUsers(ModelAndView model) {
+        List<UserProfileViewModel> users = this.userService.getAllUsers().stream()
+                .map(userService -> this.modelMapper.map(userService, UserProfileViewModel.class))
+                .collect(Collectors.toList());
+
+        model.addObject("users", users);
+
+        return super.view("user/all-users", model);
+    }
+
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Profile")
@@ -79,19 +92,6 @@ public class UserController extends BaseController {
         }
 
         return super.redirectStr("/users/profile");
-    }
-
-    @GetMapping("/all-users")
-    @PreAuthorize("hasRole('ROLE_ROOT')")
-    @PageTitle("Users")
-    public ModelAndView getAllUsers(ModelAndView model) {
-        List<UserProfileViewModel> users = this.userService.getAllUsers().stream()
-                .map(userService -> this.modelMapper.map(userService, UserProfileViewModel.class))
-                .collect(Collectors.toList());
-
-        model.addObject("users", users);
-
-        return super.view("user/all-users", model);
     }
 
     @PostMapping("/set-admin/{id}")

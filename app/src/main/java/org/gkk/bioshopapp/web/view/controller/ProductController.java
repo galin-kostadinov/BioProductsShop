@@ -43,7 +43,7 @@ public class ProductController extends BaseController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping({"/", ""})
+    @GetMapping
     @PageTitle("Products")
     public String getAllProducts() {
         return "product/products";

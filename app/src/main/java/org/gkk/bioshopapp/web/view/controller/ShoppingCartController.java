@@ -25,7 +25,7 @@ public class ShoppingCartController extends BaseController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @GetMapping({"", "/"})
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Shopping Cart")
     public String getShoppingCart(Model model, Principal principal) throws Exception {
@@ -52,7 +52,7 @@ public class ShoppingCartController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     public String buy(Principal principal) throws Exception {
         if (this.shoppingCartService.buyProducts(principal.getName())) {
-            return super.redirectStr("/orders");
+            return super.redirectStr("/orders?size=1&sort=dateCreated,desc&page=0");
         } else {
             return super.redirectStr("/cart");
         }

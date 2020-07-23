@@ -5,7 +5,6 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="~{fragments/head}"/>
-    <link rel="stylesheet" href="/css/pagination.css">
 </head>
 <body>
 <header>
@@ -28,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <th:block th:each="log, iter : ${logPage}">
+            <th:block th:each="log, iter : ${logServiceModels}">
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center" th:text="${iter.index + 1}"></th>
                     <td class="col-md-3 text-center" th:text="${log.id}"></td>
@@ -40,13 +39,37 @@
             </th:block>
             </tbody>
         </table>
-        <div class="w-25 mx-auto">
-            <div th:if="${logPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-                <a th:href="@{/logs(size=${logPage.size}, page=${pageNumber})}" th:text="${pageNumber}"
-                   th:class="${pageNumber==logPage.number + 1} ? active"></a>
-            </div>
-        </div>
-
+        <!--logs pagination -->
+        <nav class="text-center mt-5" aria-label="Pagination" th:if="${logServiceModels.totalPages gt 0}">
+            <ul class="pagination justify-content-center font-weight-bold">
+                <li class="page-item" th:classappend="${logServiceModels.number eq 0} ? 'disabled'">
+                    <a class="page-link svg-icon"
+                       th:href="@{/logs?size=10&sort=time,desc&page={id}(id=${logServiceModels.number lt 1 ? 0 : logServiceModels.number - 1})}"
+                       aria-label="Previous"
+                       title="Previous Page" rel="tooltip">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${i eq logServiceModels.number + 1} ? 'active'"
+                    th:each="i : ${#numbers.sequence( logServiceModels.number + 1, logServiceModels.totalPages > 10 + logServiceModels.number ? logServiceModels.number + 10 : logServiceModels.totalPages, 1)}">
+                    <a class="page-link" th:href="@{/logs?size=10&sort=time,desc&page={id}(id=${i-1})}" th:text="${i}"
+                       th:title="${'Page '} + i"
+                       rel="tooltip"></a>
+                </li>
+                <li class="page-item disabled" th:if="${logServiceModels.number + 10 < logServiceModels.totalPages}">
+                    <a class="page-link svg-icon" href="#">
+                        <span data-feather="more-horizontal" width="20" height="20"></span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${logServiceModels.number + 1 eq logServiceModels.totalPages} ? 'disabled'">
+                    <a class="page-link svg-icon" th:href="@{/logs?size=10&sort=time,desc&page={id}(id=${logServiceModels.number + 1})}"
+                       aria-label="Next"
+                       title="Next Page" rel="tooltip">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </main>
 <footer class="footer">

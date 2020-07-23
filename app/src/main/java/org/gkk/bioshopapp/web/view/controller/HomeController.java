@@ -10,7 +10,7 @@ import java.security.Principal;
 @Controller
 public class HomeController extends BaseController {
 
-    @GetMapping("/")
+    @GetMapping
     @PageTitle("Index")
     public String index(Principal principal) {
         if (principal != null) {

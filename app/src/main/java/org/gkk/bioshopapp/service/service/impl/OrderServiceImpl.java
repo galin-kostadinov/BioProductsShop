@@ -3,13 +3,15 @@ package org.gkk.bioshopapp.service.service.impl;
 import org.gkk.bioshopapp.data.model.*;
 import org.gkk.bioshopapp.data.repository.OrderRepository;
 import org.gkk.bioshopapp.service.model.order.OrderProductCreateServiceModel;
-import org.gkk.bioshopapp.service.model.order.OrderProductServiceModel;
 import org.gkk.bioshopapp.service.model.order.OrderServiceModel;
 import org.gkk.bioshopapp.service.service.OrderService;
 import org.gkk.bioshopapp.service.service.ProductService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -65,9 +67,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderServiceModel> getAllOrdersByUser(String username) {
-        return this.orderRepository.findAllByUsername(username)
-                .stream()
+    public Page<OrderServiceModel> getAllOrdersByUser(String username, Pageable pageable) {
+        Page<Order> page = this.orderRepository.findAllByUsername(username, pageable);
+
+        List<OrderServiceModel> result  =page.stream()
                 .map(order -> {
                     OrderServiceModel orderServiceModel = this.modelMapper.map(order, OrderServiceModel.class);
                     orderServiceModel.getOrderProducts()
@@ -75,5 +78,7 @@ public class OrderServiceImpl implements OrderService {
                     return orderServiceModel;
                 })
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(result, page.getPageable(), page.getTotalElements());
     }
 }

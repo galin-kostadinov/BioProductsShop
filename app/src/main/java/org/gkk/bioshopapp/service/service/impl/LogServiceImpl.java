@@ -41,7 +41,9 @@ public class LogServiceImpl implements LogService {
     @Override
     public Page<LogServiceModel> getPaginated(Pageable pageable) {
         Page<Log> page = this.logRepository.findAll(pageable);
-        List<LogServiceModel> result = page.stream().map(e -> modelMapper.map(e, LogServiceModel.class)).collect(Collectors.toList());
-        return new PageImpl<>(result, pageable, page.getTotalPages());
+        List<LogServiceModel> result = page.stream()
+                .map(e -> modelMapper.map(e, LogServiceModel.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(result, page.getPageable(), page.getTotalElements());
     }
 }
