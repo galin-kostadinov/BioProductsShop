@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
                                 orderProduct.setQuantity(o.getQuantity());
                                 orderProduct.setOrder(order);
                             } catch (Exception e) {
-                               //no catch
+                                //no catch
                             }
 
                             return orderProduct;
@@ -70,11 +71,15 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderServiceModel> getAllOrdersByUser(String username, Pageable pageable) {
         Page<Order> page = this.orderRepository.findAllByUsername(username, pageable);
 
-        List<OrderServiceModel> result  =page.stream()
+        if (page == null) {
+            return new PageImpl<>(new ArrayList<>(), pageable, 0);
+        }
+
+        List<OrderServiceModel> result = page.stream()
                 .map(order -> {
                     OrderServiceModel orderServiceModel = this.modelMapper.map(order, OrderServiceModel.class);
                     orderServiceModel.getOrderProducts()
-                            .forEach(p-> p.getProduct().setPrice(p.getTotalPrice().divide(BigDecimal.valueOf(p.getQuantity()), RoundingMode.HALF_UP)));
+                            .forEach(p -> p.getProduct().setPrice(p.getTotalPrice().divide(BigDecimal.valueOf(p.getQuantity()), RoundingMode.HALF_UP)));
                     return orderServiceModel;
                 })
                 .collect(Collectors.toList());

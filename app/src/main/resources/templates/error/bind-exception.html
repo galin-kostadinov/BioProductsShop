@@ -11,13 +11,16 @@
     <th:block th:include="~{fragments/navbar}"/>
 </header>
 <main>
-    <div class="w-75 mx-auto">
+    <div class="w-50 mx-auto">
         <div class="text-center">
-            <h3>Page not found!</h3>
+            <h2>Validations fail:</h2>
+            <th:block th:each="error, iter : ${errors}">
+                <h4 class="text-left" th:text="${iter.index+1} + '. ' + ${error.value}"></h4>
+            </th:block>
         </div>
     </div>
 </main>
-<footer class="footer">
+<footer>
     <th:block th:include="~{fragments/footer}"/>
 </footer>
 </body>

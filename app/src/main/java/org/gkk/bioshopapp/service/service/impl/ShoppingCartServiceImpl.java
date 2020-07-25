@@ -43,6 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartServiceModel getShoppingCartByBuyer(String buyer) throws Exception {
         ShoppingCart shoppingCart = this.shoppingCartRepository.findByBuyer(buyer).orElse(null);
+
         shoppingCart = updateCart(shoppingCart, buyer);
 
         ShoppingCartServiceModel shoppingCartServiceModel = new ShoppingCartServiceModel();
@@ -129,8 +130,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCart createShoppingCart(String buyer) throws Exception {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setBuyer(this.userService.getUserEntityByUsername(buyer));
-//        shoppingCart.setExpiryDate(LocalDateTime.now().plusDays(EXPIRY_DAYS));
-        shoppingCart.setExpiryDate(LocalDateTime.now());
+        shoppingCart.setExpiryDate(LocalDateTime.now().plusDays(EXPIRY_DAYS));
         return this.shoppingCartRepository.saveAndFlush(shoppingCart);
     }
 
@@ -138,8 +138,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         if (shoppingCart == null) {
             shoppingCart = createShoppingCart(buyer);
         } else {
-//            shoppingCart.setExpiryDate(LocalDateTime.now().plusDays(EXPIRY_DAYS));
-            shoppingCart.setExpiryDate(LocalDateTime.now());
+            shoppingCart.setExpiryDate(LocalDateTime.now().plusDays(EXPIRY_DAYS));
             this.shoppingCartRepository.saveAndFlush(shoppingCart);
         }
 

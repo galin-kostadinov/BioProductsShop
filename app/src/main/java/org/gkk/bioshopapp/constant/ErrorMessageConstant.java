@@ -19,4 +19,6 @@ public class ErrorMessageConstant {
     public final static String CATEGORY_NOT_FOUND = "Category not found!";
 
     public final static String ROLE_NOT_FOUND = "Role not found!";
+
+    public final static String PAST_DATE = "To date cannot be in the past!";
 }

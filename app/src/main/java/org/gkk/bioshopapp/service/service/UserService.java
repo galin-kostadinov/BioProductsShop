@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     UserProfileServiceModel getUserByUsername(String username) throws Exception;
 
-    List<String> editUserProfile(UserEditProfileServiceModel serviceModel) throws Exception;
+    List<String> editUserProfile(UserEditProfileServiceModel serviceModel);
 
     void deleteUserProfile(String username);
 

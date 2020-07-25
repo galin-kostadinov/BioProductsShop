@@ -1,6 +1,5 @@
 package org.gkk.bioshopapp.validation.impl;
 
-import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UserRepository;
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.gkk.bioshopapp.constant.ErrorMessageConstant.*;
+import static org.gkk.bioshopapp.constant.ErrorMessageConstant.USERNAME_OR_PASSWORD_ARE_INCORRECT;
 
 @Component
 public class UserValidationImpl implements UserValidation {

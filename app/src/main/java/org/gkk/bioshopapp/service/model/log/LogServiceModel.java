@@ -18,6 +18,13 @@ public class LogServiceModel implements Serializable {
     public LogServiceModel() {
     }
 
+    public LogServiceModel(String username, String description, String propertyId, LocalDateTime time) {
+        this.username = username;
+        this.description = description;
+        this.propertyId = propertyId;
+        this.time = time;
+    }
+
     public String getId() {
         return id;
     }

@@ -98,13 +98,13 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String setAdminRole(@PathVariable String id) {
         this.userService.makeAdmin(id);
-        return super.redirectStr("/users/all-users");
+        return super.redirectStr("/users");
     }
 
     @PostMapping("/set-user/{id}")
     @PreAuthorize("hasRole('ROLE_ROOT')")
     public String setUserRole(@PathVariable String id) {
         this.userService.makeUser(id);
-        return super.redirectStr("/users/all-users");
+        return super.redirectStr("/users");
     }
 }

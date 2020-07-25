@@ -1,8 +1,10 @@
 package org.gkk.bioshopapp.service.service.impl;
 
 import org.gkk.bioshopapp.constant.ErrorMessageConstant;
-import org.gkk.bioshopapp.constant.GlobalLogConstant;
-import org.gkk.bioshopapp.data.model.*;
+import org.gkk.bioshopapp.data.model.Category;
+import org.gkk.bioshopapp.data.model.PriceDiscount;
+import org.gkk.bioshopapp.data.model.PriceHistory;
+import org.gkk.bioshopapp.data.model.Product;
 import org.gkk.bioshopapp.data.repository.ProductRepository;
 import org.gkk.bioshopapp.error.ProductDuplicateException;
 import org.gkk.bioshopapp.error.ProductNotFoundException;
@@ -25,7 +27,6 @@ import java.util.stream.Collectors;
 
 import static org.gkk.bioshopapp.constant.ErrorMessageConstant.PRODUCT_NOT_FOUND;
 import static org.gkk.bioshopapp.constant.GlobalLogConstant.*;
-import static org.gkk.bioshopapp.constant.GlobalLogConstant.PRODUCT_ADDED;
 
 @Service
 @Transactional
@@ -73,31 +74,31 @@ public class ProductServiceImpl implements ProductService {
 
         this.productRepository.saveAndFlush(product);
 
-        Log log = new Log(username, PRODUCT_ADDED, product.getId(), LocalDateTime.now());
+        LogServiceModel log = new LogServiceModel(username, PRODUCT_ADDED, product.getId(), LocalDateTime.now());
 
         this.logService.seedLogInDb(log);
     }
 
     @Override
-    public void editProduct(String id, ProductEditServiceModel model, String username) {
+    public void editProduct(String id, ProductEditServiceModel productEditServiceModel, String username) {
         Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
 
-        product.setName(model.getName());
-        product.setDescription(model.getDescription());
-        product.setImgUrl(model.getImgUrl());
+        product.setName(productEditServiceModel.getName());
+        product.setDescription(productEditServiceModel.getDescription());
+        product.setImgUrl(productEditServiceModel.getImgUrl());
 
-        if (!product.getLastAssignedAmountFromHistory().getPrice().equals(model.getPrice())) {
+        if (!product.getLastAssignedAmountFromHistory().getPrice().equals(productEditServiceModel.getPrice())) {
             product.getLastAssignedAmountFromHistory().setToDate(LocalDateTime.now());
 
-            PriceHistory price = new PriceHistory(model.getPrice(), LocalDateTime.now());
+            PriceHistory price = new PriceHistory(productEditServiceModel.getPrice(), LocalDateTime.now());
             price.setProduct(product);
             product.getPrices().add(price);
         }
 
         this.productRepository.saveAndFlush(product);
 
-        Log log = new Log(username, PRODUCT_EDITED, product.getId(), LocalDateTime.now());
+        LogServiceModel log = new LogServiceModel(username, PRODUCT_EDITED, product.getId(), LocalDateTime.now());
 
         this.logService.seedLogInDb(log);
     }
@@ -106,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(String id, String username) {
         this.productRepository.setProductDeletedTrue(id);
 
-        Log log = new Log(username, PRODUCT_DELETED, id, LocalDateTime.now());
+        LogServiceModel log = new LogServiceModel(username, PRODUCT_DELETED, id, LocalDateTime.now());
 
         this.logService.seedLogInDb(log);
     }
@@ -209,21 +210,6 @@ public class ProductServiceImpl implements ProductService {
                     return product;
                 })
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public ProductShoppingCartServiceModel getShoppingCartProductModelById(String id) {
-        Product product = this.productRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(() -> new ProductNotFoundException(PRODUCT_NOT_FOUND));
-
-        ProductShoppingCartServiceModel productServiceModel = this.modelMapper.map(product, ProductShoppingCartServiceModel.class);
-
-        PriceHistory lastPrice = product.getLastAssignedAmountFromHistory();
-        productServiceModel.setPrice(lastPrice.getPrice());
-
-        setPromotionalPrice(lastPrice, productServiceModel);
-
-        return productServiceModel;
     }
 
     private void setPromotionalPrice(PriceHistory lastPrice, PricePromotion productServiceModel) {

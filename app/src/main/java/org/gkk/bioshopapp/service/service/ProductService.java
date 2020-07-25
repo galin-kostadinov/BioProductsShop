@@ -10,7 +10,7 @@ public interface ProductService {
 
     void create(ProductCreateServiceModel serviceModel, String username);
 
-    void editProduct(String id, ProductEditServiceModel map, String username);
+    void editProduct(String id, ProductEditServiceModel productEditServiceModel, String username);
 
     void deleteProduct(String id, String username);
 
@@ -25,8 +25,6 @@ public interface ProductService {
     List<ProductTableServiceModel> getProductTable();
 
     List<ProductDiscountTableServiceModel> getDiscountedProducts(LocalDateTime localDateTime);
-
-    ProductShoppingCartServiceModel getShoppingCartProductModelById(String id);
 
     ProductDetailsServiceModel parseToProductDetailsModel(Product product);
 

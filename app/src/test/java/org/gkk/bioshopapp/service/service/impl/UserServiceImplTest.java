@@ -1,5 +1,7 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+
+import org.gkk.bioshopapp.base.TestBase;
 import org.gkk.bioshopapp.data.model.Role;
 import org.gkk.bioshopapp.data.model.User;
 import org.gkk.bioshopapp.data.repository.UserRepository;
@@ -9,109 +11,85 @@ import org.gkk.bioshopapp.service.service.HashingService;
 import org.gkk.bioshopapp.service.service.RoleService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.validation.UserValidation;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserServiceImplTest {
+class UserServiceImplTest extends TestBase {
+
+    private final static String USERNAME = UUID.randomUUID().toString();
+
+    @MockBean
     UserRepository userRepository;
+
+    @MockBean
     UserValidation userValidation;
+
+    @MockBean
     RoleService roleService;
+
+    @MockBean
     HashingService hashingService;
-    ModelMapper modelMapper;
 
+    @Autowired
+    @Qualifier("userServiceImpl")
     UserService userService;
-
-    @BeforeEach
-    public void setupTest() {
-        userRepository = Mockito.mock(UserRepository.class);
-        userValidation = Mockito.mock(UserValidation.class);
-        roleService = Mockito.mock(RoleService.class);
-        hashingService = Mockito.mock(HashingService.class);
-        modelMapper = new ModelMapper();
-
-        userService = new UserServiceImpl(userRepository, userValidation, roleService, hashingService, modelMapper);
-    }
 
     @Test
     public void getUserByUsername_whenUserExist_shouldReturnUser() throws Exception {
-        String username = "ivanov";
         String email = "ivanov@abv.bg";
 
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(USERNAME);
         user.setEmail(email);
 
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        UserProfileServiceModel expectedUser = this.modelMapper.map(user, UserProfileServiceModel.class);
-
         UserProfileServiceModel resultUser = userService.getUserByUsername(user.getUsername());
 
-        assertEquals(expectedUser.getUsername(), resultUser.getUsername());
-        assertEquals(expectedUser.getEmail(), resultUser.getEmail());
+        assertEquals(user.getUsername(), resultUser.getUsername());
+        assertEquals(user.getEmail(), resultUser.getEmail());
     }
 
     @Test
     public void getUserByUsername_whenUserDoesNotExist_shouldThrowException() {
-        String username = "ivanov";
-
-        assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername(username));
+        assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername(USERNAME));
     }
 
     @Test
     public void editUserProfile_whenUserDoesNotExist_shouldThrowException() {
-        String username = "ivanov";
         UserEditProfileServiceModel serviceModel = new UserEditProfileServiceModel();
-        serviceModel.setUsername(username);
+        serviceModel.setUsername(USERNAME);
 
         assertThrows(UsernameNotFoundException.class, () -> userService.editUserProfile(serviceModel));
     }
 
     @Test
-    public void editUserProfile_whenValidationServiceReturnFalse_shouldThrowException() {
-        String username = "ivanov";
-        String password = "password123A";
+    public void editUserProfile_whenDataIsValid_shouldEditProfile() {
+        String passwordOld = UUID.randomUUID().toString();
+        String passwordNew = UUID.randomUUID().toString();
 
         UserEditProfileServiceModel serviceModel = new UserEditProfileServiceModel();
-        serviceModel.setUsername(username);
-        serviceModel.setOldPassword(password);
-
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-
-        Mockito.when(userRepository.findByUsername(serviceModel.getUsername())).thenReturn(Optional.of(user));
-//        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(false);
-
-        assertThrows(IllegalArgumentException.class, () -> userService.editUserProfile(serviceModel));
-    }
-
-    @Test
-    public void editUserProfile_whenDataIsValid_shouldEditProfile() throws Exception {
-        String username = "ivanov";
-        String passwordOld = "password123A";
-        String passwordNew = "123passwordA";
-
-        UserEditProfileServiceModel serviceModel = new UserEditProfileServiceModel();
-        serviceModel.setUsername(username);
+        serviceModel.setUsername(USERNAME);
         serviceModel.setOldPassword(passwordOld);
         serviceModel.setNewPassword(passwordNew);
 
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(USERNAME);
         user.setPassword(passwordOld);
 
         Mockito.when(userRepository.findByUsername(serviceModel.getUsername())).thenReturn(Optional.of(user));
-//        Mockito.when(userValidation.isValid(serviceModel, user.getPassword())).thenReturn(true);
+        Mockito.when(userValidation.getViolations(serviceModel)).thenReturn(new ArrayList<>());
         Mockito.when(hashingService.hash(serviceModel.getNewPassword())).thenReturn(passwordNew);
 
         userService.editUserProfile(serviceModel);
@@ -119,15 +97,12 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void getAllUsers_whenThereAreUsersInUserRepository_shouldReturnUserServiceList() throws Exception {
-        String username1 = "ivanov";
-        String username2 = "ivanova";
-
+    public void getAllUsers_whenThereAreUsersInUserRepository_shouldReturnUserServiceList() {
         User user1 = new User();
-        user1.setUsername(username1);
+        user1.setUsername(USERNAME);
 
         User user2 = new User();
-        user1.setUsername(username2);
+        user2.setUsername(USERNAME + "_2");
 
         List<User> users = new ArrayList<>();
 
@@ -143,7 +118,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    public void getAllUsers_whenThereAreNotUsersInUserRepository_shouldReturnEmptyList() throws Exception {
+    public void getAllUsers_whenThereAreNotUsersInUserRepository_shouldReturnEmptyList() {
         List<UserProfileServiceModel> usersDb = userService.getAllUsers();
 
         assertEquals(0, usersDb.size());
@@ -151,11 +126,10 @@ class UserServiceImplTest {
 
     @Test
     public void getUserEntityByUsername_whenUserExist_shouldReturnUser() throws Exception {
-        String username = "ivanov";
         String email = "ivanov@abv.bg";
 
         User user = new User();
-        user.setUsername(username);
+        user.setUsername(USERNAME);
         user.setEmail(email);
 
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
@@ -168,21 +142,19 @@ class UserServiceImplTest {
 
     @Test
     public void getUserEntityByUsername_whenUserDoesNotExist_shouldThrowException() {
-        String username = "ivanov";
-
-        assertThrows(UsernameNotFoundException.class, () -> userService.getUserEntityByUsername(username));
+        assertThrows(UsernameNotFoundException.class, () -> userService.getUserEntityByUsername(USERNAME));
     }
 
     @Test
     public void makeAdmin_whenUserWithThatIdDoesNotExist_shouldThrowException() {
-        String id = "ivanov_123";
+        String id = UUID.randomUUID().toString();
 
         assertThrows(UsernameNotFoundException.class, () -> userService.makeAdmin(id));
     }
 
     @Test
     public void makeAdmin_whenUserExist_shouldAddRoleAdmin() {
-        String id = "ivanov_123";
+        String id = UUID.randomUUID().toString();
         User user = new User();
         user.setId(id);
 
@@ -199,14 +171,14 @@ class UserServiceImplTest {
 
     @Test
     public void makeUser_whenUserWithThatIdDoesNotExist_shouldThrowException() {
-        String id = "ivanov_123";
+        String id = UUID.randomUUID().toString();
 
         assertThrows(UsernameNotFoundException.class, () -> userService.makeUser(id));
     }
 
     @Test
     public void makeUser_whenUserExist_shouldRemoveRoleAdmin() {
-        String id = "ivanov_123";
+        String id = UUID.randomUUID().toString();
         User user = new User();
         user.setId(id);
 

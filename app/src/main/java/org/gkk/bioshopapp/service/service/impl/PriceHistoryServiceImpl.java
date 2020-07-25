@@ -1,5 +1,6 @@
 package org.gkk.bioshopapp.service.service.impl;
 
+import org.gkk.bioshopapp.constant.ErrorMessageConstant;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
 import org.gkk.bioshopapp.data.model.PriceHistory;
 import org.gkk.bioshopapp.data.repository.PriceHistoryRepository;
@@ -31,11 +32,11 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
     @Transactional
     public void setDiscount(String productId, PriceDiscountServiceModel model) {
         if (model.getToDate().isBefore(LocalDateTime.now())) {
-           return;
+            throw new IllegalArgumentException(ErrorMessageConstant.PAST_DATE);
         }
 
         PriceHistory priceHistory = this.priceHistoryRepository.findOneByProductIdOrderByFromDateDesc(productId)
-                .orElseThrow(()->new PriceHishoryNotFoundException(PRICE_HISTORY_NOT_FOUND));
+                .orElseThrow(() -> new PriceHishoryNotFoundException(PRICE_HISTORY_NOT_FOUND));
         List<PriceDiscount> priceDiscounts = priceHistory.getPriceDiscountList();
 
         if (!priceDiscounts.isEmpty()) {
@@ -47,8 +48,6 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
         }
 
         PriceDiscount newPriceDiscount = this.modelMapper.map(model, PriceDiscount.class);
-        newPriceDiscount.setFromDate(LocalDateTime.now());
-
 
         newPriceDiscount.setPrice(priceHistory);
         priceDiscounts.add(newPriceDiscount);
