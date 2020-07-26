@@ -33,7 +33,7 @@ From root dir execute:
     3. Shopping Cart
        - add to cart
        - remove from cart
-       - buy all added product
+       - buy all added products
     
     The shopping cart is stored in DB and its storage period is 7 days without activity.
     
