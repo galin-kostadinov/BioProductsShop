@@ -42,7 +42,7 @@ public class Order extends BaseEntity {
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "order", orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @Valid
     public List<OrderProduct> getOrderProducts() {
         return orderProducts;

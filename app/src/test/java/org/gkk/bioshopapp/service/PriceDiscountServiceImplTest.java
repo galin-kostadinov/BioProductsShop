@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.service.service.impl;
+package org.gkk.bioshopapp.service;
 
 import org.gkk.bioshopapp.base.TestBase;
 import org.gkk.bioshopapp.data.model.PriceDiscount;
@@ -54,6 +54,6 @@ class PriceDiscountServiceImplTest extends TestBase {
         assertEquals(pd.getId(), priceDiscountDB.getId());
         assertEquals(pd.getPrice(), priceDiscountDB.getPrice());
         assertEquals(pd.getDiscount(), priceDiscountDB.getDiscount());
-        assertTrue(priceDiscountDB.getToDate().isBefore(LocalDateTime.now()));
+        assertTrue(priceDiscountDB.getToDate().isBefore(LocalDateTime.now().plusMinutes(1)));
     }
 }

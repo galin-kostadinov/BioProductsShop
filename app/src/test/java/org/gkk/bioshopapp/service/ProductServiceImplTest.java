@@ -1,4 +1,4 @@
-package org.gkk.bioshopapp.service.service.impl;
+package org.gkk.bioshopapp.service;
 
 import org.gkk.bioshopapp.base.TestBase;
 import org.gkk.bioshopapp.data.model.*;

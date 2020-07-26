@@ -2,11 +2,11 @@ package org.gkk.bioshopapp.web.view.controller;
 
 import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
+import org.gkk.bioshopapp.service.service.ShoppingCartService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.view.model.user.UserEditProfileBindingModel;
 import org.gkk.bioshopapp.web.view.model.user.UserProfileViewModel;
-import org.gkk.bioshopapp.web.view.model.user.UserRegisterBindingModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +28,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController extends BaseController {
     private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ShoppingCartService shoppingCartService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
         this.modelMapper = modelMapper;
     }
 
@@ -92,6 +96,22 @@ public class UserController extends BaseController {
         }
 
         return super.redirectStr("/users/profile");
+    }
+
+    @GetMapping("/profile/delete")
+    @PreAuthorize("isAuthenticated()")
+    @PageTitle("Delete Profile")
+    public String getDeleteProfile() {
+        return "user/delete-profile";
+    }
+
+    @PostMapping("/profile/delete")
+    @PreAuthorize("isAuthenticated()")
+    @PageTitle("Delete Profile")
+    public void deleteProfileConfirm(Principal principal, HttpServletResponse response) throws IOException {
+        this.shoppingCartService.deleteShoppingCartByUsername(principal.getName());
+        this.userService.deleteUserProfile(principal.getName());
+        response.sendRedirect("/logout");
     }
 
     @PostMapping("/set-admin/{id}")

@@ -6,6 +6,7 @@ import org.gkk.bioshopapp.service.model.user.UserEditProfileServiceModel;
 import org.gkk.bioshopapp.service.model.user.UserProfileServiceModel;
 import org.gkk.bioshopapp.service.service.HashingService;
 import org.gkk.bioshopapp.service.service.RoleService;
+import org.gkk.bioshopapp.service.service.ShoppingCartService;
 import org.gkk.bioshopapp.service.service.UserService;
 import org.gkk.bioshopapp.validation.UserValidation;
 import org.modelmapper.ModelMapper;

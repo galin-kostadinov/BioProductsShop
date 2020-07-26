@@ -11,10 +11,13 @@
     <th:block th:include="~{fragments/navbar}"/>
 </header>
 <main>
-    <div class="w-75 mx-auto">
-        <div class="text-center">
-            <h3 th:utext="${message}"></h3>
-        </div>
+    <h1 class="text-center mt-5 mb-2">
+        <span class="badge badge-pill badge-secondary">500</span>
+    </h1>
+    <div class="text-center">
+        <h3>An internal server error occurred while executing your request...</h3>
+        <h3>We apologize for the inconvenience.</h3>
+        <h3 class="mt-3">Please, try again later.</h3>
     </div>
 </main>
 <footer>

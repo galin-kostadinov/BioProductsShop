@@ -123,6 +123,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public void deleteShoppingCartByUsername(String username) {
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findByBuyer(username).orElse(null);
+
+        if (shoppingCart == null){
+            return;
+        }
+
+        this.shoppingCartRepository.delete(shoppingCart);
+    }
+
+    @Override
     public void deleteExpiredShoppingCart(LocalDateTime now) {
         this.shoppingCartRepository.deleteAllByExpiryDateIsLessThanEqual(now);
     }

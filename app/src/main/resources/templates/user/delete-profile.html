@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"/>
+</head>
+<body>
+<header>
+    <th:block th:include="~{fragments/navbar}"/>
+</header>
+<main>
+    <h2 class="text-center mt-5 mb-2">
+        <span class="badge badge-pill badge-secondary">Delete Profile</span>
+    </h2>
+    <div class="d-flex justify-content-center">
+        <h4>Hi, <span th:text="${#authentication.getPrincipal().getUsername()}"></span></h4>
+    </div>
+    <div class="mb-3 mt-3 d-flex justify-content-center">
+        <h4 class="text-white text-monospace">After clicking the Delete button you will delete your account.</h4>
+    </div>
+    <form class="form" th:action="@{/users/profile/delete}" th:method="POST">
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger low-button font-weight-bold text-white">Delete</button>
+        </div>
+    </form>
+</main>
+<footer class="footer">
+    <th:block th:include="~{fragments/footer}"/>
+</footer>
+</body>
+</html>

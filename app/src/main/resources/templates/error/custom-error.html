@@ -11,9 +11,14 @@
     <th:block th:include="~{fragments/navbar}"/>
 </header>
 <main>
-    <div class="w-75 mx-auto">
-        <div class="text-center">
-            <h3 th:utext="${message}"></h3>
+    <h1 class="text-center mt-5 mb-2">
+        <span class="badge badge-pill badge-secondary">Error</span>
+    </h1>
+    <div class="text-center">
+        <div class="w-75 mx-auto">
+            <div class="text-center">
+                <h3 th:utext="${message}"></h3>
+            </div>
         </div>
     </div>
 </main>

@@ -12,25 +12,24 @@
 </header>
 <main>
     <div class="mx-auto w-25">
-        <h2 class="text-center mt-5">
+        <h2 class="text-center mt-5 mb-5">
             <span class="badge badge-pill badge-secondary">User profile</span>
         </h2>
-        <span style="visibility: hidden">....</span>
-        <div class="text-left">
-            <h4 th:utext="'Username: ' + ${model.username}"></h4>
+        <div class="d-flex justify-content-center">
+            <h4 th:text="'Username: ' + ${model.username}"></h4>
         </div>
-        <div class="text-left">
-            <h4 th:utext="'Email: ' + ${model.email}"></h4>
+        <div class="d-flex justify-content-center">
+            <h4 th:text="'Email: ' + ${model.email}"></h4>
         </div>
-        <span style="visibility: hidden">....</span>
-        <div class="button-holder d-flex justify-content-center">
+        <div class="button-holder d-flex justify-content-center mt-5">
             <th:block>
                 <a th:href="@{/users/profile/edit}"
-                   class="btn warning btn-warning low-button font-weight-bold text-white">Edit Profile</a>
+                   class="btn btn-warning low-button font-weight-bold text-white mr-2">Edit Profile</a>
+                <a th:href="@{/users/profile/delete}"
+                   class="btn btn-danger low-button font-weight-bold text-white">Delete Profile</a>
             </th:block>
         </div>
     </div>
-    <span style="visibility: hidden">....</span>
 </main>
 <footer class="footer">
     <th:block th:include="~{fragments/footer}"/>

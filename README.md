@@ -20,6 +20,7 @@ From root dir execute:
        - login/logout
        - view and edit own user profile
        - add or remove users` roles - that functionality is accessible only for the ROOT User
+	   - delete profile
     
     2. Products
        - CRUD operations
