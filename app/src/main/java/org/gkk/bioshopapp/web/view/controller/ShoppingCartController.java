@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("/carts")
 public class ShoppingCartController extends BaseController {
 
     private final ShoppingCartService shoppingCartService;
@@ -45,7 +45,7 @@ public class ShoppingCartController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     public String removeFromCart(@PathVariable(name = "id") String productId, Principal principal) throws Exception {
         this.shoppingCartService.removeProduct(principal.getName(), productId);
-        return super.redirectStr("/cart");
+        return super.redirectStr("/carts");
     }
 
     @PostMapping("/buy")
@@ -54,7 +54,7 @@ public class ShoppingCartController extends BaseController {
         if (this.shoppingCartService.buyProducts(principal.getName())) {
             return super.redirectStr("/orders?size=1&sort=dateCreated,desc&page=0");
         } else {
-            return super.redirectStr("/cart");
+            return super.redirectStr("/carts");
         }
     }
 }

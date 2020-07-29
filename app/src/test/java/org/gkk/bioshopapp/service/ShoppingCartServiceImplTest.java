@@ -27,22 +27,22 @@ class ShoppingCartServiceImplTest extends TestBase {
     private final static String USERNAME = UUID.randomUUID().toString();
 
     @MockBean
-    ShoppingCartRepository shoppingCartRepository;
+    private ShoppingCartRepository shoppingCartRepository;
 
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    ProductService productService;
+    private ProductService productService;
 
     @MockBean
-    OrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    ShoppingCartService shoppingCartService;
+    private ShoppingCartService shoppingCartService;
 
     @Test
     public void getShoppingCartByBuyer_ifNotProductAdded_shouldReturnCartWithEmptyProductSet() throws Exception {

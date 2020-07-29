@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class PriceDiscountServiceImplTest extends TestBase {
 
     @MockBean
-    PriceDiscountRepository priceDiscountRepository;
+    private  PriceDiscountRepository priceDiscountRepository;
 
     @Autowired
-    PriceDiscountService priceDiscountService;
+    private PriceDiscountService priceDiscountService;
 
     @Test
     public void removePromotion() {

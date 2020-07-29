@@ -21,16 +21,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuthServiceImplTest extends TestBase {
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    RoleService roleService;
+    private  RoleService roleService;
 
     @Autowired
-    HashingService hashingService;
+    private HashingService hashingService;
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @Test
     public void register_whenUserDataIsValid_shouldSaveTheUser() {

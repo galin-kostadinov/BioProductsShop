@@ -77,7 +77,7 @@ public class UserController extends BaseController {
     @PostMapping("/profile/edit")
     @PreAuthorize("isAuthenticated()")
     public String editProfileConfirm(@Valid @ModelAttribute UserEditProfileBindingModel userEditProfileBindingModel,
-                                     BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
+                                     BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         if (userEditProfileBindingModel == null || bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userEditProfileBindingModel", userEditProfileBindingModel);
@@ -89,7 +89,7 @@ public class UserController extends BaseController {
 
         List<String> violations = this.userService.editUserProfile(serviceModel);
 
-        if (violations != null) {
+        if (violations != null && !violations.isEmpty()) {
             redirectAttributes.addFlashAttribute("userEditProfileBindingModel", userEditProfileBindingModel);
             redirectAttributes.addFlashAttribute("editProfileError", violations);
             return super.redirectStr("/users/profile/edit");
@@ -115,7 +115,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/set-admin/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ROOT')")
     public String setAdminRole(@PathVariable String id) {
         this.userService.makeAdmin(id);
         return super.redirectStr("/users");

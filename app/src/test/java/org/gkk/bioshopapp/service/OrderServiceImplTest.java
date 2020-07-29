@@ -32,16 +32,16 @@ class OrderServiceImplTest extends TestBase {
     private final static int SIZE = 20;
 
     @MockBean
-    OrderRepository orderRepository;
+    private  OrderRepository orderRepository;
 
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @MockBean
-    ProductService productService;
+    private ProductService productService;
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Test
     public void create_whenOrderProductsExist_shouldCreateOrderWithOrderedProducts() throws Exception {

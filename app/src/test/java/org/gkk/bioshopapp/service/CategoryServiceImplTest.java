@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class CategoryServiceImplTest extends TestBase {
 
     @MockBean
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @Test
     public void getCategoryByName_whenNotExist_ShouldThrowException() {

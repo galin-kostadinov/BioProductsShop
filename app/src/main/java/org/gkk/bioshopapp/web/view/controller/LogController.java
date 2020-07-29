@@ -23,7 +23,7 @@ public class LogController extends BaseController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Logs")
-    public String getAllOrders(Model model, Pageable pageable) {
+    public String getAllLogs(Model model, Pageable pageable) {
         Page<LogServiceModel> logServiceModels = this.logService.getPaginated(pageable);
         model.addAttribute("logServiceModels", logServiceModels);
 

@@ -33,13 +33,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductControllerTest {
 
     @MockBean
-    ProductService productService;
+    private ProductService productService;
 
     @MockBean
-    PriceHistoryService priceHistoryService;
+    private  PriceHistoryService priceHistoryService;
 
     @MockBean
-    PriceDiscountService priceDiscountService;
+    private PriceDiscountService priceDiscountService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -82,7 +82,6 @@ class ProductControllerTest {
                 .perform(MockMvcRequestBuilders
                         .post("/products/create")
                         .flashAttr("productCreateBindingModel", productCreateBindingModel))
-                .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/products"));
     }
@@ -96,7 +95,6 @@ class ProductControllerTest {
                 .perform(MockMvcRequestBuilders
                         .post("/products/create")
                         .flashAttr("productCreateBindingModel", productCreateBindingModel))
-                .andDo(print())
                 .andExpect(status().isFound())
                 .andExpect(flash().attributeExists("productCreateBindingModel", "org.springframework.validation.BindingResult.productCreateBindingModel"))
                 .andExpect(view().name("redirect:create"));
@@ -110,7 +108,6 @@ class ProductControllerTest {
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .get("/products/product-table"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("product/product-table"))
                 .andExpect(model().attributeExists("productTableViewModels"));

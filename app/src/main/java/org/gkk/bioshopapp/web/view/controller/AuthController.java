@@ -58,7 +58,7 @@ public class AuthController extends BaseController {
 
         List<String> violations = authService.register(serviceModel);
 
-        if (violations != null) {
+        if (violations != null && !violations.isEmpty()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("registrationError", violations);
             return this.redirectStr("register");

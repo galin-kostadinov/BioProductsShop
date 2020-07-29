@@ -27,7 +27,7 @@
                         <h5 th:unless="${product.product.promotionalPrice} == null" class="text-left pl-4" th:utext="'Price: ' + ${product.product.promotionalPrice} + ' $'"></h5>
                         <h5 class="text-left pl-4" th:utext="'Quantity: ' + ${product.quantity} + 'pcs.'"></h5>
                         <span style="visibility: hidden">....</span>
-                        <form class="mx-auto" th:action="@{/cart/remove-from-cart/{id}(id=${product.product.id})}"
+                        <form class="mx-auto" th:action="@{/carts/remove-from-cart/{id}(id=${product.product.id})}"
                               method="post">
                             <button class="btn warning btn-primary low-button font-weight-bold text-white"
                                     type="submit">Remove from Cart
@@ -37,7 +37,7 @@
                 </th:block>
                 <hr class="hr-2 bg-dark">
                 <h4 th:utext="'Total price: ' + ${cart.calculateTotalCartPrice()} + ' $'"></h4>
-                <form th:action="@{/cart/buy}" method="post">
+                <form th:action="@{/carts/buy}" method="post">
                     <th:block>
                         <button class="btn warning btn-warning low-button font-weight-bold text-white" type="submit">
                             Buy Products

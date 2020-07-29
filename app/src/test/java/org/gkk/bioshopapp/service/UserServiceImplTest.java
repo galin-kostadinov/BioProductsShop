@@ -30,20 +30,20 @@ class UserServiceImplTest extends TestBase {
     private final static String USERNAME = UUID.randomUUID().toString();
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    UserValidation userValidation;
+    private UserValidation userValidation;
 
     @MockBean
-    RoleService roleService;
+    private  RoleService roleService;
 
     @MockBean
-    HashingService hashingService;
+    private HashingService hashingService;
 
     @Autowired
     @Qualifier("userServiceImpl")
-    UserService userService;
+    private  UserService userService;
 
     @Test
     public void getUserByUsername_whenUserExist_shouldReturnUser() throws Exception {

@@ -34,5 +34,5 @@ app/target*
 .vscode
 
 ### Sensitive Data ###
-app/src/main/resources/application.properties
-.properties
+### app/src/main/resources/application.properties ###
+### .properties ###

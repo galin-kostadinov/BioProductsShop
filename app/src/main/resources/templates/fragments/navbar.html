@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/orders?size=1&sort=dateCreated,desc&page=0}">Orders</a>
-                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/cart}">Shopping cart</a>
+                    <a class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white" th:href="@{/carts}">Shopping cart</a>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" class="pt-3 pr-2 pb-3 pl-2 font-weight-bold text-white"
                        th:href="@{/logs?page=0&size=10&sort=time,desc}">Logs</a>
                     <div class="dropdown">

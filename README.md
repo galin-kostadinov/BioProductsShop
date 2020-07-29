@@ -11,7 +11,8 @@ The application also uses Bootstrap and JQuery.
 
 From root dir execute:
 
-`mvn clean install`
+`mvn clean install > log-file.log` 
+due to the long log outputting into IntelliJ IDEA console the tests can crash. Solution: save logs in log-file.log
 
 ## Basic Functionality
 

@@ -26,10 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class LogServiceImplTest extends TestBase {
 
     @MockBean
-    LogRepository logRepository;
+    private LogRepository logRepository;
 
     @Autowired
-    LogService logService;
+    private LogService logService;
 
     @Test
     public void seedLogInDb_shouldSaveLogInDb() {

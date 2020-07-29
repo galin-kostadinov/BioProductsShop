@@ -24,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class PriceHistoryServiceImplTest extends TestBase {
 
     @MockBean
-    PriceHistoryRepository priceHistoryRepository;
+    private PriceHistoryRepository priceHistoryRepository;
 
     @Autowired
-    PriceHistoryService priceHistoryService;
+    private PriceHistoryService priceHistoryService;
 
     @Test
     public void setDiscount_whenProductNotExist_ShouldThrowException() {

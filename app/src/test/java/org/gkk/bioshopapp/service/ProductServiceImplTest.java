@@ -31,16 +31,16 @@ class ProductServiceImplTest extends TestBase {
     private final static String USERNAME = UUID.randomUUID().toString();
 
     @MockBean
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @MockBean
-    CategoryService categoryService;
+    private  CategoryService categoryService;
 
     @MockBean
-    LogService logService;
+    private LogService logService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Test
     public void create_whenProductWithSameCodeExist_shouldThrowException() {

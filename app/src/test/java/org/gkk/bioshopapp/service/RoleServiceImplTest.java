@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class RoleServiceImplTest extends TestBase {
 
     @MockBean
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Test
     public void findByAuthority_whenRoleNotExist_ShouldThrowException() {
