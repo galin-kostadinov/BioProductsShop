@@ -39,7 +39,7 @@ function addTitleDOM() {
 function addProductDOM({id, name, made, imgUrl, price, promotionalPrice}) {
     $('#index-promoted-products')
         .append($('<output/>')
-            .addClass('col col-md-3 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0')
+            .addClass('col col-xl-3 col-lg-4 col-md-6 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0')
             .append($('<div/>')
                 .append(
                     $('<h4/>')

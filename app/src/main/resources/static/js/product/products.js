@@ -19,7 +19,7 @@ function loadAllProducts() {
 function addProductDOM({id, name, made, imgUrl, price, promotionalPrice}) {
     $('#product-list')
         .append($('<output/>')
-            .addClass('col col-md-3 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0')
+            .addClass('col col-xl-3 col-lg-4 col-md-6 col-sm-12 text-center pb-md-5 ml-md-0 mr-md-0')
             .append($('<div/>')
                 .addClass('col col-md-12 text-center')
                 .append(
@@ -39,7 +39,7 @@ function addProductDOM({id, name, made, imgUrl, price, promotionalPrice}) {
                 .append(
                     $('<img/>', {src: imgUrl})
                         .addClass('col col-md-12 mb-md-3 mt-md-3')
-                        .width('300px')
+                        .width('18/75re')
                         .height('300px')
                 )
             )
