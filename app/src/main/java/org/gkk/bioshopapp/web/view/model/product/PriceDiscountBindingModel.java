@@ -32,7 +32,6 @@ public class PriceDiscountBindingModel {
 
     @NotNull(message = "The start date is mandatory.")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @FutureOrPresent(message = "The date cannot be in the past.")
     public LocalDateTime getFromDate() {
         return fromDate;
     }

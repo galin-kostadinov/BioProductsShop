@@ -34,7 +34,7 @@ class PriceHistoryServiceImplTest extends TestBase {
         String productId = UUID.randomUUID().toString();
         PriceDiscountServiceModel newPriceDiscount = new PriceDiscountServiceModel();
         newPriceDiscount.setDiscount(10);
-        newPriceDiscount.setFromDate(LocalDateTime.now().plusMinutes(10));
+        newPriceDiscount.setFromDate(LocalDateTime.now());
         newPriceDiscount.setToDate(LocalDateTime.now().plusDays(10));
 
         assertThrows(PriceHishoryNotFoundException.class, () -> priceHistoryService.setDiscount(productId, newPriceDiscount));
@@ -45,7 +45,7 @@ class PriceHistoryServiceImplTest extends TestBase {
         String productId = UUID.randomUUID().toString();
         PriceDiscountServiceModel newPriceDiscount = new PriceDiscountServiceModel();
         newPriceDiscount.setDiscount(10);
-        newPriceDiscount.setFromDate(LocalDateTime.now().plusMinutes(10));
+        newPriceDiscount.setFromDate(LocalDateTime.now());
         newPriceDiscount.setToDate(LocalDateTime.now().minusHours(10));
 
         assertThrows(IllegalArgumentException.class, () -> priceHistoryService.setDiscount(productId, newPriceDiscount));
@@ -56,7 +56,7 @@ class PriceHistoryServiceImplTest extends TestBase {
         String productId = UUID.randomUUID().toString();
         PriceDiscountServiceModel newPriceDiscount = new PriceDiscountServiceModel();
         newPriceDiscount.setDiscount(10);
-        newPriceDiscount.setFromDate(LocalDateTime.now().plusMinutes(10));
+        newPriceDiscount.setFromDate(LocalDateTime.now());
         newPriceDiscount.setToDate(LocalDateTime.now().plusDays(10));
 
         PriceHistory priceHistory = new PriceHistory();
@@ -78,7 +78,8 @@ class PriceHistoryServiceImplTest extends TestBase {
 
         PriceDiscount priceDiscountResult = priceDiscountsListResult.get(0);
 
-        assertEquals(newPriceDiscount.getFromDate(), priceDiscountResult.getFromDate());
+        assertTrue(priceDiscountResult.getFromDate().isAfter(LocalDateTime.now().minusMinutes(5)));
+        assertTrue(priceDiscountResult.getFromDate().isBefore(LocalDateTime.now()));
         assertEquals(newPriceDiscount.getToDate(), priceDiscountResult.getToDate());
         assertEquals(newPriceDiscount.getDiscount(), priceDiscountResult.getDiscount());
     }

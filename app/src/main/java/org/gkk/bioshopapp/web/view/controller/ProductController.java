@@ -160,7 +160,9 @@ public class ProductController extends BaseController {
     @PageTitle("Promote Product")
     public String getPromoteForm(@PathVariable String id, Model model) {
         if (model.getAttribute("priceDiscountBindingModel") == null) {
-            model.addAttribute("priceDiscountBindingModel", new PriceDiscountBindingModel());
+            PriceDiscountBindingModel priceDiscountBindingModel = new PriceDiscountBindingModel();
+            priceDiscountBindingModel.setFromDate(LocalDateTime.now());
+            model.addAttribute("priceDiscountBindingModel", priceDiscountBindingModel);
         }
 
         ProductDetailsServiceModel productServiceModel = this.productService.getProductDetailsModel(id);

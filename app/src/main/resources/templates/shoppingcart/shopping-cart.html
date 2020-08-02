@@ -24,7 +24,7 @@
                         </h4>
                         <img class ="mb-3 mt-3" th:src="${product.product.imgUrl}" width="150" height="150" >
                         <h5 th:if="${product.product.promotionalPrice} == null" class="text-left text-center" th:utext="'Price: ' + ${product.product.price} + ' $'"></h5>
-                        <h5 th:unless="${product.product.promotionalPrice} == null" class="text-left" th:utext="'Price: ' + ${product.product.promotionalPrice} + ' $'"></h5>
+                        <h5 th:unless="${product.product.promotionalPrice} == null" class="text-left text-center" th:utext="'Price: ' + ${product.product.promotionalPrice} + ' $'"></h5>
                         <h5 class="text-left text-center" th:utext="'Quantity: ' + ${product.quantity} + 'pcs.'"></h5>
                         <span style="visibility: hidden">....</span>
                         <form class="mx-auto" th:action="@{/carts/remove-from-cart/{id}(id=${product.product.id})}"

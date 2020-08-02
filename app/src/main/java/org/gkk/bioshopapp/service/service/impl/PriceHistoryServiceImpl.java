@@ -30,10 +30,12 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
 
     @Override
     @Transactional
-    public void setDiscount(String productId, PriceDiscountServiceModel model) {
-        if (model.getToDate().isBefore(LocalDateTime.now())) {
+    public void setDiscount(String productId, PriceDiscountServiceModel priceDiscountServiceModel) {
+        if (priceDiscountServiceModel.getToDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException(ErrorMessageConstant.PAST_DATE);
         }
+
+        priceDiscountServiceModel.setFromDate(LocalDateTime.now());
 
         PriceHistory priceHistory = this.priceHistoryRepository.findOneByProductIdOrderByFromDateDesc(productId)
                 .orElseThrow(() -> new PriceHishoryNotFoundException(PRICE_HISTORY_NOT_FOUND));
@@ -42,12 +44,12 @@ public class PriceHistoryServiceImpl implements PriceHistoryService {
         if (!priceDiscounts.isEmpty()) {
             PriceDiscount lastPriceDiscount = getLastPricePromotion(priceDiscounts);
 
-            if (lastPriceDiscount.getToDate().isAfter(model.getFromDate())) {
-                lastPriceDiscount.setToDate(model.getFromDate().minusSeconds(1));
+            if (lastPriceDiscount.getToDate().isAfter(priceDiscountServiceModel.getFromDate())) {
+                lastPriceDiscount.setToDate(priceDiscountServiceModel.getFromDate().minusSeconds(1));
             }
         }
 
-        PriceDiscount newPriceDiscount = this.modelMapper.map(model, PriceDiscount.class);
+        PriceDiscount newPriceDiscount = this.modelMapper.map(priceDiscountServiceModel, PriceDiscount.class);
 
         newPriceDiscount.setPrice(priceHistory);
         priceDiscounts.add(newPriceDiscount);

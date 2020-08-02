@@ -46,7 +46,7 @@
                             <input type="datetime-local" size="15px" id="fromDate" name="fromDate"
                                    th:errorclass="bg-danger" th:field="*{fromDate}"
                                    class="form-control validate col-md-4 ml-2"
-                                   data-large-mode="true">
+                                   data-large-mode="true" readonly>
                             <p th:each="e : ${#fields.errors('fromDate')}">
                                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
                             </p>
