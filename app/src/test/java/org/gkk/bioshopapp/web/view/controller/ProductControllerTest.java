@@ -7,6 +7,7 @@ import org.gkk.bioshopapp.service.model.product.ProductEditServiceModel;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.gkk.bioshopapp.service.service.ShoppingCartService;
 import org.gkk.bioshopapp.web.view.model.product.PriceDiscountBindingModel;
 import org.gkk.bioshopapp.web.view.model.product.ProductCreateBindingModel;
 import org.gkk.bioshopapp.web.view.model.product.ProductEditModel;
@@ -25,7 +26,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -40,6 +40,9 @@ class ProductControllerTest {
 
     @MockBean
     private PriceDiscountService priceDiscountService;
+
+    @MockBean
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     private MockMvc mockMvc;

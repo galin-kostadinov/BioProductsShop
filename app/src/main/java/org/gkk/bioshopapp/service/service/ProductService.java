@@ -10,17 +10,17 @@ public interface ProductService {
 
     void create(ProductCreateServiceModel serviceModel, String username);
 
-    void editProduct(String id, ProductEditServiceModel productEditServiceModel, String username);
+    void editProduct(String productId, ProductEditServiceModel productEditServiceModel, String username);
 
-    void deleteProduct(String id, String username);
+    void deleteProduct(String productId, String username);
 
-    Product getProduct(String id);
+    Product getProduct(String productId);
 
-    ProductEditServiceModel getProductEditModelById(String id);
+    ProductEditServiceModel getProductEditModelById(String productId);
 
-    ProductDeleteServiceModel getProductDeleteModelById(String id);
+    ProductDeleteServiceModel getProductDeleteModelById(String productId);
 
-    ProductDetailsServiceModel getProductDetailsModel(String id);
+    ProductDetailsServiceModel getProductDetailsModel(String productId);
 
     List<ProductTableServiceModel> getProductTable();
 

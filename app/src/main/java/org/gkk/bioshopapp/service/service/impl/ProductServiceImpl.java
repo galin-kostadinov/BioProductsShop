@@ -14,6 +14,7 @@ import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.CategoryService;
 import org.gkk.bioshopapp.service.service.LogService;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.gkk.bioshopapp.service.service.ShoppingCartService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,11 +105,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(String id, String username) {
-        this.productRepository.setProductDeletedTrue(id);
-
-        LogServiceModel log = new LogServiceModel(username, PRODUCT_DELETED, id, LocalDateTime.now());
-
+    public void deleteProduct(String productId, String username) {
+        this.productRepository.setProductDeletedTrue(productId);
+        LogServiceModel log = new LogServiceModel(username, PRODUCT_DELETED, productId, LocalDateTime.now());
         this.logService.seedLogInDb(log);
     }
 

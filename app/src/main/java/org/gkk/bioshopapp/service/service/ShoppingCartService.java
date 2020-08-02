@@ -17,4 +17,6 @@ public interface ShoppingCartService {
     void deleteExpiredShoppingCart(LocalDateTime now);
 
     void deleteShoppingCartByUsername(String username);
+
+    void removeProductById(String productId);
 }

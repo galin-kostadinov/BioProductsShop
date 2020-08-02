@@ -104,6 +104,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    public void removeProductById(String productId) {
+        List<ShoppingCart> shoppingCarts = this.shoppingCartRepository.findAllByProductId(productId);
+
+        for (ShoppingCart shoppingCart : shoppingCarts) {
+            ShoppingCartProduct shoppingCartProduct = shoppingCart.getShoppingCartProducts()
+                    .stream()
+                    .filter(pr -> pr.getProduct().getId().equals(productId))
+                    .findFirst().orElse(null);
+
+            shoppingCart.getShoppingCartProducts().remove(shoppingCartProduct);
+            this.shoppingCartRepository.saveAndFlush(shoppingCart);
+        }
+    }
+
+    @Override
     public boolean buyProducts(String buyer) throws Exception {
         ShoppingCart shoppingCart = this.shoppingCartRepository.findByBuyer(buyer).orElse(null);
 
@@ -126,7 +141,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteShoppingCartByUsername(String username) {
         ShoppingCart shoppingCart = this.shoppingCartRepository.findByBuyer(username).orElse(null);
 
-        if (shoppingCart == null){
+        if (shoppingCart == null) {
             return;
         }
 

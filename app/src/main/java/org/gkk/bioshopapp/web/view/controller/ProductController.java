@@ -6,6 +6,7 @@ import org.gkk.bioshopapp.service.model.product.*;
 import org.gkk.bioshopapp.service.service.PriceDiscountService;
 import org.gkk.bioshopapp.service.service.PriceHistoryService;
 import org.gkk.bioshopapp.service.service.ProductService;
+import org.gkk.bioshopapp.service.service.ShoppingCartService;
 import org.gkk.bioshopapp.web.annotation.PageTitle;
 import org.gkk.bioshopapp.web.view.model.product.*;
 import org.modelmapper.ModelMapper;
@@ -13,11 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -33,13 +31,15 @@ public class ProductController extends BaseController {
     private final ProductService productService;
     private final PriceHistoryService priceHistoryService;
     private final PriceDiscountService priceDiscountService;
+    private final ShoppingCartService shoppingCartService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ProductController(ProductService productService, PriceHistoryService priceHistoryService, PriceDiscountService priceDiscountService, ModelMapper modelMapper) {
+    public ProductController(ProductService productService, PriceHistoryService priceHistoryService, PriceDiscountService priceDiscountService, ShoppingCartService shoppingCartService, ModelMapper modelMapper) {
         this.productService = productService;
         this.priceHistoryService = priceHistoryService;
         this.priceDiscountService = priceDiscountService;
+        this.shoppingCartService = shoppingCartService;
         this.modelMapper = modelMapper;
     }
 
@@ -151,6 +151,7 @@ public class ProductController extends BaseController {
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteProductConfirm(@PathVariable String id, @ModelAttribute ProductCreateBindingModel model, Principal principal) {
+        this.shoppingCartService.removeProductById(id);
         this.productService.deleteProduct(id, principal.getName());
         return super.redirectStr("/products/product-table");
     }
