@@ -59,8 +59,8 @@ function addProductDOM({id, name, made, imgUrl, price, promotionalPrice}) {
             .append(
                 $('<img/>', {src: imgUrl})
                     .addClass('col col-md-12 pt-1 pb-2')
-                    .width('300px')
-                    .height('300px')
+                    .width('min-vw-300')
+                    .height('min-vh-300')
             )
             .append($('<div/>')
                 .addClass('form-inline col col-md-12 mb-md-2')

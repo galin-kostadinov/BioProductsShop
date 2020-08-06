@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
@@ -108,10 +109,11 @@ public class UserController extends BaseController {
     @PostMapping("/profile/delete")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Delete Profile")
-    public void deleteProfileConfirm(Principal principal, HttpServletResponse response) throws IOException {
+    public void deleteProfileConfirm(Principal principal, HttpServletResponse response, HttpSession session) throws IOException {
         this.shoppingCartService.deleteShoppingCartByUsername(principal.getName());
         this.userService.deleteUserProfile(principal.getName());
-        response.sendRedirect("/logout");
+        session.invalidate();
+        response.sendRedirect("/login?logout");
     }
 
     @PostMapping("/set-admin/{id}")

@@ -39,8 +39,8 @@ function addProductDOM({id, name, made, imgUrl, price, promotionalPrice}) {
                 .append(
                     $('<img/>', {src: imgUrl})
                         .addClass('col col-md-12 mb-md-3 mt-md-3')
-                        .width('18/75re')
-                        .height('300px')
+                        .width('min-vw-300')
+                        .height('min-vh-300')
                 )
             )
         );

@@ -30,8 +30,6 @@ public class ApplicationWebSecurityConfiguration extends WebSecurityConfigurerAd
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().disable()
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/contacts", "/products", "/products/details/{id}").permitAll()
                 .antMatchers("/api/products", "/api/products/promotions").permitAll()

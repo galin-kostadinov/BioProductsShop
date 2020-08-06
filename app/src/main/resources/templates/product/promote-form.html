@@ -43,9 +43,9 @@
                         </div>
                         <div class="input-group col-md-10 h5 p-0 mb-3">
                             <label for="fromDate" class="col-form-label">From Date: </label>
-                            <input type="datetime-local" size="15px" id="fromDate" name="fromDate"
+                            <input type="datetime-local" size="20px" id="fromDate" name="fromDate"
                                    th:errorclass="bg-danger" th:field="*{fromDate}"
-                                   class="form-control validate col-md-4 ml-2"
+                                   class="form-control validate col-md-5 ml-2"
                                    data-large-mode="true" readonly>
                             <p th:each="e : ${#fields.errors('fromDate')}">
                                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
@@ -53,9 +53,9 @@
                         </div>
                         <div class="input-group col-md-10 h5 p-0 mb-3">
                             <label for="toDate" class="col-form-label">To Date: </label>
-                            <input type="datetime-local" size="15px" id="toDate" name="toDate"
+                            <input type="datetime-local" size="20px" id="toDate" name="toDate"
                                    th:errorclass="bg-danger" th:field="*{toDate}"
-                                   class="form-control validate col-md-4 ml-2"
+                                   class="form-control validate col-md-5 ml-2"
                                    data-large-mode="true">
                             <p th:each="e : ${#fields.errors('toDate')}">
                                 <small th:text="${e}" class="text-dark col-12 text-center"></small>
